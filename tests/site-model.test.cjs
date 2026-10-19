@@ -18,6 +18,16 @@ test("catalog has distinct, valid routes and only major feature tabs", () => {
   for (const folder of catalog.folders) assert.ok(catalog.features.some((feature) => feature.folderId === folder.id));
 });
 
+test("feature and tab icons share a scalable grid and restrained stroke", () => {
+  for (const page of pages) {
+    assert.match(page.icon, /viewBox="0 0 24 24"/);
+    assert.match(page.icon, /stroke-width="1\.75"/);
+    assert.match(page.icon, /stroke="currentColor"/);
+    assert.match(page.icon, /aria-hidden="true"/);
+    assert.doesNotMatch(page.icon, /<image|<script|https?:/);
+  }
+});
+
 test("Home and every feature support direct links", () => {
   for (const page of pages) {
     assert.equal(resolveRoute(`#${page.id}`, pages), page.id);

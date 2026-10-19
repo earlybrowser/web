@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: MPL-2.0
 // Keep this catalog limited to major features available in Early today.
+// SVG artwork adapted from Lucide 0.468.0 (ISC); see licenses/lucide.txt.
 (function (root) {
   "use strict";
-  const icon = (paths) => `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+  const icon = (paths) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
   const icons = {
-    home: icon('<path d="m2 7 6-5 6 5v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1Z"/><path d="M6 14V9h4v5"/>'),
-    download: icon('<path d="M8 2v8m-3-3 3 3 3-3M3 13h10"/>'),
-    list: icon('<path d="M5 4h8M5 8h8M5 12h8M2 4h.01M2 8h.01M2 12h.01"/>'),
-    sidebar: icon('<rect x="1.5" y="2" width="13" height="12" rx="2"/><path d="M6 2v12M3.5 5h.5m-.5 3h.5m-.5 3h.5"/>'),
-    pin: icon('<path d="m5 2 6 0-1 4 2 3H4l2-3ZM8 9v5"/>'),
-    folder: icon('<path d="M2 13h12V5H8L6 3H2Zm0-6h12"/>'),
-    spaces: icon('<rect x="2" y="2" width="9" height="9" rx="2"/><path d="M5 14h7a2 2 0 0 0 2-2V5"/>'),
-    search: icon('<circle cx="7" cy="7" r="4.5"/><path d="m10.5 10.5 3 3"/>'),
-    mac: icon('<rect x="1.5" y="2.5" width="13" height="10" rx="2"/><path d="M5 15h6M8 12.5V15M1.5 5.5h13"/>'),
-    profile: icon('<circle cx="8" cy="5" r="2.5"/><path d="M2.5 14v-1a5.5 5.5 0 0 1 11 0v1"/>'),
-    restore: icon('<path d="M2 6a6 6 0 1 1 .5 6M2 2v4h4m2-2v4l2 1.5"/>')
+    home: icon('<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),
+    download: icon('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/>'),
+    list: icon('<path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13"/>'),
+    sidebar: icon('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>'),
+    pin: icon('<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>'),
+    folder: icon('<path d="M20 17a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3.9a2 2 0 0 1-1.69-.9l-.81-1.2a2 2 0 0 0-1.67-.9H8a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2Z"/><path d="M2 8v11a2 2 0 0 0 2 2h14"/>'),
+    spaces: icon('<path d="m16.02 12 5.48 3.13a1 1 0 0 1 0 1.74L13 21.74a2 2 0 0 1-2 0l-8.5-4.87a1 1 0 0 1 0-1.74L7.98 12"/><path d="M13 13.74a2 2 0 0 1-2 0L2.5 8.87a1 1 0 0 1 0-1.74L11 2.26a2 2 0 0 1 2 0l8.5 4.87a1 1 0 0 1 0 1.74Z"/>'),
+    search: icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
+    mac: icon('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01"/>'),
+    profile: icon('<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>'),
+    restore: icon('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/>')
   };
   const catalog = {
     folders: [

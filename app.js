@@ -299,18 +299,12 @@
     $("browser-window").classList.toggle("sidebar-visible", state.sidebarVisible);
     $("sidebar").inert = state.autoHide && !state.sidebarVisible;
     $("sidebar-reveal").setAttribute("aria-expanded", String(state.sidebarVisible));
-    $("sidebar-toggle-btn").setAttribute("aria-expanded", String(!state.autoHide || state.sidebarVisible));
   }
   function showSidebar(pinned = false) { state.sidebarVisible = true; state.sidebarPinnedOpen = pinned; updateSidebar(); }
   function hideSidebar() { state.sidebarVisible = false; state.sidebarPinnedOpen = false; updateSidebar(); }
-  $("sidebar-toggle-btn").addEventListener("click", () => {
-    state.autoHide = narrow.matches || !state.autoHide;
-    hideSidebar();
-    if (state.autoHide) $("sidebar-reveal").focus();
-  });
   $("sidebar-reveal").addEventListener("click", () => {
     if (state.sidebarVisible) hideSidebar();
-    else { showSidebar(true); $("sidebar-toggle-btn").focus(); }
+    else { showSidebar(true); $("address-edit-btn").focus(); }
   });
   $("sidebar-edge-sensor").addEventListener("pointerenter", (event) => {
     if (state.autoHide && event.pointerType === "mouse") showSidebar();
@@ -366,8 +360,6 @@
       event.preventDefault(); openCommandBar(key === "l");
     } else if (modifier && event.shiftKey && key === "c") {
       event.preventDefault(); copyText(model.pageURL(state.active, location.href), "Copied Current URL");
-    } else if (modifier && event.shiftKey && key === "s") {
-      event.preventDefault(); $("sidebar-toggle-btn").click();
     } else if (event.key === "Escape" && state.sidebarVisible && !state.open) {
       hideSidebar(); $("sidebar-reveal").focus();
     }

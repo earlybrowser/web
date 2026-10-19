@@ -20,6 +20,8 @@ The command bar searches this site locally and ranks feature names ahead of inci
 
 Pages use hash routes so deep links work on static hosting, including project subdirectories. Toolbar and browser Back/Forward both work. URL copying requires a secure context (HTTPS or localhost) and clipboard permission.
 
+Feature-page and tab icons are bundled SVGs adapted from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0/icons), with a lighter stroke to suit Early’s chrome. The [ISC notice](licenses/lucide.txt) is included. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
+
 ## Checks
 
 With Node.js 22 or later, no package installation is needed:
