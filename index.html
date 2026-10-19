@@ -30,22 +30,10 @@
           <div class="navigation-controls" id="window-drag-region">
 
             <!-- WindowControls().frame(width: 60, height: 32) -->
-            <div id="traffic-lights" class="traffic-lights" aria-label="Window Controls">
-              <button type="button" id="traffic-close" class="traffic-btn traffic-close" aria-label="Close" title="Close">
-                <svg class="traffic-glyph" viewBox="0 0 14 14" aria-hidden="true">
-                  <path d="M4.1 4.1L9.9 9.9M9.9 4.1L4.1 9.9" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                </svg>
-              </button>
-              <button type="button" id="traffic-min" class="traffic-btn traffic-minimize" aria-label="Minimize" title="Minimize">
-                <svg class="traffic-glyph" viewBox="0 0 14 14" aria-hidden="true">
-                  <path d="M3.5 7H10.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round"/>
-                </svg>
-              </button>
-              <button type="button" id="traffic-zoom" class="traffic-btn traffic-zoom" aria-label="Full Screen" title="Toggle Full Screen">
-                <svg class="traffic-glyph" viewBox="0 0 14 14" aria-hidden="true">
-                  <path d="M3.6 6.4V3.6H6.4L3.6 6.4ZM10.4 7.6V10.4H7.6L10.4 7.6Z" fill="currentColor"/>
-                </svg>
-              </button>
+            <div id="traffic-lights" class="traffic-lights" aria-hidden="true">
+              <span class="traffic-btn traffic-close"></span>
+              <span class="traffic-btn traffic-minimize"></span>
+              <span class="traffic-btn traffic-zoom"></span>
             </div>
 
             <!-- Sidebar Toggle Button: Image(systemName: "sidebar.left").frame(width: 32, height: 32) -->

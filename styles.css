@@ -202,6 +202,7 @@ button, input {
   flex-shrink: 0;
   display: flex;
   align-items: center;
+  pointer-events: none;
 }
 
 .traffic-btn {
@@ -213,61 +214,21 @@ button, input {
   border: none;
   background: transparent;
   padding: 1px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
+  cursor: default;
+  pointer-events: none;
 }
 
 .traffic-btn.traffic-close { left: 0px; }
 .traffic-btn.traffic-minimize { left: 22px; }
 .traffic-btn.traffic-zoom { left: 44px; }
 
-/* Neutral monochrome circle at rest */
+/* Always neutral translucent circle */
 .traffic-btn::before {
   content: "";
   position: absolute;
   inset: 1px;
   border-radius: 50%;
   background: var(--traffic-idle);
-  transition: background-color 0.1s ease, box-shadow 0.1s ease;
-}
-
-.traffic-glyph {
-  position: relative;
-  z-index: 1;
-  width: 12px;
-  height: 12px;
-  opacity: 0;
-  transition: opacity 0.1s ease;
-  pointer-events: none;
-}
-
-/* Native macOS traffic light colors & glyphs on group hover */
-.traffic-lights:hover .traffic-close::before {
-  background: #ff5f57;
-  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
-}
-.traffic-lights:hover .traffic-minimize::before {
-  background: #febc2e;
-  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
-}
-.traffic-lights:hover .traffic-zoom::before {
-  background: #28c840;
-  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.2);
-}
-
-.traffic-lights:hover .traffic-close { color: rgba(76, 0, 2, 0.88); }
-.traffic-lights:hover .traffic-minimize { color: rgba(92, 60, 0, 0.88); }
-.traffic-lights:hover .traffic-zoom { color: rgba(0, 77, 13, 0.88); }
-
-.traffic-lights:hover .traffic-glyph {
-  opacity: 1;
-}
-
-.traffic-btn:active::before {
-  filter: brightness(0.85);
 }
 
 /* Toolbar Buttons: 32x32, cornerRadius 8 (NavigationControlStyle) */

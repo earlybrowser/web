@@ -50,9 +50,6 @@
     sidebarEdgeSensor: document.getElementById("sidebar-edge-sensor"),
     sidebarResizeHandle: document.getElementById("sidebar-resize-handle"),
     sidebarToggleBtn: document.getElementById("sidebar-toggle-btn"),
-    trafficClose: document.getElementById("traffic-close"),
-    trafficMin: document.getElementById("traffic-min"),
-    trafficZoom: document.getElementById("traffic-zoom"),
     navBack: document.getElementById("nav-back"),
     navForward: document.getElementById("nav-forward"),
     navReload: document.getElementById("nav-reload"),
@@ -785,12 +782,6 @@
   // 11. EVENT LISTENERS & KEYBOARD SHORTCUTS
   // =========================================================================
   function initEventListeners() {
-    dom.trafficClose.addEventListener("click", () => navigateToTab("home"));
-    dom.trafficMin.addEventListener("click", () => toggleSidebarAutoHide());
-    dom.trafficZoom.addEventListener("click", () => {
-      dom.browserWindow.classList.toggle("is-fullscreen");
-    });
-
     dom.sidebarToggleBtn.addEventListener("click", () => toggleSidebarAutoHide());
 
     dom.navBack.addEventListener("click", () => {
