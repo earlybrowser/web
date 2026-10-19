@@ -291,13 +291,39 @@ button, input {
   transform: translateX(2.5px) scale(0.88);
 }
 
+/* NavigationSymbolMotion (BrowserWindowView.swift lines 2098-2138) */
 .reload-stop-rotator {
+  position: relative;
   width: 18px;
   height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.16s linear;
+}
+
+.reload-glyph,
+.stop-glyph {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  transition: opacity 0.16s linear;
+}
+
+.reload-glyph {
+  opacity: 1;
+}
+
+.stop-glyph {
+  opacity: 0;
+}
+
+.reload-stop-rotator.is-loading .reload-glyph {
+  opacity: 0;
+}
+
+.reload-stop-rotator.is-loading .stop-glyph {
+  opacity: 1;
 }
 
 /* Address Bar (BrowserWindowView.addressBar lines 1995-2039) */

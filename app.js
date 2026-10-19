@@ -224,6 +224,37 @@
   // =========================================================================
   // 5. NAVIGATION & PAGE RENDERING
   // =========================================================================
+  let reloadPhase = 0;
+  let reloadTimer = null;
+
+  function setReloadLoading(loading) {
+    const wasLoading = reloadPhase % 2 !== 0;
+    if (loading === wasLoading) return;
+    reloadPhase += 1;
+    dom.reloadRotator.style.transform = `rotate(${reloadPhase * 180}deg)`;
+    dom.reloadRotator.classList.toggle("is-loading", loading);
+    dom.navReload.setAttribute("aria-label", loading ? "Stop Loading" : "Reload");
+    dom.navReload.title = loading ? "Stop Loading" : "Reload (⌘R)";
+  }
+
+  function triggerReloadMotion() {
+    clearTimeout(reloadTimer);
+    if (reloadPhase % 2 !== 0) {
+      // Currently in Stop (X) state -> complete clockwise turn back to Reload
+      setReloadLoading(false);
+      dom.pageLoadingLine.classList.remove("is-loading");
+      dom.pageLoadingLine.classList.add("is-done");
+      return;
+    }
+    // Step 1: Rotate 180° clockwise into X (Stop)
+    setReloadLoading(true);
+    triggerLoadingLine();
+    // Step 2: Complete the 360° clockwise turn from X back to Reload
+    reloadTimer = setTimeout(() => {
+      setReloadLoading(false);
+    }, 180);
+  }
+
   function triggerLoadingLine() {
     dom.pageLoadingLine.classList.remove("is-loading", "is-done");
     void dom.pageLoadingLine.offsetWidth;
@@ -799,11 +830,7 @@
     });
 
     dom.navReload.addEventListener("click", () => {
-      dom.reloadRotator.style.transform = "rotate(360deg)";
-      triggerLoadingLine();
-      setTimeout(() => {
-        dom.reloadRotator.style.transform = "";
-      }, 340);
+      triggerReloadMotion();
     });
 
     dom.addressBar.addEventListener("click", (e) => {
