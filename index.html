@@ -3,19 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Early - A Native macOS Browser</title>
-  <meta name="description" content="A fast, lightweight native macOS browser built with Swift 6, SwiftUI, AppKit, and WebKit.">
+  <title>Early — A native macOS browser</title>
+  <meta name="description" content="Early is an open-source native macOS browser inspired by Arc. Organize your browsing with vertical tabs, Favorites, folders, Spaces, and profiles. Actively in development.">
+  <meta name="theme-color" content="#171819" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#d5d2cc" media="(prefers-color-scheme: light)">
   <link rel="icon" type="image/png" href="assets/Early-Default-64.png">
   <link rel="apple-touch-icon" href="assets/Early-Default-1024.png">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body data-appearance="dark">
+<body>
+  <a class="skip-link" href="#content-viewport">Skip to content</a>
 
   <div class="desktop-viewport">
 
-    <div id="browser-window" class="browser-window" role="application" aria-label="Early Browser">
+    <div id="browser-window" class="browser-window" aria-label="Early browser preview">
 
-      <div id="sidebar-edge-sensor" class="sidebar-edge-sensor" aria-label="Reveal sidebar"></div>
+      <button type="button" id="sidebar-reveal" class="toolbar-btn sidebar-reveal" aria-label="Show sidebar" aria-controls="sidebar" aria-expanded="false" title="Show sidebar">
+        <svg width="16" height="16" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.35" aria-hidden="true"><rect x="1.5" y="1.75" width="15" height="12.5" rx="2.5"/><path d="M6.5 2v12"/></svg>
+      </button>
+
+      <div id="sidebar-edge-sensor" class="sidebar-edge-sensor" aria-hidden="true"></div>
 
       <aside id="sidebar" class="sidebar" aria-label="Sidebar">
 
@@ -29,7 +36,7 @@
               <span class="traffic-btn traffic-zoom"></span>
             </div>
 
-            <button type="button" id="sidebar-toggle-btn" class="toolbar-btn" aria-label="Toggle sidebar auto-hide" title="Toggle sidebar auto-hide (⌘⇧S)">
+            <button type="button" id="sidebar-toggle-btn" class="toolbar-btn" aria-label="Toggle sidebar auto-hide" aria-controls="sidebar" aria-expanded="true" title="Toggle sidebar auto-hide (⌘⇧S)">
               <svg width="16" height="16" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="1.5" y="1.75" width="15" height="12.5" rx="2.5"/>
                 <line x1="6.5" y1="1.75" x2="6.5" y2="14.25"/>
@@ -67,13 +74,14 @@
 
           </div>
 
-          <div id="sidebar-address-bar" class="sidebar-address-bar" role="button" tabindex="0" aria-label="Address bar" title="Search or enter a URL (⌘L)">
-            <svg id="address-search-icon" class="address-search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="7" cy="7" r="4.8"/>
-              <line x1="10.6" y1="10.6" x2="14" y2="14"/>
-            </svg>
-            <span id="address-bar-label" class="address-bar-label is-placeholder">Search…</span>
-            <span class="address-bar-spacer"></span>
+          <div id="sidebar-address-bar" class="sidebar-address-bar">
+            <button type="button" id="address-edit-btn" class="address-edit-btn" aria-label="Edit address" title="Search this site or enter an address (⌘K / Ctrl K)">
+              <svg id="address-search-icon" class="address-search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="7" cy="7" r="4.8"/>
+                <line x1="10.6" y1="10.6" x2="14" y2="14"/>
+              </svg>
+              <span id="address-bar-label" class="address-bar-label is-placeholder">Search…</span>
+            </button>
             <button type="button" id="address-copy-link-btn" class="address-link-btn" style="display: none;" aria-label="Copy current page URL" title="Copy URL (⌘⇧C)">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M6.8 9.2a3.2 3.2 0 0 0 4.5 0l2-2a3.2 3.2 0 0 0-4.5-4.5L7.7 3.8"/>
@@ -86,13 +94,13 @@
 
         <div class="favorites-section" aria-label="Favorites">
           <div class="favorites-grid">
-            <a href="https://github.com/earlybrowser/early-browser" target="_blank" rel="noopener noreferrer" class="favorite-tile" id="fav-github" title="GitHub&#10;https://github.com/earlybrowser/early-browser">
+            <a href="https://github.com/earlybrowser/early-browser" target="_blank" rel="noopener noreferrer" class="favorite-tile" id="fav-github" aria-label="Early on GitHub (opens in a new tab)" title="GitHub&#10;https://github.com/earlybrowser/early-browser">
               <svg width="20" height="20" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" transform="scale(64)" fill="#ffffff"/>
               </svg>
             </a>
 
-            <a href="mailto:earlybrowser.dev@gmail.com" class="favorite-tile" id="fav-mail" title="Mail&#10;earlybrowser.dev@gmail.com">
+            <a href="mailto:earlybrowser.dev@gmail.com" class="favorite-tile" id="fav-mail" aria-label="Email Early" title="Mail&#10;earlybrowser.dev@gmail.com">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 192 192" aria-hidden="true">
                 <path fill="url(#a)" d="M146 44h38v110c0 6.627-5.373 12-12 12h-20a6 6 0 0 1-6-6z"/>
                 <path fill="#fc413d" d="M46 44H8v110c0 6.627 5.373 12 12 12h20a6 6 0 0 0 6-6z"/>
@@ -120,7 +128,7 @@
               </svg>
             </a>
 
-            <a href="https://buymeacoffee.com/earlybrowser" target="_blank" rel="noopener noreferrer" class="favorite-tile" id="fav-bmac" title="Buy Me a Coffee&#10;https://buymeacoffee.com/earlybrowser">
+            <a href="https://buymeacoffee.com/earlybrowser" target="_blank" rel="noopener noreferrer" class="favorite-tile" id="fav-bmac" aria-label="Support Early on Buy Me a Coffee (opens in a new tab)" title="Buy Me a Coffee&#10;https://buymeacoffee.com/earlybrowser">
               <svg width="16" height="22" viewBox="0 0 884 1279" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M791.109 297.518L790.231 297.002L788.201 296.383C789.018 297.072 790.04 297.472 791.109 297.518V297.518Z" fill="#ffffff"/>
                 <path d="M803.896 388.891L802.916 389.166L803.896 388.891Z" fill="#ffffff"/>
@@ -160,7 +168,7 @@
                 <div class="sidebar-divider"></div>
               </div>
 
-              <button type="button" id="new-tab-btn" class="new-tab-btn" title="Open the command bar (⌘T)">
+              <button type="button" id="new-tab-btn" class="new-tab-btn" title="Open the command bar (⌘K / Ctrl K on this website)">
                 <span class="new-tab-left">
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
                     <line x1="8" y1="3" x2="8" y2="13"/>
@@ -179,44 +187,42 @@
         </div>
 
         <div id="sidebar-footer" class="sidebar-footer" aria-label="Spaces">
-          <div class="footer-icon-btn is-tertiary" aria-label="Downloads" title="Downloads">
+          <button type="button" id="footer-download" class="footer-icon-btn is-tertiary" aria-label="Download and installation information" title="Download & Install">
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="8" cy="8" r="6.2"/>
               <polyline points="5.6 8.3 8 10.7 10.4 8.3"/>
               <line x1="8" y1="5.2" x2="8" y2="10.5"/>
             </svg>
-          </div>
+          </button>
 
           <div id="space-indicator-strip" class="space-indicator-strip" aria-label="Active Space">
-            <div class="space-dot-btn is-active" title="Personal">
+            <div class="space-dot-btn is-active" title="Personal — preview Space" aria-label="Personal, current Space">
               <span class="space-default-dot"></span>
             </div>
           </div>
 
-          <div class="footer-icon-btn" aria-label="New Space" title="New Space">
+          <button type="button" id="footer-spaces" class="footer-icon-btn" aria-label="Learn about Spaces in Early" title="Explore Spaces">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
               <line x1="8" y1="3.2" x2="8" y2="12.8"/>
               <line x1="3.2" y1="8" x2="12.8" y2="8"/>
             </svg>
-          </div>
+          </button>
         </div>
 
-        <div id="sidebar-resize-handle" class="sidebar-resize-handle" role="separator" aria-label="Sidebar width" title="Drag to resize sidebar (220–360 pt)"></div>
+        <div id="sidebar-resize-handle" class="sidebar-resize-handle" role="separator" tabindex="0" aria-label="Sidebar width" aria-orientation="vertical" aria-valuemin="220" aria-valuemax="360" aria-valuenow="240" title="Drag or use arrow keys to resize sidebar (220–360 pt)"></div>
 
       </aside>
 
       <main id="content-area" class="content-area" aria-label="Web Content">
 
-        <div id="page-loading-line" class="page-loading-line" aria-hidden="true"></div>
-
-        <div id="command-bar-layer" class="command-bar-layer" style="display: none;">
-          <div id="command-bar-card" class="command-bar-card" role="dialog" aria-label="Command Bar">
+        <div id="command-bar-layer" class="command-bar-layer" hidden>
+          <div id="command-bar-card" class="command-bar-card" role="dialog" aria-label="Command bar" aria-modal="false">
             <div class="command-bar-input-row">
               <svg class="command-bar-search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="7" cy="7" r="4.8"/>
                 <line x1="10.6" y1="10.6" x2="14" y2="14"/>
               </svg>
-              <input type="text" id="command-bar-input" class="command-bar-input" placeholder="Search or enter a URL" autocomplete="off" spellcheck="false" aria-label="Search or enter a URL">
+              <textarea id="command-bar-input" class="command-bar-input" rows="1" maxlength="2048" placeholder="Search or enter a URL" autocomplete="off" autocapitalize="off" spellcheck="false" role="combobox" aria-label="Search Early or enter a URL" aria-autocomplete="list" aria-controls="command-bar-suggestions" aria-expanded="false" aria-describedby="command-bar-hint"></textarea>
               <button type="button" id="command-bar-dismiss" class="command-bar-dismiss" aria-label="Dismiss command bar" title="Dismiss (Escape)">
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
                   <line x1="4" y1="4" x2="12" y2="12"/>
@@ -224,16 +230,28 @@
                 </svg>
               </button>
             </div>
-            <div id="command-bar-suggestions-wrap" class="command-bar-suggestions-wrap" style="display: none;">
+            <p id="command-bar-hint" class="command-bar-hint sr-only"></p>
+            <div id="command-bar-suggestions-wrap" class="command-bar-suggestions-wrap" hidden>
               <div class="command-bar-divider"></div>
-              <div id="command-bar-suggestions" class="command-bar-suggestions" role="listbox"></div>
+              <div id="command-bar-suggestions" class="command-bar-suggestions" role="listbox" aria-label="Suggested destinations"></div>
             </div>
           </div>
         </div>
 
-        <div id="toast-host" class="toast-host" aria-live="polite"></div>
+        <div id="toast-host" class="toast-host" role="status" aria-live="polite" aria-atomic="true"></div>
+        <div id="command-bar-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 
-        <div id="content-viewport" class="content-viewport"></div>
+        <div id="content-viewport" class="content-viewport" tabindex="-1">
+          <noscript>
+            <style>.sidebar, .sidebar-reveal { display: none; } .content-area { margin-left: 0; }</style>
+            <article class="page-container">
+              <h1>Early</h1>
+              <p class="intro">An open-source native macOS browser inspired by Arc, with vertical tabs, Favorites, folders, Spaces, and profiles.</p>
+              <p class="information-note">Actively in development. Not production-ready yet. Enable JavaScript to explore the interactive browser preview.</p>
+              <p><a href="https://github.com/earlybrowser/early-browser">Visit the project and build Early from source</a>.</p>
+            </article>
+          </noscript>
+        </div>
 
       </main>
 
@@ -242,6 +260,7 @@
   </div>
 
   <script src="features-data.js"></script>
+  <script src="site-model.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

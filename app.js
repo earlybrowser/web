@@ -1,1030 +1,380 @@
 // SPDX-License-Identifier: MPL-2.0
-// Early Official Website — User-Focused Native Browser Interface
-
 (function () {
   "use strict";
-
-  // =========================================================================
-  // 1. EXACT FOLDER SVG PATHS (BrowserWindowView.swift)
-  // =========================================================================
-  const FOLDER_BACK_PATH =
-    "M 3.42 17.60 Q 1.14 17.60 1.14 15.20 L 1.14 4.60 Q 1.14 2.20 3.42 2.20 L 6.46 2.20 Q 7.22 2.20 7.79 3.00 L 8.93 4.60 Q 9.50 5.40 10.26 5.40 L 14.44 5.40 Q 16.72 5.40 16.72 7.80 L 16.72 15.20 Q 16.72 17.60 14.44 17.60 Z";
-
-  const FOLDER_COVER_CLOSED_PATH =
-    "M 3.42 17.60 Q 1.14 17.60 1.14 15.20 L 1.14 9.20 Q 1.14 6.80 3.42 6.80 L 15.58 6.80 Q 17.86 6.80 17.86 9.20 L 17.86 15.20 Q 17.86 17.60 15.58 17.60 Z";
-
-  const FOLDER_COVER_OPEN_PATH =
-    "M 3.42 17.60 Q 1.90 17.60 2.28 16.00 L 5.13 8.60 Q 5.70 7.40 7.03 7.40 L 16.91 7.40 Q 19.00 7.40 18.24 9.20 L 15.96 16.20 Q 15.39 17.60 14.06 17.60 Z";
-
-  // =========================================================================
-  // 2. STATE MODEL
-  // =========================================================================
-  const folders = (window.EARLY_FOLDERS || []).map((f) => ({ ...f }));
-  const todayTabs = (window.EARLY_TODAY_TABS || []).map((t) => ({ ...t }));
-  const features = (window.EARLY_FEATURES || []).map((f) => ({ ...f }));
-
+  const catalog = window.EarlyCatalog;
+  const model = window.EarlySiteModel;
+  const pages = [...catalog.tabs, ...catalog.features];
+  const byId = new Map(pages.map((page) => [page.id, page]));
+  const $ = (id) => document.getElementById(id);
+  const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+  const routeLink = (id, label, className = "") => `<a href="${id === "home" ? "#" : `#${id}`}" data-route="${id}" class="${className}">${label}</a>`;
+  const repo = "https://github.com/earlybrowser/early-browser";
+  const externalLink = (url, label, className = "") => `<a href="${url}" class="${className}" target="_blank" rel="noopener noreferrer">${label}<span class="sr-only"> (opens in a new tab)</span></a>`;
+  const narrow = matchMedia("(max-width: 760px)");
   const state = {
-    activeTabId: "home",
-    history: ["home"],
-    historyIndex: 0,
-
-    sidebarWidth: 240,
-    sidebarAutoHide: false,
-    sidebarHovered: false,
-
-    readmeFilter: "all", // "all" | "implemented" | "partial" | "planned"
-
-    commandBarOpen: false,
-    commandBarMode: "newTab",
-    commandBarQuery: "",
-    commandBarSelectedIndex: 0,
-    commandBarItems: []
+    active: model.resolveRoute(location.hash, pages), historyIndex: 0, historyEnd: 0,
+    autoHide: narrow.matches, sidebarVisible: false, sidebarPinnedOpen: false,
+    open: false, results: [], selected: 0, prefilled: false, returnFocus: null
   };
+  const folderNodes = new Map();
+  let reloadTimer, toastTimer, reloadPhase = 0;
 
-  // =========================================================================
-  // 3. DOM REFERENCES
-  // =========================================================================
-  const dom = {
-    browserWindow: document.getElementById("browser-window"),
-    sidebar: document.getElementById("sidebar"),
-    sidebarEdgeSensor: document.getElementById("sidebar-edge-sensor"),
-    sidebarResizeHandle: document.getElementById("sidebar-resize-handle"),
-    sidebarToggleBtn: document.getElementById("sidebar-toggle-btn"),
-    navBack: document.getElementById("nav-back"),
-    navForward: document.getElementById("nav-forward"),
-    navReload: document.getElementById("nav-reload"),
-    reloadRotator: document.getElementById("reload-stop-rotator"),
-    addressBar: document.getElementById("sidebar-address-bar"),
-    addressSearchIcon: document.getElementById("address-search-icon"),
-    addressBarLabel: document.getElementById("address-bar-label"),
-    addressCopyLinkBtn: document.getElementById("address-copy-link-btn"),
-    pinnedContainer: document.getElementById("pinned-items-container"),
-    todayContainer: document.getElementById("today-tabs-container"),
-    newTabBtn: document.getElementById("new-tab-btn"),
-    pageLoadingLine: document.getElementById("page-loading-line"),
-    commandBarLayer: document.getElementById("command-bar-layer"),
-    commandBarCard: document.getElementById("command-bar-card"),
-    commandBarInput: document.getElementById("command-bar-input"),
-    commandBarDismiss: document.getElementById("command-bar-dismiss"),
-    commandBarSuggestionsWrap: document.getElementById("command-bar-suggestions-wrap"),
-    commandBarSuggestions: document.getElementById("command-bar-suggestions"),
-    toastHost: document.getElementById("toast-host"),
-    contentViewport: document.getElementById("content-viewport")
-  };
-
-  // =========================================================================
-  // 4. SIDEBAR RENDERING (Feature-Wise Folders + Today Tabs)
-  // =========================================================================
-  function createFolderSVG(isExpanded) {
-    const coverPath = isExpanded ? FOLDER_COVER_OPEN_PATH : FOLDER_COVER_CLOSED_PATH;
-    return `
-      <span class="folder-icon-cell" aria-hidden="true">
-        <svg class="folder-icon-svg" viewBox="0 0 19 20">
-          <path class="folder-back-path" d="${FOLDER_BACK_PATH}"></path>
-          <path class="folder-cover-path" d="${coverPath}"></path>
-        </svg>
-      </span>
-    `;
+  // Paths and dimensions follow Early's BrowserWindowView folder artwork.
+  const folderBack = "M 3.42 17.60 Q 1.14 17.60 1.14 15.20 L 1.14 4.60 Q 1.14 2.20 3.42 2.20 L 6.46 2.20 Q 7.22 2.20 7.79 3.00 L 8.93 4.60 Q 9.50 5.40 10.26 5.40 L 14.44 5.40 Q 16.72 5.40 16.72 7.80 L 16.72 15.20 Q 16.72 17.60 14.44 17.60 Z";
+  const folderClosed = "M 3.42 17.60 Q 1.14 17.60 1.14 15.20 L 1.14 9.20 Q 1.14 6.80 3.42 6.80 L 15.58 6.80 Q 17.86 6.80 17.86 9.20 L 17.86 15.20 Q 17.86 17.60 15.58 17.60 Z";
+  const folderOpen = "M 3.42 17.60 Q 1.90 17.60 2.28 16.00 L 5.13 8.60 Q 5.70 7.40 7.03 7.40 L 16.91 7.40 Q 19.00 7.40 18.24 9.20 L 15.96 16.20 Q 15.39 17.60 14.06 17.60 Z";
+  function tabMarkup(page, pinned) {
+    return routeLink(page.id, `<span class="tab-icon" aria-hidden="true">${page.icon}</span><span class="tab-title-label">${escapeHTML(page.name)}</span>`, `tab-item-row ${pinned ? "is-pinned" : "is-today"}`).replace("data-route=", `data-tab-id="${page.id}" data-route=`);
   }
-
-  function createFeatureTabRow(feature) {
-    const isSelected = state.activeTabId === feature.id;
-    const row = document.createElement("div");
-    row.className = `tab-item-row is-pinned${isSelected ? " is-selected" : ""}`;
-    row.dataset.tabId = feature.id;
-    row.setAttribute("role", "button");
-    row.setAttribute("tabindex", "0");
-    row.title = `${feature.name} (${feature.status})`;
-
-    row.innerHTML = `
-      <span class="pinned-icon-cell" aria-hidden="true">${feature.icon}</span>
-      <span class="tab-title-label">${escapeHTML(feature.name)}</span>
-      <span class="tab-state-badge ${feature.statusType}">${feature.status}</span>
-    `;
-
-    row.addEventListener("click", () => navigateToTab(feature.id));
-    row.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        navigateToTab(feature.id);
-      }
+  function buildSidebar() {
+    catalog.folders.forEach((folder) => {
+      const block = document.createElement("div");
+      block.className = "folder-block";
+      block.innerHTML = `<button class="folder-header" type="button" aria-expanded="false" aria-controls="children-${folder.id}">
+        <span class="folder-icon-cell" aria-hidden="true"><svg viewBox="0 0 19 20"><path class="folder-back-path" d="${folderBack}"/><path class="folder-cover-path" d="${folderClosed}"/></svg></span>
+        <span class="tab-title-label">${folder.name}</span></button>
+        <div class="folder-children-wrap" id="children-${folder.id}" inert><div class="folder-children">${catalog.features.filter((feature) => feature.folderId === folder.id).map((feature) => tabMarkup(feature, true)).join("")}</div></div>`;
+      const button = block.querySelector("button");
+      button.addEventListener("click", () => expandFolder(folder.id, button.getAttribute("aria-expanded") !== "true"));
+      $("pinned-items-container").append(block);
+      folderNodes.set(folder.id, block);
     });
-
-    return row;
+    $("today-tabs-container").innerHTML = catalog.tabs.map((tab) => tabMarkup(tab, false)).join("");
   }
-
-  function createTodayTabRow(tab) {
-    const isSelected = state.activeTabId === tab.id;
-    const row = document.createElement("div");
-    row.className = `tab-item-row is-today${isSelected ? " is-selected" : ""}`;
-    row.dataset.tabId = tab.id;
-    row.setAttribute("role", "button");
-    row.setAttribute("tabindex", "0");
-    row.title = tab.name;
-
-    row.innerHTML = `
-      <span class="today-icon-cell" aria-hidden="true">${tab.icon}</span>
-      <span class="tab-title-label">${escapeHTML(tab.name)}</span>
-    `;
-
-    row.addEventListener("click", () => navigateToTab(tab.id));
-    row.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        navigateToTab(tab.id);
-      }
-    });
-
-    return row;
+  function expandFolder(id, expanded) {
+    const block = folderNodes.get(id);
+    if (!block) return;
+    block.classList.toggle("is-expanded", expanded);
+    block.querySelector("button").setAttribute("aria-expanded", String(expanded));
+    block.querySelector(".folder-children-wrap").inert = !expanded;
+    block.querySelector(".folder-cover-path").setAttribute("d", expanded ? folderOpen : folderClosed);
   }
-
-  function renderFolderBlock(folder) {
-    const blockEl = document.createElement("div");
-    blockEl.className = `folder-block${folder.isExpanded ? " is-expanded" : ""}`;
-    blockEl.dataset.folderId = folder.id;
-
-    const headerRow = document.createElement("div");
-    headerRow.className = "folder-header-row";
-    headerRow.setAttribute("role", "button");
-    headerRow.setAttribute("tabindex", "0");
-    headerRow.setAttribute("aria-expanded", folder.isExpanded ? "true" : "false");
-
-    headerRow.innerHTML = `
-      ${createFolderSVG(folder.isExpanded)}
-      <span class="folder-name-label">${escapeHTML(folder.name)}</span>
-    `;
-
-    headerRow.addEventListener("click", () => {
-      folder.isExpanded = !folder.isExpanded;
-      renderSidebar();
+  function updateChrome() {
+    document.querySelectorAll("[data-tab-id]").forEach((row) => {
+      const active = row.dataset.tabId === state.active;
+      row.classList.toggle("is-selected", active);
+      if (active) row.setAttribute("aria-current", "page");
+      else row.removeAttribute("aria-current");
     });
-
-    headerRow.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        folder.isExpanded = !folder.isExpanded;
-        renderSidebar();
-      }
-    });
-
-    blockEl.appendChild(headerRow);
-
-    const childrenWrap = document.createElement("div");
-    childrenWrap.className = "folder-children";
-
-    const childTabs = features.filter((t) => t.folderId === folder.id);
-    childTabs.forEach((tab) => {
-      childrenWrap.appendChild(createFeatureTabRow(tab));
-    });
-
-    blockEl.appendChild(childrenWrap);
-    return blockEl;
+    $("nav-back").disabled = state.historyIndex === 0;
+    $("nav-forward").disabled = state.historyIndex >= state.historyEnd;
+    $("address-bar-label").textContent = location.host || "Early";
+    $("address-bar-label").classList.remove("is-placeholder");
+    $("address-search-icon").setAttribute("hidden", "");
+    $("address-copy-link-btn").style.display = "";
+    $("address-edit-btn").setAttribute("aria-label", `Edit address for ${byId.get(state.active).name}`);
+    document.title = state.active === "home" ? "Early — A native macOS browser" : `${byId.get(state.active).name} — Early`;
   }
-
-  function renderSidebar() {
-    dom.pinnedContainer.innerHTML = "";
-    folders.forEach((folder) => {
-      dom.pinnedContainer.appendChild(renderFolderBlock(folder));
-    });
-
-    dom.todayContainer.innerHTML = "";
-    todayTabs.forEach((tab) => {
-      dom.todayContainer.appendChild(createTodayTabRow(tab));
-    });
-
-    updateAddressBarAndControls();
-  }
-
-  function getActiveTabItem() {
-    return (
-      todayTabs.find((t) => t.id === state.activeTabId) ||
-      features.find((f) => f.id === state.activeTabId) ||
-      todayTabs[0]
-    );
-  }
-
-  function updateAddressBarAndControls() {
-    dom.navBack.disabled = state.historyIndex <= 0;
-    dom.navForward.disabled = state.historyIndex >= state.history.length - 1;
-
-    const current = getActiveTabItem();
-    if (!current || current.id === "home") {
-      dom.addressSearchIcon.style.display = "block";
-      dom.addressBarLabel.textContent = "Search…";
-      dom.addressBarLabel.classList.add("is-placeholder");
-      dom.addressCopyLinkBtn.style.display = "none";
-    } else {
-      dom.addressSearchIcon.style.display = "none";
-      dom.addressBarLabel.textContent = current.host;
-      dom.addressBarLabel.classList.remove("is-placeholder");
-      dom.addressCopyLinkBtn.style.display = "flex";
+  function navigate(id, { push = true, focus = true } = {}) {
+    if (!byId.has(id)) return;
+    closeCommandBar(false);
+    const changed = state.active !== id;
+    state.active = id;
+    if (push && changed) {
+      state.historyIndex += 1;
+      state.historyEnd = state.historyIndex;
+      history.pushState({ earlySite: true, index: state.historyIndex }, "", model.pageURL(id, location.href));
     }
+    expandFolder(byId.get(id).folderId, true);
+    updateChrome();
+    if (changed || !$("page-heading")) {
+      renderPage();
+      $("content-viewport").scrollTop = 0;
+      if (changed) animateReload();
+    }
+    if (narrow.matches && state.autoHide) hideSidebar();
+    if (focus) $("page-heading").focus({ preventScroll: true });
+  }
+  function syncLocation() {
+    const index = history.state?.earlySite ? history.state.index : null;
+    if (Number.isInteger(index)) state.historyIndex = index;
+    else {
+      state.historyIndex += 1;
+      state.historyEnd = state.historyIndex;
+      history.replaceState({ earlySite: true, index: state.historyIndex }, "", location.href);
+    }
+    navigate(model.resolveRoute(location.hash, pages), { push: false });
+  }
+  window.addEventListener("popstate", syncLocation);
+  window.addEventListener("hashchange", () => {
+    if (model.resolveRoute(location.hash, pages) !== state.active) syncLocation();
+  });
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest("a[data-route]");
+    if (!link || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    event.preventDefault();
+    navigate(link.dataset.route);
+  });
+
+  const footer = () => `<footer class="page-footer"><span>Early · Open source · MPL-2.0</span><nav aria-label="Project links">${externalLink(repo, "GitHub")}<a href="mailto:earlybrowser.dev@gmail.com">Email</a>${externalLink("https://buymeacoffee.com/earlybrowser", "Support Early")}</nav></footer>`;
+  const breadcrumb = (label) => `<nav class="breadcrumb" aria-label="Breadcrumb">${routeLink("home", "Home")}<span aria-hidden="true">/</span><span>${label}</span></nav>`;
+  function renderPage() {
+    let content;
+    if (state.active === "home") {
+      content = `<header class="home-header"><img class="app-icon" src="assets/Early-Default-1024.png" width="68" height="68" alt="" fetchpriority="high">
+        <p class="eyebrow">Made for macOS</p><h1 id="page-heading" tabindex="-1">Early</h1>
+        <p class="home-lede">A native Mac browser.<br>Room for everything you’re working on.</p>
+        <p class="intro">Open source and inspired by Arc’s sidebar workflow. Built with Swift and WebKit, with tabs, folders, and Spaces that keep your browsing organized.</p>
+        <div class="page-actions">${routeLink("download", "Get Early", "button button-primary")}${externalLink(repo, "View on GitHub", "button")}</div>
+        <p class="development-note"><span class="notice-dot" aria-hidden="true"></span>Actively in development. Not production-ready yet.</p></header>
+        <section class="home-overview" aria-labelledby="overview-heading"><h2 id="overview-heading">Less clutter. More context.</h2>
+          <div class="editorial-row"><h3>${routeLink("vertical-tabs", "A sidebar that makes sense")}</h3><p>Keep Favorites close, group pins into folders, and leave everyday pages in Today tabs.</p></div>
+          <div class="editorial-row"><h3>${routeLink("spaces-and-profiles", "A Space for each part of your day")}</h3><p>Separate projects with Spaces. Keep accounts and website data apart with profiles.</p></div>
+          <div class="editorial-row"><h3>${routeLink("native-macos-interface", "At home on your Mac")}</h3><p>Native controls, a keyboard-driven command bar, and a quiet interface that follows your appearance.</p></div>
+          ${routeLink("roadmap", "Explore all features <span aria-hidden=\"true\">→</span>", "text-link")}</section>
+        <section class="contribute-section"><h2>Help shape what comes next.</h2><p>Early is a work in progress. Code, bug reports, testing, and thoughtful design feedback are welcome.</p>${externalLink(`${repo}/blob/main/CONTRIBUTING.md`, "Contribute to Early <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
+    } else if (state.active === "download") {
+      const command = `git clone ${repo}.git\ncd early-browser\nopen Early.xcodeproj`;
+      content = `${breadcrumb("Download & Install")}<header class="article-header"><p class="eyebrow">Try the development build</p><h1 id="page-heading" tabindex="-1">Download & Install</h1><p class="intro">Early is still in active development. For now, building from source is the documented way to try it.</p></header>
+        <aside class="information-note">Not production-ready. Keep another browser available for important work, and expect features and behavior to change.</aside>
+        <section><h2>Build on your Mac</h2><p>You’ll need macOS 14 or later and Xcode with Swift 6 support. Use an Xcode version compatible with your macOS release.</p>
+          <div class="code-block"><div class="code-caption"><span>Terminal</span><button type="button" class="copy-code">Copy</button></div><pre><code>${escapeHTML(command)}</code></pre></div>
+          <p>In Xcode, select the <strong>Early</strong> scheme and <strong>My Mac</strong>, then build and run. The repository has the full build and test instructions.</p>
+          ${externalLink(`${repo}#commands`, "Read the build instructions <span aria-hidden=\"true\">↗</span>", "text-link")}</section>
+        <section><h2>Packaged releases</h2><p>Packaged macOS releases and Homebrew installation are planned. Check GitHub for release availability and installation notes as development progresses.</p>${externalLink(`${repo}/releases`, "Check releases on GitHub <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
+    } else if (state.active === "roadmap") {
+      content = `${breadcrumb("All Features")}<header class="article-header"><p class="eyebrow">What’s in Early</p><h1 id="page-heading" tabindex="-1">All Features</h1><p class="intro">The essentials available today, and a clear view of what’s still ahead.</p></header>
+        ${catalog.folders.map((folder) => `<section class="feature-group"><h2>${folder.name}</h2><div class="feature-list">${catalog.features.filter((feature) => feature.folderId === folder.id).map((feature) => routeLink(feature.id, `<span class="feature-list-icon">${feature.icon}</span><span><strong>${feature.name}</strong><span class="feature-description">${feature.description}</span></span><span class="list-arrow" aria-hidden="true">↗</span>`, "feature-list-row")).join("")}</div></section>`).join("")}
+        <section><p class="eyebrow">Not available yet</p><h2>Looking ahead</h2><p>These are planned areas of work, not release commitments.</p><dl class="planned-list">${catalog.planned.map((item) => `<div><dt>${item.name}</dt><dd>${item.description}</dd></div>`).join("")}</dl>${externalLink(`${repo}#features`, "See the full project status <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
+    } else {
+      const feature = byId.get(state.active);
+      const index = catalog.features.indexOf(feature);
+      const previous = catalog.features[index - 1];
+      const next = catalog.features[index + 1];
+      const folder = catalog.folders.find((item) => item.id === feature.folderId);
+      content = `${breadcrumb(folder.name)}<header class="article-header"><span class="article-icon">${feature.icon}</span><p class="eyebrow">${folder.name}</p><h1 id="page-heading" tabindex="-1">${feature.name}</h1><p class="feature-lede">${feature.description}</p><p class="intro">${feature.summary}</p></header>
+        <section><h2>How it works</h2><ul class="behavior-list">${feature.behavior.map((item) => `<li>${item}</li>`).join("")}</ul>${feature.note ? `<aside class="information-note">${feature.note}</aside>` : ""}</section>
+        <nav class="feature-pagination" aria-label="Feature navigation">${routeLink(previous?.id || "roadmap", `<span>Previous</span><strong>← ${previous?.name || "All Features"}</strong>`)}${routeLink(next?.id || "roadmap", `<span>Next</span><strong>${next?.name || "All Features"} →</strong>`)}</nav>`;
+    }
+    $("content-viewport").innerHTML = `<article class="page-container">${content}${footer()}</article>`;
+    const copy = document.querySelector(".copy-code");
+    copy?.addEventListener("click", () => copyText(document.querySelector("pre code").textContent, "Copied Build Instructions"));
   }
 
-  // =========================================================================
-  // 5. NAVIGATION & PAGE RENDERING
-  // =========================================================================
-  let reloadPhase = 0;
-  let reloadTimer = null;
-
-  function setReloadLoading(loading) {
-    const wasLoading = reloadPhase % 2 !== 0;
-    if (loading === wasLoading) return;
-    reloadPhase += 1;
-    dom.reloadRotator.style.transform = `rotate(${reloadPhase * 180}deg)`;
-    dom.reloadRotator.classList.toggle("is-loading", loading);
-    dom.navReload.setAttribute("aria-label", loading ? "Stop Loading" : "Reload");
-    dom.navReload.title = loading ? "Stop Loading" : "Reload (⌘R)";
-  }
-
-  function triggerReloadMotion() {
+  function animateReload() {
     clearTimeout(reloadTimer);
-    if (reloadPhase % 2 !== 0) {
-      // Currently in Stop (X) state -> complete clockwise turn back to Reload
-      setReloadLoading(false);
-      dom.pageLoadingLine.classList.remove("is-loading");
-      dom.pageLoadingLine.classList.add("is-done");
-      return;
-    }
-    // Step 1: Rotate 180° clockwise into X (Stop)
-    setReloadLoading(true);
-    triggerLoadingLine();
-    // Step 2: Complete the 360° clockwise turn from X back to Reload
+    reloadPhase += 180;
+    $("reload-stop-rotator").style.transform = `rotate(${reloadPhase}deg)`;
+    $("nav-reload").classList.add("is-loading");
     reloadTimer = setTimeout(() => {
-      setReloadLoading(false);
-    }, 180);
+      reloadPhase += 180;
+      $("reload-stop-rotator").style.transform = `rotate(${reloadPhase}deg)`;
+      $("nav-reload").classList.remove("is-loading");
+    }, 160);
   }
+  $("nav-back").addEventListener("click", () => history.back());
+  $("nav-forward").addEventListener("click", () => history.forward());
+  $("nav-reload").addEventListener("click", () => { renderPage(); animateReload(); });
 
-  function triggerLoadingLine() {
-    dom.pageLoadingLine.classList.remove("is-loading", "is-done");
-    void dom.pageLoadingLine.offsetWidth;
-    dom.pageLoadingLine.classList.add("is-loading");
-    setTimeout(() => {
-      dom.pageLoadingLine.classList.remove("is-loading");
-      dom.pageLoadingLine.classList.add("is-done");
-    }, 240);
-  }
-
-  function navigateToTab(tabId, pushHistory = true) {
-    const feature = features.find((f) => f.id === tabId);
-    if (feature && feature.folderId) {
-      const parentFolder = folders.find((f) => f.id === feature.folderId);
-      if (parentFolder) parentFolder.isExpanded = true;
-    }
-
-    state.activeTabId = tabId;
-
-    if (pushHistory && state.history[state.historyIndex] !== tabId) {
-      state.history = state.history.slice(0, state.historyIndex + 1);
-      state.history.push(tabId);
-      state.historyIndex = state.history.length - 1;
-    }
-
-    triggerLoadingLine();
-    renderSidebar();
-    renderMainContent();
-    dom.contentViewport.scrollTop = 0;
-
-    const activeRow = dom.sidebar.querySelector(`.tab-item-row[data-tab-id="${tabId}"]`);
-    if (activeRow) {
-      activeRow.scrollIntoView({ block: "nearest" });
-    }
-
-    try {
-      const targetHash = tabId === "home" ? "" : `#${tabId}`;
-      if (window.location.hash !== targetHash) {
-        const cleanUrl = targetHash || (window.location.pathname + window.location.search);
-        history.replaceState(null, "", cleanUrl);
-      }
-    } catch (_) {}
-  }
-
-  function renderMainContent() {
-    if (state.activeTabId === "home") {
-      renderHomePage();
-      return;
-    }
-    if (state.activeTabId === "download") {
-      renderDownloadPage();
-      return;
-    }
-    if (state.activeTabId === "roadmap") {
-      renderRoadmapPage();
-      return;
-    }
-
-    const activeFeature = features.find((f) => f.id === state.activeTabId);
-    if (activeFeature) {
-      renderFeatureDetailPage(activeFeature);
-    } else {
-      renderHomePage();
-    }
-  }
-
-  // =========================================================================
-  // 6. TODAY PAGES: HOME, DOWNLOAD, ALL FEATURES
-  // =========================================================================
-  function buildFeatureTableSectionHTML() {
-    const counts = {
-      all: features.length,
-      implemented: features.filter((f) => f.statusType === "implemented").length,
-      partial: features.filter((f) => f.statusType === "partial").length,
-      planned: features.filter((f) => f.statusType === "planned").length
-    };
-
-    const filteredFeatures = features.filter((f) => {
-      return state.readmeFilter === "all" || f.statusType === state.readmeFilter;
-    });
-
-    return `
-      <section aria-label="Features Directory">
-        <div class="directory-section-header">
-          <div class="directory-title-group">
-            <h2 class="directory-title">Features</h2>
-            <span class="directory-subtitle">${counts.implemented} Implemented · ${counts.partial} Partial · ${counts.planned} Planned</span>
-          </div>
-
-          <div class="filter-pills" role="tablist" aria-label="Filter features by status">
-            <button type="button" class="filter-pill ${state.readmeFilter === "all" ? "is-active" : ""}" data-filter="all">
-              All (${counts.all})
-            </button>
-            <button type="button" class="filter-pill ${state.readmeFilter === "implemented" ? "is-active" : ""}" data-filter="implemented">
-              Implemented (${counts.implemented})
-            </button>
-            <button type="button" class="filter-pill ${state.readmeFilter === "partial" ? "is-active" : ""}" data-filter="partial">
-              Partial (${counts.partial})
-            </button>
-            <button type="button" class="filter-pill ${state.readmeFilter === "planned" ? "is-active" : ""}" data-filter="planned">
-              Planned (${counts.planned})
-            </button>
-          </div>
-        </div>
-
-        <div class="features-table-card">
-          <table class="features-table">
-            <thead>
-              <tr>
-                <th>Feature</th>
-                <th>Description</th>
-                <th style="text-align: right;">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${filteredFeatures
-                .map(
-                  (f) => `
-                <tr class="feature-table-row" data-open-feature="${f.id}" tabindex="0" role="button" aria-label="Open ${escapeHTML(f.name)}">
-                  <td class="td-feature-name">
-                    <div class="td-feature-name-inner">
-                      ${f.icon}
-                      <span>${escapeHTML(f.name)}</span>
-                    </div>
-                  </td>
-                  <td class="td-feature-desc">${escapeHTML(f.readmeDesc)}</td>
-                  <td class="td-feature-status">
-                    <span class="status-badge ${f.statusType}">${f.status}</span>
-                  </td>
-                </tr>
-              `
-                )
-                .join("")}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    `;
-  }
-
-  function wireFeatureTableInteractions() {
-    dom.contentViewport.querySelectorAll(".filter-pill").forEach((pill) => {
-      pill.addEventListener("click", () => {
-        state.readmeFilter = pill.getAttribute("data-filter");
-        renderMainContent();
-      });
-    });
-
-    dom.contentViewport.querySelectorAll(".feature-table-row").forEach((row) => {
-      const fid = row.getAttribute("data-open-feature");
-      row.addEventListener("click", () => navigateToTab(fid));
-      row.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          navigateToTab(fid);
-        }
-      });
-    });
-
-    dom.contentViewport.querySelectorAll("[data-copy]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        copyToClipboard(btn.getAttribute("data-copy"));
-        const original = btn.textContent;
-        btn.textContent = "Copied";
-        showToast("Copied to clipboard");
-        setTimeout(() => {
-          btn.textContent = original;
-        }, 1400);
-      });
-    });
-  }
-
-  function renderHomePage() {
-    dom.contentViewport.innerHTML = `
-      <div class="page-container">
-        <section class="overview-hero">
-          <div class="overview-brand-header">
-            <img src="assets/Early-Default-1024.png" alt="Early App Icon" class="overview-app-icon">
-            <div class="overview-title-group">
-              <div class="overview-title-row">
-                <h1 class="overview-title">Early</h1>
-                <span class="overview-meta-pill">macOS</span>
-              </div>
-              <p class="overview-tagline">
-                A fast, lightweight native macOS browser built around vertical tabs, Spaces, and a clean command bar.
-              </p>
-            </div>
-          </div>
-
-          <p class="overview-lead">
-            <strong>Early</strong> is designed for calm, focused everyday browsing on your Mac. Open any folder in the sidebar to explore Early's features, or install it right now with Homebrew:
-          </p>
-
-          <div class="code-box">
-            <code>brew install --cask earlybrowser/tap/early</code>
-            <button type="button" class="copy-btn" data-copy="brew install --cask earlybrowser/tap/early">Copy</button>
-          </div>
-        </section>
-
-        ${buildFeatureTableSectionHTML()}
-
-        <footer class="overview-footer-note">
-          <span>Early Browser</span>
-          <span>
-            <a href="https://github.com/earlybrowser/early-browser" target="_blank" rel="noopener noreferrer">GitHub</a>
-            ·
-            <a href="mailto:earlybrowser.dev@gmail.com">earlybrowser.dev@gmail.com</a>
-            ·
-            <a href="https://buymeacoffee.com/earlybrowser" target="_blank" rel="noopener noreferrer">Buy Me a Coffee</a>
-          </span>
-        </footer>
-      </div>
-    `;
-
-    wireFeatureTableInteractions();
-  }
-
-  function renderDownloadPage() {
-    dom.contentViewport.innerHTML = `
-      <div class="page-container">
-        <div class="page-top-nav">
-          <div class="breadcrumb-row">
-            <button type="button" class="breadcrumb-btn" id="back-home-btn">Early</button>
-            <span>/</span>
-            <span>Download & Install</span>
-          </div>
-        </div>
-
-        <header class="feature-hero-block">
-          <h1 class="feature-main-title" style="margin-bottom: 8px;">Download & Install</h1>
-          <p class="feature-summary-paragraph">
-            Install Early using Homebrew or download the signed macOS disk image directly.
-          </p>
-        </header>
-
-        <div class="info-stack">
-          <div class="info-card">
-            <h3>Install with Homebrew</h3>
-            <p>Run the following command in Terminal to install Early:</p>
-            <div class="code-box">
-              <code>brew install --cask earlybrowser/tap/early</code>
-              <button type="button" class="copy-btn" data-copy="brew install --cask earlybrowser/tap/early">Copy</button>
-            </div>
-          </div>
-
-          <div class="info-card">
-            <h3>Direct DMG Download</h3>
-            <p>
-              Download the latest <code>Early.dmg</code> installer from
-              <a href="https://github.com/earlybrowser/early-browser/releases/latest" target="_blank" rel="noopener noreferrer" style="color: var(--text-primary);">GitHub Releases</a>,
-              open the disk image, and drag <strong>Early</strong> into your <strong>Applications</strong> folder.
-            </p>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.getElementById("back-home-btn").addEventListener("click", () => navigateToTab("home"));
-    wireFeatureTableInteractions();
-  }
-
-  function renderRoadmapPage() {
-    dom.contentViewport.innerHTML = `
-      <div class="page-container">
-        <div class="page-top-nav">
-          <div class="breadcrumb-row">
-            <button type="button" class="breadcrumb-btn" id="back-home-btn">Early</button>
-            <span>/</span>
-            <span>All Features</span>
-          </div>
-        </div>
-
-        <header class="feature-hero-block">
-          <h1 class="feature-main-title" style="margin-bottom: 8px;">All Features</h1>
-          <p class="feature-summary-paragraph">
-            Explore what is available in Early today and what is coming next. Click any feature to learn more.
-          </p>
-        </header>
-
-        ${buildFeatureTableSectionHTML()}
-      </div>
-    `;
-
-    document.getElementById("back-home-btn").addEventListener("click", () => navigateToTab("home"));
-    wireFeatureTableInteractions();
-  }
-
-  // =========================================================================
-  // 7. INDIVIDUAL FEATURE DETAIL PAGE (User-Focused, Zero Dev Jargon)
-  // =========================================================================
-  function renderFeatureDetailPage(feature) {
-    const idx = features.findIndex((f) => f.id === feature.id);
-    const prevFeature = idx > 0 ? features[idx - 1] : null;
-    const nextFeature = idx < features.length - 1 ? features[idx + 1] : null;
-
-    dom.contentViewport.innerHTML = `
-      <div class="page-container">
-        <div class="page-top-nav">
-          <div class="breadcrumb-row">
-            <button type="button" class="breadcrumb-btn" id="spec-back-home">Early</button>
-            <span>/</span>
-            <span>${escapeHTML(feature.category)}</span>
-          </div>
-          <span class="status-badge ${feature.statusType}">${feature.status}</span>
-        </div>
-
-        <header class="feature-hero-block">
-          <div class="feature-title-line">
-            <div class="feature-title-icon">${feature.icon}</div>
-            <h1 class="feature-main-title">${escapeHTML(feature.name)}</h1>
-          </div>
-          <p class="feature-readme-quote">${escapeHTML(feature.readmeDesc)}</p>
-          <p class="feature-summary-paragraph">${escapeHTML(feature.summary)}</p>
-        </header>
-
-        <section class="feature-highlights-section">
-          <div class="detail-card">
-            <h2 class="detail-card-heading">How It Works</h2>
-            <ul class="behavior-list">
-              ${feature.behavior.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}
-            </ul>
-          </div>
-        </section>
-
-        <nav class="feature-pagination" aria-label="Feature navigation">
-          ${
-            prevFeature
-              ? `
-            <button type="button" class="page-nav-card" data-nav-feature="${prevFeature.id}">
-              <span class="page-nav-dir">← Previous (${prevFeature.status})</span>
-              <span class="page-nav-name">${escapeHTML(prevFeature.name)}</span>
-            </button>
-          `
-              : `<div></div>`
-          }
-          ${
-            nextFeature
-              ? `
-            <button type="button" class="page-nav-card is-next" data-nav-feature="${nextFeature.id}">
-              <span class="page-nav-dir">Next (${nextFeature.status}) →</span>
-              <span class="page-nav-name">${escapeHTML(nextFeature.name)}</span>
-            </button>
-          `
-              : `<div></div>`
-          }
-        </nav>
-      </div>
-    `;
-
-    document.getElementById("spec-back-home").addEventListener("click", () => navigateToTab("home"));
-
-    dom.contentViewport.querySelectorAll("[data-nav-feature]").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        navigateToTab(btn.getAttribute("data-nav-feature"));
-      });
-    });
-  }
-
-  // =========================================================================
-  // 8. FLOATING COMMAND BAR
-  // =========================================================================
-  const SEARCH_ICON_SVG = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>`;
-
-  function openCommandBar(mode = "newTab") {
-    state.commandBarOpen = true;
-    state.commandBarMode = mode;
-
-    const current = getActiveTabItem();
-    if (mode === "editCurrentTab" && current && current.id !== "home") {
-      state.commandBarQuery = current.url;
-      state.commandBarInitialPrefill = true;
-    } else {
-      state.commandBarQuery = "";
-      state.commandBarInitialPrefill = false;
-    }
-
-    dom.commandBarLayer.style.display = "block";
-    dom.commandBarInput.value = state.commandBarQuery;
-    updateCommandBarSuggestions();
-
+  function openCommandBar(edit = false) {
+    if (!state.open) state.returnFocus = document.activeElement;
+    if (state.autoHide) hideSidebar();
+    state.open = true;
+    state.prefilled = edit;
+    $("command-bar-layer").hidden = false;
+    $("command-bar-input").value = edit ? model.pageURL(state.active, location.href) : "";
+    updateSuggestions();
     requestAnimationFrame(() => {
-      dom.commandBarInput.focus();
-      dom.commandBarInput.select();
+      if (!state.open) return;
+      $("command-bar-input").focus({ preventScroll: true });
+      if (edit) $("command-bar-input").select();
+      layoutCommandBar();
     });
   }
-
-  function closeCommandBar() {
-    if (!state.commandBarOpen) return;
-    state.commandBarOpen = false;
-    dom.commandBarLayer.style.display = "none";
-  }
-
-  function buildCommandBarSuggestions(rawQuery, isInitialPrefill = false) {
-    const q = isInitialPrefill ? "" : rawQuery.trim().toLowerCase();
-    const results = [];
-
-    todayTabs.forEach((tab) => {
-      const matchesHomeAlias = tab.id === "home" && ("home".includes(q) || "overview".includes(q));
-      if (
-        !q ||
-        matchesHomeAlias ||
-        tab.name.toLowerCase().includes(q) ||
-        tab.url.toLowerCase().includes(q) ||
-        (tab.host && tab.host.toLowerCase().includes(q)) ||
-        tab.id.toLowerCase().includes(q)
-      ) {
-        results.push({
-          type: "tab",
-          id: tab.id,
-          title: tab.name,
-          badge: tab.id === "home" ? "Home" : "Tab",
-          statusType: "planned",
-          icon: tab.icon
-        });
-      }
-    });
-
-    features.forEach((f) => {
-      if (
-        !q ||
-        f.name.toLowerCase().includes(q) ||
-        f.readmeDesc.toLowerCase().includes(q) ||
-        f.summary.toLowerCase().includes(q) ||
-        f.status.toLowerCase().includes(q) ||
-        f.category.toLowerCase().includes(q) ||
-        f.url.toLowerCase().includes(q) ||
-        (f.host && f.host.toLowerCase().includes(q)) ||
-        f.id.toLowerCase().includes(q)
-      ) {
-        results.push({
-          type: "tab",
-          id: f.id,
-          title: `${f.name} — ${f.readmeDesc}`,
-          badge: f.status,
-          statusType: f.statusType,
-          icon: f.icon
-        });
-      }
-    });
-
-    const trimmed = rawQuery.trim();
-    if (!isInitialPrefill && trimmed) {
-      results.push({
-        type: "search",
-        query: trimmed,
-        title: `Search Google for “${trimmed}”`,
-        badge: "Search",
-        statusType: "planned",
-        icon: SEARCH_ICON_SVG
-      });
-    }
-
-    return results.slice(0, 8);
-  }
-
-  function executeCommandBarItem(item) {
-    if (!item) return;
-    closeCommandBar();
-    if (item.type === "tab" && item.id) {
-      navigateToTab(item.id);
-    } else if (item.type === "search" && item.query) {
-      const q = item.query;
-      if (/^https?:\/\//i.test(q)) {
-        window.open(q, "_blank", "noopener,noreferrer");
-      } else {
-        window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, "_blank", "noopener,noreferrer");
-      }
+  function closeCommandBar(restoreFocus = true) {
+    if (!state.open) return;
+    state.open = false;
+    $("command-bar-layer").hidden = true;
+    $("command-bar-input").setAttribute("aria-expanded", "false");
+    if (restoreFocus) {
+      const previous = state.returnFocus;
+      const target = previous?.isConnected && !previous.closest("[inert]") && previous.getClientRects().length ? previous : $(state.autoHide ? "sidebar-reveal" : "page-heading");
+      target.focus({ preventScroll: true });
     }
   }
-
-  function updateCommandBarSuggestions() {
-    state.commandBarItems = buildCommandBarSuggestions(
-      state.commandBarQuery,
-      state.commandBarInitialPrefill
-    );
-    state.commandBarSelectedIndex = 0;
-    renderCommandBarSuggestionRows();
+  function updateSuggestions() {
+    const query = state.prefilled ? "" : $("command-bar-input").value.trim();
+    state.results = model.rankPages(query, pages).slice(0, 6).map((page) => ({ kind: "page", page, label: page.name, detail: "On this site", icon: page.icon }));
+    const action = model.classifyInput(state.prefilled ? "" : query);
+    if (action.kind === "url" || action.kind === "search") state.results.push({ ...action, label: action.kind === "url" ? query : `Search Google for “${query}”`, detail: "Opens a new tab", icon: catalog.features.find((feature) => feature.id === "command-bar-navigation").icon });
+    state.selected = 0;
+    $("command-bar-hint").textContent = action.kind === "invalid" ? "Enter an http or https address without account credentials." : !query ? "Search Early’s features, or enter a web address. ⌘K / Ctrl K" : "↑ ↓ to select · → to fill · Return to open";
+    $("command-bar-hint").classList.toggle("sr-only", action.kind !== "invalid");
+    $("command-bar-suggestions-wrap").hidden = state.results.length === 0;
+    $("command-bar-input").setAttribute("aria-expanded", String(state.results.length > 0));
+    $("command-bar-suggestions").innerHTML = state.results.map((result, index) => `<div class="command-bar-suggestion" id="suggestion-${index}" role="option" aria-selected="false" data-index="${index}"><span class="suggestion-icon" aria-hidden="true">${result.icon}</span><span class="suggestion-label">${escapeHTML(result.label)}</span><span class="suggestion-detail">${result.detail}</span></div>`).join("");
+    $("command-bar-status").textContent = `${state.results.length} ${state.results.length === 1 ? "result" : "results"}`;
+    selectSuggestion(0, false);
+    layoutCommandBar();
   }
-
-  function updateCommandBarSelectionHighlight(scrollIntoView = false) {
-    const rows = dom.commandBarSuggestions.querySelectorAll(".command-suggestion-row");
-    rows.forEach((row, idx) => {
-      const isSelected = idx === state.commandBarSelectedIndex;
-      row.classList.toggle("is-selected", isSelected);
-      row.setAttribute("aria-selected", isSelected ? "true" : "false");
-      if (isSelected && scrollIntoView) {
-        row.scrollIntoView({ block: "nearest" });
-      }
-    });
-  }
-
-  function renderCommandBarSuggestionRows() {
-    const items = state.commandBarItems;
-    if (!items.length) {
-      dom.commandBarSuggestionsWrap.style.display = "none";
-      dom.commandBarSuggestions.innerHTML = "";
+  function selectSuggestion(index, scroll = true) {
+    if (!state.results.length) {
+      $("command-bar-input").removeAttribute("aria-activedescendant");
       return;
     }
-
-    dom.commandBarSuggestionsWrap.style.display = "flex";
-    dom.commandBarSuggestions.innerHTML = items
-      .map((item, idx) => {
-        const isSelected = idx === state.commandBarSelectedIndex;
-        return `
-          <div class="command-suggestion-row${isSelected ? " is-selected" : ""}" data-cmd-idx="${idx}" role="option" aria-selected="${isSelected}">
-            <span class="command-suggestion-icon">${item.icon}</span>
-            <span class="command-suggestion-title">${escapeHTML(item.title)}</span>
-            <span class="tab-state-badge ${item.statusType}">${escapeHTML(item.badge)}</span>
-          </div>
-        `;
-      })
-      .join("");
-
-    dom.commandBarSuggestions.querySelectorAll(".command-suggestion-row").forEach((row) => {
-      const idx = Number(row.getAttribute("data-cmd-idx"));
-      row.addEventListener("mouseenter", () => {
-        if (state.commandBarSelectedIndex !== idx) {
-          state.commandBarSelectedIndex = idx;
-          updateCommandBarSelectionHighlight(false);
-        }
-      });
-      row.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        executeCommandBarItem(items[idx]);
-      });
-    });
+    state.selected = (index + state.results.length) % state.results.length;
+    $("command-bar-suggestions").querySelectorAll("[role=option]").forEach((row, rowIndex) => row.setAttribute("aria-selected", String(rowIndex === state.selected)));
+    $("command-bar-input").setAttribute("aria-activedescendant", `suggestion-${state.selected}`);
+    if (scroll) $(`suggestion-${state.selected}`).scrollIntoView({ block: "nearest" });
   }
-
-  // =========================================================================
-  // 9. SIDEBAR RESIZE & AUTO-HIDE
-  // =========================================================================
-  function setSidebarWidth(width) {
-    const clamped = Math.max(220, Math.min(360, width));
-    state.sidebarWidth = clamped;
-    document.documentElement.style.setProperty("--sidebar-width", `${clamped}px`);
+  function executeSuggestion(result) {
+    if (!result) {
+      if (state.prefilled) closeCommandBar();
+      return;
+    }
+    if (result.kind === "page") { navigate(result.page.id); return; }
+    const url = new URL(result.url);
+    if (url.origin === location.origin && url.pathname === location.pathname) {
+      navigate(model.resolveRoute(url.hash, pages));
+      return;
+    }
+    window.open(result.url, "_blank", "noopener,noreferrer");
+    closeCommandBar();
   }
-
-  function toggleSidebarAutoHide() {
-    state.sidebarAutoHide = !state.sidebarAutoHide;
-    state.sidebarHovered = false;
-    dom.browserWindow.classList.toggle("sidebar-autohide", state.sidebarAutoHide);
-    dom.browserWindow.classList.remove("sidebar-hovered");
+  function layoutCommandBar() {
+    if (!state.open) return;
+    const height = $("content-area").clientHeight;
+    const top = Math.max(16, height * 0.40 - 32);
+    const maximum = Math.max(64, Math.min(440, height - top - 16));
+    const input = $("command-bar-input");
+    const hint = $("command-bar-hint");
+    const statusHeight = hint.classList.contains("sr-only") || !hint.offsetHeight ? 0 : hint.offsetHeight + 12;
+    const reserve = state.results.length ? 61 : 0;
+    const inputMaximum = Math.min(120, Math.max(24, maximum - 40 - statusHeight - reserve));
+    input.style.height = "24px";
+    const inputHeight = Math.min(inputMaximum, input.scrollHeight);
+    input.style.height = `${inputHeight}px`;
+    input.style.overflowY = input.scrollHeight > inputMaximum ? "auto" : "hidden";
+    $("command-bar-card").style.top = `${top}px`;
+    $("command-bar-suggestions").style.maxHeight = `${Math.min(220, Math.max(0, maximum - 40 - inputHeight - statusHeight - 25))}px`;
   }
+  $("new-tab-btn").addEventListener("click", () => openCommandBar());
+  $("address-edit-btn").addEventListener("click", () => openCommandBar(true));
+  $("command-bar-dismiss").addEventListener("click", () => closeCommandBar());
+  $("command-bar-input").addEventListener("input", () => { state.prefilled = false; updateSuggestions(); });
+  $("command-bar-input").addEventListener("keydown", (event) => {
+    if (event.isComposing || event.keyCode === 229) return;
+    const input = event.currentTarget;
+    if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+      if (!state.results.length) return;
+      event.preventDefault();
+      selectSuggestion(state.selected + (event.key === "ArrowDown" ? 1 : -1));
+    } else if (event.key === "ArrowRight" && input.selectionStart === input.value.length && input.selectionEnd === input.value.length && state.results[state.selected]) {
+      const result = state.results[state.selected];
+      if (result.kind !== "page") return;
+      event.preventDefault();
+      input.value = result.page.name;
+      state.prefilled = false;
+      updateSuggestions();
+      input.setSelectionRange(input.value.length, input.value.length);
+    } else if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      executeSuggestion(state.results[state.selected]);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
+      closeCommandBar();
+    }
+  });
+  $("command-bar-suggestions").addEventListener("pointerdown", (event) => event.preventDefault());
+  $("command-bar-suggestions").addEventListener("pointermove", (event) => {
+    const row = event.target.closest("[data-index]");
+    if (row) selectSuggestion(Number(row.dataset.index), false);
+  });
+  $("command-bar-suggestions").addEventListener("click", (event) => {
+    const row = event.target.closest("[data-index]");
+    if (row) executeSuggestion(state.results[Number(row.dataset.index)]);
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (state.open && !event.target.closest("#command-bar-card, #address-edit-btn, #new-tab-btn")) closeCommandBar(false);
+    if (narrow.matches && state.sidebarVisible && !event.target.closest("#sidebar, #sidebar-reveal")) hideSidebar();
+  });
+  document.addEventListener("focusin", (event) => {
+    if (state.open && !event.target.closest("#command-bar-card")) closeCommandBar(false);
+  });
+  new ResizeObserver(layoutCommandBar).observe($("content-area"));
 
-  function initSidebarInteractions() {
-    let dragging = false;
-
-    dom.sidebarResizeHandle.addEventListener("mousedown", (e) => {
-      e.preventDefault();
-      dragging = true;
-      dom.sidebarResizeHandle.classList.add("is-resizing");
-      document.body.style.cursor = "ew-resize";
-    });
-
-    window.addEventListener("mousemove", (e) => {
-      if (!dragging) return;
-      const winRect = dom.browserWindow.getBoundingClientRect();
-      setSidebarWidth(e.clientX - winRect.left - 6);
-    });
-
-    window.addEventListener("mouseup", () => {
-      if (!dragging) return;
-      dragging = false;
-      dom.sidebarResizeHandle.classList.remove("is-resizing");
-      document.body.style.cursor = "";
-    });
-
-    dom.sidebarEdgeSensor.addEventListener("mouseenter", () => {
-      if (state.sidebarAutoHide) {
-        state.sidebarHovered = true;
-        dom.browserWindow.classList.add("sidebar-hovered");
-      }
-    });
-
-    dom.sidebar.addEventListener("mouseleave", (e) => {
-      if (state.sidebarAutoHide && state.sidebarHovered) {
-        const rect = dom.sidebar.getBoundingClientRect();
-        if (e.clientX > rect.right) {
-          state.sidebarHovered = false;
-          dom.browserWindow.classList.remove("sidebar-hovered");
-        }
-      }
-    });
+  function updateSidebar() {
+    $("browser-window").classList.toggle("sidebar-autohide", state.autoHide);
+    $("browser-window").classList.toggle("sidebar-visible", state.sidebarVisible);
+    $("sidebar").inert = state.autoHide && !state.sidebarVisible;
+    $("sidebar-reveal").setAttribute("aria-expanded", String(state.sidebarVisible));
+    $("sidebar-toggle-btn").setAttribute("aria-expanded", String(!state.autoHide || state.sidebarVisible));
   }
+  function showSidebar(pinned = false) { state.sidebarVisible = true; state.sidebarPinnedOpen = pinned; updateSidebar(); }
+  function hideSidebar() { state.sidebarVisible = false; state.sidebarPinnedOpen = false; updateSidebar(); }
+  $("sidebar-toggle-btn").addEventListener("click", () => {
+    state.autoHide = narrow.matches || !state.autoHide;
+    hideSidebar();
+    if (state.autoHide) $("sidebar-reveal").focus();
+  });
+  $("sidebar-reveal").addEventListener("click", () => {
+    if (state.sidebarVisible) hideSidebar();
+    else { showSidebar(true); $("sidebar-toggle-btn").focus(); }
+  });
+  $("sidebar-edge-sensor").addEventListener("pointerenter", (event) => {
+    if (state.autoHide && event.pointerType === "mouse") showSidebar();
+  });
+  $("sidebar").addEventListener("pointerleave", () => {
+    if (state.autoHide && !state.sidebarPinnedOpen && !$("sidebar").contains(document.activeElement)) hideSidebar();
+  });
+  narrow.addEventListener("change", () => { state.autoHide = narrow.matches; hideSidebar(); });
+  const handle = $("sidebar-resize-handle");
+  function resizeSidebar(width) {
+    const bounded = Math.round(Math.min(360, Math.max(220, width)));
+    $("browser-window").style.setProperty("--sidebar-width", `${bounded}px`);
+    handle.setAttribute("aria-valuenow", String(bounded));
+  }
+  handle.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    handle.setPointerCapture(event.pointerId);
+    document.body.classList.add("is-resizing");
+  });
+  handle.addEventListener("pointermove", (event) => {
+    if (handle.hasPointerCapture(event.pointerId)) resizeSidebar(event.clientX - $("sidebar").getBoundingClientRect().left);
+  });
+  handle.addEventListener("lostpointercapture", () => document.body.classList.remove("is-resizing"));
+  handle.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const current = Number(handle.getAttribute("aria-valuenow"));
+    resizeSidebar(event.key === "Home" ? 220 : event.key === "End" ? 360 : current + (event.key === "ArrowRight" ? 10 : -10));
+  });
+  $("footer-download").addEventListener("click", () => navigate("download"));
+  $("footer-spaces").addEventListener("click", () => navigate("spaces-and-profiles"));
 
-  // =========================================================================
-  // 10. UTILITIES & TOAST
-  // =========================================================================
-  let toastTimer = null;
-
-  function showToast(message) {
-    if (!dom.toastHost) return;
-    dom.toastHost.innerHTML = `<div class="native-toast">${escapeHTML(message)}</div>`;
+  function toast(message) {
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      dom.toastHost.innerHTML = "";
-    }, 1700);
+    $("toast-host").textContent = message;
+    $("toast-host").classList.add("is-visible");
+    toastTimer = setTimeout(() => $("toast-host").classList.remove("is-visible"), 2000);
   }
-
-  function copyCurrentTabURL() {
-    const current = getActiveTabItem();
-    copyToClipboard(current ? current.url : "https://earlybrowser.dev");
-    showToast("Copied Current URL");
+  async function copyText(text, message) {
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+      await navigator.clipboard.writeText(text);
+      toast(message);
+    } catch { toast("Couldn’t copy. Check your browser’s clipboard permission."); }
   }
-
-  function copyToClipboard(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).catch(() => {});
+  $("address-copy-link-btn").addEventListener("click", () => copyText(model.pageURL(state.active, location.href), "Copied Current URL"));
+  document.addEventListener("keydown", (event) => {
+    if (event.isComposing || event.keyCode === 229) return;
+    const modifier = event.metaKey || event.ctrlKey;
+    const key = event.key.toLowerCase();
+    if (modifier && !event.altKey && !event.shiftKey && ["k", "t", "l"].includes(key)) {
+      event.preventDefault(); openCommandBar(key === "l");
+    } else if (modifier && event.shiftKey && key === "c") {
+      event.preventDefault(); copyText(model.pageURL(state.active, location.href), "Copied Current URL");
+    } else if (modifier && event.shiftKey && key === "s") {
+      event.preventDefault(); $("sidebar-toggle-btn").click();
+    } else if (event.key === "Escape" && state.sidebarVisible && !state.open) {
+      hideSidebar(); $("sidebar-reveal").focus();
     }
-  }
+  });
 
-  function escapeHTML(str) {
-    return String(str ?? "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  // =========================================================================
-  // 11. EVENT LISTENERS & KEYBOARD SHORTCUTS
-  // =========================================================================
-  function initEventListeners() {
-    dom.sidebarToggleBtn.addEventListener("click", () => toggleSidebarAutoHide());
-
-    dom.navBack.addEventListener("click", () => {
-      if (state.historyIndex > 0) {
-        state.historyIndex -= 1;
-        navigateToTab(state.history[state.historyIndex], false);
-      }
-    });
-
-    dom.navForward.addEventListener("click", () => {
-      if (state.historyIndex < state.history.length - 1) {
-        state.historyIndex += 1;
-        navigateToTab(state.history[state.historyIndex], false);
-      }
-    });
-
-    dom.navReload.addEventListener("click", () => {
-      triggerReloadMotion();
-    });
-
-    dom.addressBar.addEventListener("click", (e) => {
-      if (e.target.closest("#address-copy-link-btn")) return;
-      openCommandBar(state.activeTabId !== "home" ? "editCurrentTab" : "newTab");
-    });
-
-    dom.addressBar.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        openCommandBar(state.activeTabId !== "home" ? "editCurrentTab" : "newTab");
-      }
-    });
-
-    dom.addressCopyLinkBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      copyCurrentTabURL();
-    });
-
-    dom.newTabBtn.addEventListener("click", () => openCommandBar("newTab"));
-
-    dom.commandBarInput.addEventListener("input", (e) => {
-      state.commandBarInitialPrefill = false;
-      state.commandBarQuery = e.target.value;
-      updateCommandBarSuggestions();
-    });
-
-    dom.commandBarInput.addEventListener("keydown", (e) => {
-      const items = state.commandBarItems;
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (items.length) {
-          state.commandBarSelectedIndex = (state.commandBarSelectedIndex + 1) % items.length;
-          updateCommandBarSelectionHighlight(true);
-        }
-      } else if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (items.length) {
-          state.commandBarSelectedIndex = (state.commandBarSelectedIndex - 1 + items.length) % items.length;
-          updateCommandBarSelectionHighlight(true);
-        }
-      } else if (e.key === "Enter") {
-        e.preventDefault();
-        if (items.length) {
-          const chosen = items[state.commandBarSelectedIndex] || items[0];
-          executeCommandBarItem(chosen);
-        } else {
-          closeCommandBar();
-        }
-      } else if (e.key === "Escape") {
-        e.preventDefault();
-        closeCommandBar();
-      }
-    });
-
-    dom.commandBarDismiss.addEventListener("click", () => closeCommandBar());
-
-    document.addEventListener("mousedown", (e) => {
-      if (
-        state.commandBarOpen &&
-        !dom.commandBarCard.contains(e.target) &&
-        !dom.addressBar.contains(e.target) &&
-        !dom.newTabBtn.contains(e.target)
-      ) {
-        closeCommandBar();
-      }
-    });
-
-    window.addEventListener("keydown", (e) => {
-      const mod = e.metaKey || e.ctrlKey;
-
-      if (e.key === "Escape") {
-        if (state.commandBarOpen) closeCommandBar();
-        return;
-      }
-
-      if (mod && (e.key.toLowerCase() === "k" || e.key.toLowerCase() === "t")) {
-        e.preventDefault();
-        openCommandBar("newTab");
-      } else if (mod && e.key.toLowerCase() === "l") {
-        e.preventDefault();
-        openCommandBar(state.activeTabId !== "home" ? "editCurrentTab" : "newTab");
-      } else if (mod && e.shiftKey && e.key.toLowerCase() === "s") {
-        e.preventDefault();
-        toggleSidebarAutoHide();
-      } else if (mod && e.shiftKey && e.key.toLowerCase() === "c") {
-        e.preventDefault();
-        copyCurrentTabURL();
-      } else if (mod && e.key === "[") {
-        e.preventDefault();
-        if (state.historyIndex > 0) {
-          state.historyIndex -= 1;
-          navigateToTab(state.history[state.historyIndex], false);
-        }
-      } else if (mod && e.key === "]") {
-        e.preventDefault();
-        if (state.historyIndex < state.history.length - 1) {
-          state.historyIndex += 1;
-          navigateToTab(state.history[state.historyIndex], false);
-        }
-      }
-    });
-  }
-
-  // =========================================================================
-  // 12. INITIALIZATION
-  // =========================================================================
-  function init() {
-    setSidebarWidth(state.sidebarWidth);
-    initSidebarInteractions();
-    initEventListeners();
-
-    const initialHash = window.location.hash.replace(/^#/, "");
-    const validTab =
-      todayTabs.find((t) => t.id === initialHash) ||
-      features.find((f) => f.id === initialHash);
-
-    if (validTab) {
-      navigateToTab(validTab.id, false);
-    } else {
-      renderSidebar();
-      renderMainContent();
-    }
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
+  buildSidebar();
+  updateSidebar();
+  history.replaceState({ earlySite: true, index: 0 }, "", model.pageURL(state.active, location.href));
+  navigate(state.active, { push: false, focus: false });
 })();

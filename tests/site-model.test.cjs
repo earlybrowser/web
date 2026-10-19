@@ -1,0 +1,81 @@
+// SPDX-License-Identifier: MPL-2.0
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
+const catalog = require("../features-data.js");
+const { resolveRoute, rankPages, classifyInput, pageURL } = require("../site-model.js");
+const pages = [...catalog.tabs, ...catalog.features];
+
+test("catalog has distinct, valid routes and only major feature tabs", () => {
+  assert.equal(new Set(pages.map((page) => page.id)).size, pages.length);
+  assert.equal(catalog.tabs[0].id, "home");
+  assert.equal(catalog.tabs[0].name, "Home");
+  assert.equal(catalog.features.length, 8);
+  for (const feature of catalog.features) {
+    assert.ok(catalog.folders.some((folder) => folder.id === feature.folderId));
+    assert.ok(feature.description && feature.summary && feature.behavior.length);
+    assert.match(feature.id, /^[a-z\d-]+$/);
+  }
+  for (const folder of catalog.folders) assert.ok(catalog.features.some((feature) => feature.folderId === folder.id));
+});
+
+test("Home and every feature support direct links", () => {
+  for (const page of pages) {
+    assert.equal(resolveRoute(`#${page.id}`, pages), page.id);
+    assert.equal(resolveRoute(`#/${page.id}`, pages), page.id);
+  }
+  for (const hash of ["", "#", "#unknown", "#%ZZ", "#__proto__"]) assert.equal(resolveRoute(hash, pages), "home");
+});
+
+test("legacy routes resolve without producing missing pages", () => {
+  assert.equal(resolveRoute("#overview", pages), "home");
+  assert.equal(resolveRoute("#features", pages), "roadmap");
+  assert.equal(resolveRoute("#spaces", pages), "spaces-and-profiles");
+  assert.equal(resolveRoute("#search-suggestions", pages), "command-bar-navigation");
+});
+
+for (const [query, id] of [
+  ["spaces", "spaces-and-profiles"], ["spa", "spaces-and-profiles"],
+  ["PROFILES", "profiles"], ["profile", "profiles"], ["favourites", "pinned-and-today-tabs"],
+  ["folders", "sidebar-folders"], ["vertical tabs", "vertical-tabs"],
+  ["command bar", "command-bar-navigation"], ["search", "command-bar-navigation"],
+  ["home", "home"], ["install", "download"], ["all features", "roadmap"],
+  ["  native   macOS  ", "native-macos-interface"], ["sessions", "session-restoration"]
+]) {
+  test(`search ranks “${query}” by title or alias before incidental mentions`, () => {
+    assert.equal(rankPages(query, pages)[0]?.id, id);
+  });
+}
+
+test("empty queries do not display arbitrary results", () => {
+  assert.deepEqual(rankPages("", pages), []);
+  assert.deepEqual(rankPages("   ", pages), []);
+  assert.deepEqual(rankPages("nonexistentword", pages), []);
+});
+
+test("safe web addresses are recognized, including ports and paths", () => {
+  for (const input of ["https://github.com/earlybrowser", "http://localhost:4177/#profiles", "github.com", "example.com:8080/docs?q=spaces", "localhost:4177"]) {
+    const result = classifyInput(input);
+    assert.equal(result.kind, "url", input);
+    assert.match(result.url, /^https?:\/\//);
+  }
+});
+
+test("unsupported schemes, malformed URLs, and credentials cannot be opened", () => {
+  for (const input of ["javascript:alert(1)", "data:text/html,test", "file:///etc/hosts", "mailto:test@example.com", "https://user:password@example.com", "https://", "http:example.com", "https://bad host"]) {
+    assert.equal(classifyInput(input).kind, "invalid", input);
+  }
+});
+
+test("plain text becomes an encoded explicit web-search action", () => {
+  assert.equal(classifyInput(" ").kind, "empty");
+  const result = classifyInput("mac browser & privacy");
+  assert.equal(result.kind, "search");
+  assert.equal(new URL(result.url).searchParams.get("q"), "mac browser & privacy");
+  assert.equal(classifyInput("work\npersonal").kind, "search");
+});
+
+test("copyable URLs use the actual deployment path, not invented routes", () => {
+  assert.equal(pageURL("profiles", "https://example.org/early/#home"), "https://example.org/early/#profiles");
+  assert.equal(pageURL("home", "http://localhost:4177/#profiles"), "http://localhost:4177/");
+  assert.equal(resolveRoute(new URL(pageURL("spaces-and-profiles", "https://example.org/")).hash, pages), "spaces-and-profiles");
+});
