@@ -1072,8 +1072,11 @@ button, input {
 
 .page-container {
   max-width: 760px;
+  min-height: 100%;
   margin: 0 auto;
-  padding: 48px 44px 64px 44px;
+  padding: 48px 44px 28px 44px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Overview / Homepage Hero */
@@ -1517,12 +1520,18 @@ button, input {
   color: var(--text-secondary);
 }
 
-/* Prev / Next Feature Pagination */
+/* Prev / Next Feature Pagination (Fixed at bottom) */
 .feature-pagination {
+  margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: var(--canvas-bg);
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   padding-top: 20px;
+  padding-bottom: 4px;
   border-top: 1px solid var(--divider-color);
 }
 
