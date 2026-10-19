@@ -1,0 +1,97 @@
+name: Website
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    name: Website checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    concurrency:
+      group: website-checks-${{ github.ref }}
+      cancel-in-progress: true
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install test dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check features-data.js
+          node --check site-model.js
+          node --check scripts/stamp-assets.cjs
+          node --check playwright.config.cjs
+
+      - name: Test site data and asset versions
+        run: npm test
+
+      - name: Install Chromium and system dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Test browser layouts and navigation
+        run: npm run test:browser
+
+      - name: Upload browser failure screenshots
+        if: failure()
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: website-test-failures
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      - name: Stage public site files
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        run: |
+          mkdir _site
+          cp index.html styles.css features-data.js site-model.js app.js _site/
+          cp -R assets licenses _site/
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    name: Deploy GitHub Pages
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v6.0.0
+
+      - name: Deploy tested site
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1

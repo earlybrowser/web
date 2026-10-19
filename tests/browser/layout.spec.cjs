@@ -67,5 +67,26 @@ for (const colorScheme of ["light", "dark"]) {
       await expect(page.locator(".information-note")).toHaveCSS("border-left-width", "0px");
       await expect(page.locator(".information-note")).toHaveCSS("border-radius", "10px");
     });
+
+    test("Pages project-subdirectory URLs preserve assets and navigation", async ({ page }) => {
+      // Serve the same files beneath /web/, as GitHub project Pages does.
+      await page.route("**/web/**", async (route) => {
+        const url = new URL(route.request().url());
+        url.pathname = url.pathname.replace(/^\/web\//, "/");
+        const response = await route.fetch({ url: url.href });
+        await route.fulfill({ response });
+      });
+      await page.goto("/web/#profiles");
+      await expect(page.locator("h1")).toHaveText("Profiles");
+      await expect(page.locator("#window-drag-region")).toHaveCSS("display", "flex");
+      await page.locator("#new-tab-btn").click();
+      await page.getByRole("option").filter({ hasText: "Download & Install" }).click();
+      await expect(page.locator("h1")).toHaveText("Download & Install");
+      await expect(page).toHaveURL(/\/web\/#download$/);
+      await page.locator("[data-tab-id=home]").click();
+      await expect(page.locator("h1")).toHaveText("Early");
+      await expect(page).toHaveURL(/\/web\/$/);
+      await expect(page.locator(".app-icon")).toHaveJSProperty("naturalWidth", 1024);
+    });
   });
 }

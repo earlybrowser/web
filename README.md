@@ -46,3 +46,17 @@ npm run test:browser
 ```
 
 The test runner starts and stops its own local preview server when one is not already running. Playwright is a development dependency only; publishing the site still requires no JavaScript build or runtime packages.
+
+## GitHub Pages
+
+The **Website** workflow runs syntax, unit, asset-version, and browser checks for pull requests targeting `main` and pushes to `main`. Successful `main` runs deploy to GitHub Pages. Other branches can be tested with **Run workflow**, but cannot deploy. Pull requests have read-only permissions and never deploy.
+
+Only the public HTML, CSS, JavaScript, images, and icon license are staged for publication. Source-control metadata, test dependencies, and test results are not published. Failed browser checks attach their screenshots to the workflow run.
+
+One-time setup:
+
+1. Open this repository’s **Settings → Pages**.
+2. Set **Build and deployment → Source** to **GitHub Actions**.
+3. Open **Actions → Website → Run workflow**, select `main`, and run it. If the first deployment failed before Pages was enabled, rerun it after this setup.
+
+The default site address is [earlybrowser.github.io/web/](https://earlybrowser.github.io/web/). Future successful pushes to `main` update it automatically. No personal access token or deployment secret is needed; the deploy job uses GitHub’s scoped token and Pages environment.
