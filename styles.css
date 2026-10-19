@@ -104,18 +104,21 @@ svg { display: block; flex-shrink: 0; }
 .sidebar-scroll { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--strong-border) transparent; }
 .sidebar-list, .pinned-items-container, .today-tabs-container { display: flex; flex-direction: column; gap: 4px; }
 .pinned-spacer { height: 2px; }
-.folder-block { position: relative; border-radius: 10px; transition: background 180ms; }
-.folder-block.is-expanded { background: var(--hover); }
+.folder-block { position: relative; isolation: isolate; border-radius: 10px; }
+/* One native-style island wraps the header and every visible child. A second
+   header fill would stack dark corners on top of the shared background. */
+.folder-block::before { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; background: var(--hover); opacity: 0; pointer-events: none; transition: opacity 120ms; }
+.folder-block:hover::before, .folder-block:focus-within::before { opacity: 1; }
 .folder-header { display: flex; align-items: center; width: 100%; height: 34px; gap: 4px; border-radius: 10px; text-align: left; }
-.folder-header:hover, .folder-header:focus-visible { background: var(--hover); }
 .folder-icon-cell { display: grid; place-items: center; flex: 0 0 34px; }
 .folder-icon-cell svg { width: 19px; height: 20px; overflow: visible; }
-.folder-back-path { fill: var(--folder-back); }
+.folder-back-path { fill: var(--folder-back); stroke: var(--folder-outline); stroke-width: 1.25px; stroke-linejoin: round; }
 .folder-cover-path { fill: var(--folder-front); stroke: var(--folder-outline); stroke-width: 1.25px; stroke-linejoin: round; }
 .folder-children-wrap { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows 220ms cubic-bezier(.2,.7,.2,1), opacity 140ms; }
 .is-expanded > .folder-children-wrap { grid-template-rows: 1fr; opacity: 1; }
 .folder-children { min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: 4px; padding: 0 4px 0 12px; transition: padding 220ms; }
-.is-expanded .folder-children { padding-top: 4px; padding-bottom: 6px; }
+/* The final row's 4pt spacing plus the native 6pt folder footer. */
+.is-expanded .folder-children { padding-top: 4px; padding-bottom: 10px; }
 .tab-item-row { display: flex; align-items: center; min-width: 0; gap: 4px; height: 34px; flex-shrink: 0; border-radius: 10px; text-decoration: none; }
 .tab-item-row.is-today { height: 32px; border-radius: 7px; }
 .tab-item-row:hover { background: var(--hover); }

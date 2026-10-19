@@ -30,6 +30,8 @@
     catalog.folders.forEach((folder) => {
       const block = document.createElement("div");
       block.className = "folder-block";
+      block.setAttribute("role", "group");
+      block.setAttribute("aria-label", `${folder.name} folder`);
       block.innerHTML = `<button class="folder-header" type="button" aria-expanded="false" aria-controls="children-${folder.id}">
         <span class="folder-icon-cell" aria-hidden="true"><svg viewBox="0 0 19 20"><path class="folder-back-path" d="${folderBack}"/><path class="folder-cover-path" d="${folderClosed}"/></svg></span>
         <span class="tab-title-label">${folder.name}</span></button>
