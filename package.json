@@ -3,7 +3,12 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "test": "node --test tests/*.test.cjs"
+    "assets:stamp": "node scripts/stamp-assets.cjs",
+    "test": "node --test tests/*.test.cjs",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1"
   },
   "engines": {
     "node": ">=22"

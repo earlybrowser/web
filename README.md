@@ -20,6 +20,8 @@ The command bar searches this site locally and ranks feature names ahead of inci
 
 Pages use hash routes so deep links work on static hosting, including project subdirectories. Toolbar and browser Back/Forward both work. URL copying requires a secure context (HTTPS or localhost) and clipboard permission.
 
+Stylesheet and script URLs include content hashes so previews and published pages request matching assets after an update. After editing CSS or JavaScript, run `npm run assets:stamp` and commit the updated `index.html` with those changes. If a live preview still displays an old layout, restart its server from this repository and reload the page.
+
 Feature-page and tab icons are bundled SVGs adapted from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0/icons), with a lighter stroke to suit Early’s chrome. The [ISC notice](licenses/lucide.txt) is included. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
 
 ## Checks
@@ -34,3 +36,13 @@ node --check features-data.js
 ```
 
 Before publishing, also check the Home link, folder expansion, keyboard search, first-click outside dismissal, Back/Forward, clipboard success and denial, and narrow-screen navigation in a real browser. Check light/dark appearance and reduced motion. The macOS app and its native UI tests are separate from this website.
+
+The full-page browser checks validate the toolbar’s horizontal layout, sidebar/page geometry, visible non-interactive sidebar icon, command-bar suggestions, and mobile navigation in both appearances:
+
+```sh
+npm ci
+npx playwright install chromium
+npm run test:browser
+```
+
+The test runner starts and stops its own local preview server when one is not already running. Playwright is a development dependency only; publishing the site still requires no JavaScript build or runtime packages.
