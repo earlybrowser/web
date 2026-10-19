@@ -1,750 +1,769 @@
-// Comprehensive data for all 28 Early browser features from README.md
-window.EARLY_FEATURES = [
-  // --- Category: Core Experience & Interface ---
-  {
-    id: "native-interface",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Native macOS Interface",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18"/><circle cx="6" cy="6" r="1" fill="currentColor"/><circle cx="9" cy="6" r="1" fill="currentColor"/></svg>`,
-    shortDesc: "Light/dark translucent chrome, native window controls, and opaque website content. Respects Reduce Transparency and contrast.",
-    details: {
-      headline: "Built specifically for macOS. Zero Electron, zero Chromium bloat.",
-      summary: "Early leverages native AppKit and SwiftUI windows, drawing real platform chrome with fluid vibrancy and concentric corner geometry. Web content renders inside dedicated opaque WKWebView layers, preventing unwanted transparency bleed.",
-      highlights: [
-        "Concentric window and content borders matching macOS system corner radiuses exactly.",
-        "Automatic system appearance support with seamless Light and Dark vibrancy.",
-        "Deep accessibility support respecting 'Reduce Transparency' and 'Increase Contrast' settings.",
-        "Native window dragging, fluid resizing, and hardware-accelerated rendering."
-      ],
-      techSpecs: [
-        { label: "Framework", value: "SwiftUI + AppKit (NSWindow)" },
-        { label: "Rendering", value: "Hardware Metal & WKWebView" },
-        { label: "Corner Radius", value: "16pt window / 10pt inner canvas" },
-        { label: "Accessibility", value: "Reduce Transparency & High Contrast" }
-      ],
-      interactiveType: "native-interface"
-    }
-  },
-  {
-    id: "vertical-tabs",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Vertical Tabs",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="9" y1="3" x2="9" y2="21"/></svg>`,
-    shortDesc: "Organize pages in a resizable sidebar with an address bar, auto-hide, and edge-hover reveal.",
-    details: {
-      headline: "Reclaim horizontal widescreen space with vertical tab flow.",
-      summary: "Modern widescreen displays have abundant horizontal width but limited vertical height. Early moves tabs into a fluid, collapsible vertical sidebar that supports fluid drag-to-resize, auto-hiding (⌘⇧S), and instantaneous edge-hover reveal.",
-      highlights: [
-        "Clamped sidebar width (180pt to 380pt) that can be adjusted with smooth pointer dragging.",
-        "Auto-hide mode with instantaneous reveal when hovering the left window edge.",
-        "Unified scroll container ensuring pins and Today tabs never get pushed off-screen.",
-        "Clean, legible tab titles without horizontal ellipsis cramping."
-      ],
-      techSpecs: [
-        { label: "Shortcut", value: "⌘⇧S (Toggle Auto-Hide)" },
-        { label: "Width Range", value: "180pt – 380pt (Clamped)" },
-        { label: "Reveal Sensor", value: "Continuous pointer tracking on window edge" },
-        { label: "Layout", value: "Single-domain LazyVStack with zero lazy row flicker" }
-      ],
-      interactiveType: "vertical-tabs"
-    }
-  },
-  {
-    id: "command-bar",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Command-Bar Navigation",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z"/><path d="M6 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3z"/><path d="M6 9h12"/><path d="M6 15h12"/></svg>`,
-    shortDesc: "Open URLs or Google searches with ⌘T; edit the current address with ⌘L. A tab is created when you submit.",
-    details: {
-      headline: "Keystroke-driven browsing with zero friction.",
-      summary: "Forget hunting for URL bars. The floating Command Bar summons instantly with ⌘T to open new tabs or Google searches, and ⌘L to edit the current location. Submitting an inquiry creates or redirects your active tab.",
-      highlights: [
-        "Instant popup overlay centered over content with gentle backdrop dimming.",
-        "Automatic URL detection vs search query parsing.",
-        "Fast keyboard selection with Up/Down arrows and Enter.",
-        "Clean escape dismiss with Escape key without losing state."
-      ],
-      techSpecs: [
-        { label: "New Tab Shortcut", value: "⌘T" },
-        { label: "Edit Address Shortcut", value: "⌘L" },
-        { label: "Dismiss Shortcut", value: "Escape" },
-        { label: "Resolution", value: "Direct URL navigation or Google Query fallback" }
-      ],
-      interactiveType: "command-bar"
-    }
-  },
-  {
-    id: "search-suggestions",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Search Suggestions",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>`,
-    shortDesc: "Google suggestions while typing, with keyboard and mouse selection. Enabled by default with privacy controls planned.",
-    details: {
-      headline: "Instant query autocomplete as you type.",
-      summary: "As you compose queries in the command bar, Early asynchronously fetches relevant search suggestions with debounced network calls, presenting an interactive list navigable via keyboard arrows or mouse hover.",
-      highlights: [
-        "Debounced network requests preventing unnecessary keystroke traffic.",
-        "Smooth scroll navigation through suggestions using Arrow keys.",
-        "Graceful offline fallback when suggestions are unavailable.",
-        "Future privacy settings toggle planned to disable network queries."
-      ],
-      techSpecs: [
-        { label: "Provider", value: "Google Suggestions API" },
-        { label: "Debounce", value: "150ms keystroke buffer" },
-        { label: "Navigation", value: "Arrow keys (Up/Down) + Enter" },
-        { label: "Status", value: "Fully operational in Phase 1" }
-      ],
-      interactiveType: "search-suggestions"
-    }
-  },
-  {
-    id: "browser-navigation",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Browser Navigation",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m15 18-6-6 6-6"/><path d="M9 12h12"/></svg>`,
-    shortDesc: "Back, Forward, Reload, Stop, tab shortcuts, and native website alerts, confirmations, and prompts.",
-    details: {
-      headline: "Fluid navigation controls with tactile button feedback.",
-      summary: "Back and Forward buttons feature custom dynamic chevron shapes that open slightly on hover and spring forward on click. Reload seamlessly transitions into a Stop button while pages load, and native macOS sheet dialogs handle JS alert(), confirm(), and prompt().",
-      highlights: [
-        "Animated morphing Reload / Stop icon with rotational feedback.",
-        "Dynamic chevron geometry that physically responds to pointer hover and clicks.",
-        "Full support for native AppKit sheets for JavaScript alert dialogs.",
-        "Accurate canGoBack / canGoForward state tracking."
-      ],
-      techSpecs: [
-        { label: "Back / Forward", value: "⌘[ and ⌘] or toolbar chevrons" },
-        { label: "Reload / Stop", value: "⌘R or toolbar action" },
-        { label: "Dialogs", value: "WKUIDelegate native AppKit modal sheets" },
-        { label: "Feedback", value: "120ms spring click animation" }
-      ],
-      interactiveType: "browser-navigation"
-    }
-  },
-  {
-    id: "trackpad-zoom",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Trackpad Zoom",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>`,
-    shortDesc: "Native pinch-to-zoom and two-finger double-tap Smart Zoom for effortless reading.",
-    details: {
-      headline: "Apple trackpad gestures built directly into the WebKit viewport.",
-      summary: "Fluid pinch gestures scale web content smoothly with subpixel typography rendering. Double-tapping with two fingers triggers Smart Zoom, automatically centering and enlarging the target column or media block.",
-      highlights: [
-        "Native trackpad magnification without lag or choppy redraws.",
-        "Smart Zoom column detection matching Safari's renowned UX.",
-        "Smooth reset to 100% scale with ⌘0.",
-        "Maintains crisp font vector rendering at any magnification level."
-      ],
-      techSpecs: [
-        { label: "Gestures", value: "Pinch-to-zoom & two-finger double tap" },
-        { label: "Shortcuts", value: "⌘+ (Zoom In), ⌘- (Zoom Out), ⌘0 (Reset)" },
-        { label: "Backend", value: "WebKit Page Zoom & View Magnification" }
-      ],
-      interactiveType: "trackpad-zoom"
-    }
-  },
-  {
-    id: "website-fullscreen",
-    category: "core",
-    categoryName: "Core Interface",
-    name: "Website Fullscreen",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>`,
-    shortDesc: "Let compatible website players (YouTube, Vimeo, Netflix) enter and exit seamless fullscreen.",
-    details: {
-      headline: "Immersive media viewing with proper macOS window handling.",
-      summary: "Compatible web players take over the window or dedicated display smoothly. Early swizzles and coordinates macOS titlebar background views to eliminate ugly grey borders in fullscreen video mode.",
-      highlights: [
-        "Native HTML5 video fullscreen support via standard WebKit delegate callbacks.",
-        "Clean slide-down titlebar behavior without visual grey clipping.",
-        "Smooth exit via Escape or video player controls."
-      ],
-      techSpecs: [
-        { label: "Standard", value: "HTML5 Fullscreen API" },
-        { label: "Titlebar Fix", value: "NSTitlebarBackgroundView layer masking" },
-        { label: "Status", value: "Fully operational" }
-      ],
-      interactiveType: "website-fullscreen"
-    }
-  },
+// SPDX-License-Identifier: MPL-2.0
+// Authoritative feature catalog and Today tabs for the Early Browser website
+// Grounded directly in early-browser/README.md (all 29 features)
 
-  // --- Category: Tab & Workspace Management ---
+window.EARLY_FOLDERS = [
   {
-    id: "favorites-and-pins",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Favorites and Pins",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
-    shortDesc: "Keep frequently visited sites as compact Favorites or named pins. Reopen closed pins and return to saved URLs on demand.",
-    details: {
-      headline: "The cornerstone of calm, organized workflows.",
-      summary: "Keep your daily essentials pinned in the sidebar. Favorites sit in an elegant top grid, while Named Pins live in folders or top-level slots. When you navigate away from a pinned site, a subtle return arrow lets you jump back to the saved address in one click.",
-      highlights: [
-        "Compact 4-column Favorite tiles with automatic site favicon extraction.",
-        "One-click 'Reset to Pinned URL' button when browsing away from the pin.",
-        "Persisted across browser restarts; closed pins reopen on demand without allocating idle memory.",
-        "Option-click directly on any pin to rename without opening it."
-      ],
-      techSpecs: [
-        { label: "Grid Stride", value: "4 tiles per row, 44pt height" },
-        { label: "Reset Action", value: "Reverts tab.currentURL to tab.pinnedURL" },
-        { label: "Memory State", value: "WKWebView allocated only upon tab activation" },
-        { label: "Shortcuts", value: "⌥-Click (Rename), ⌘-Click (Open in background)" }
-      ],
-      interactiveType: "favorites-pins"
-    }
+    id: "folder-interface",
+    name: "Interface & Navigation",
+    isExpanded: false
   },
   {
-    id: "nested-folders",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Nested Folders",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>`,
-    shortDesc: "Group and reorder tabs with up to two nesting levels. Folder drop previews reserve space smoothly.",
-    details: {
-      headline: "Hierarchical organization that stays tidy.",
-      summary: "Organize projects, research, and daily tabs into folders with up to two levels of nesting. Custom vector folder icons smoothly open their front cover on expansion, and spring animations provide instant spatial awareness.",
-      highlights: [
-        "Up to 2 nesting levels (Root → Folder → Subfolder).",
-        "Two-part custom folder vector artwork with animated unfolding cover.",
-        "Drop target previews that intelligently reserve a single slot without visual jumpiness.",
-        "Context menu with 'New Subfolder', 'Rename', and 'Delete Folder'."
-      ],
-      techSpecs: [
-        { label: "Max Nesting", value: "2 levels (depth <= 32 guard)" },
-        { label: "Artwork", value: "Custom FolderBack + FolderCover shapes" },
-        { label: "Animation", value: "Spring duration 0.16s, bounce 0.26" },
-        { label: "Persistence", value: "Hierarchical parentID relation in SQLite/JSON" }
-      ],
-      interactiveType: "nested-folders"
-    }
+    id: "folder-workspace",
+    name: "Tabs & Workspace",
+    isExpanded: false
   },
   {
-    id: "session-restoration",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Session Restoration",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>`,
-    shortDesc: "Restore tabs, saved pages, ordering, and selection after quitting. Folders start collapsed; empty sessions open command bar.",
-    details: {
-      headline: "Pick up exactly where you left off, every single time.",
-      summary: "Quit with confidence. Early continuously writes tab metadata, active selection, folder hierarchies, and scroll indices to an atomic local session store. When reopened, the exact window geometry and state restore instantly.",
-      highlights: [
-        "Atomic disk persistence preventing corruption during unexpected shutdowns.",
-        "Lazy page restoration: tabs stay asleep until clicked, saving gigabytes of RAM.",
-        "Folders start collapsed to maintain a clean, organized initial view.",
-        "Empty sessions automatically summon the command bar for instant browsing."
-      ],
-      techSpecs: [
-        { label: "Storage", value: "Atomic local JSON session repository" },
-        { label: "Lazy Load", value: "Zero web views created for unselected tabs" },
-        { label: "Recovery", value: "Self-healing schema validation on startup" }
-      ],
-      interactiveType: "session-restoration"
-    }
+    id: "folder-media",
+    name: "Media & Page Tools",
+    isExpanded: false
   },
   {
-    id: "links-and-windows",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Links and Windows",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
-    shortDesc: "Command-click links to open background tabs; open links or tab copies in separate windows.",
-    details: {
-      headline: "Flexible multi-window support that shares persistent assets.",
-      summary: "Command-click any link on the web to open it in a quiet background tab. Drag a tab out or choose 'Open Tab in New Window' to launch a secondary window. Multiple windows share saved Pins and Favorites while maintaining separate Today tabs.",
-      highlights: [
-        "Command-click (⌘-Click) opens links seamlessly in background tabs.",
-        "Right-click context menu options: 'Open Tab in New Window', 'Copy Link', 'Share Link'.",
-        "Shared state coordination: updates to Favorites and Pins sync across all open windows.",
-        "Independent Today tab sessions per window."
-      ],
-      techSpecs: [
-        { label: "Shared State", value: "BrowserCoordinator centralized tab store" },
-        { label: "Window Protocol", value: "NSWindowController + SwiftUI focused scene values" }
-      ],
-      interactiveType: "links-windows"
-    }
-  },
-  {
-    id: "quick-renaming",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Quick Renaming",
-    status: "Implemented",
-    statusType: "implemented",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`,
-    shortDesc: "Option-click a tab, Favorite, or folder to rename without opening it. Standard clicks open immediately.",
-    details: {
-      headline: "Rename items instantly without disrupting your flow.",
-      summary: "Tired of click-delay timers? In Early, a normal click selects or toggles immediately. Hold Option (⌥) and click any tab, favorite tile, or folder to invoke the rename sheet instantly without accidentally loading the page.",
-      highlights: [
-        "Zero-latency clicking: no double-click delay timer on ordinary clicks.",
-        "⌥-Click gesture recognized exclusively before standard click activation.",
-        "Modal rename sheet with one-click 'Use Page Title' reset button.",
-        "Renaming updates the local session store immediately."
-      ],
-      techSpecs: [
-        { label: "Gesture", value: "TapGesture().modifiers(.option)" },
-        { label: "Safety", value: "Drag gesture takes priority to prevent accidental rename" },
-        { label: "Sheet", value: "RenameTabSheet with auto-focus text field" }
-      ],
-      interactiveType: "quick-renaming"
-    }
-  },
-  {
-    id: "spaces-and-profiles",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Spaces and Profiles",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>`,
-    shortDesc: "Separate workspaces with colored space dots and isolated browsing profiles (Personal, Work, Side-projects).",
-    details: {
-      headline: "Contextual boundaries for your distinct digital lives.",
-      summary: "Switch between Personal, Work, and Client environments with one swipe. Each space maintains distinct pinned tabs, folders, cookies, and browsing profiles, completely isolating logins and credentials.",
-      highlights: [
-        "Colored space dots at the bottom of the sidebar for instant workspace switching.",
-        "Isolated WKWebsiteDataStore profiles: log into multiple Google or GitHub accounts simultaneously.",
-        "Custom space themes and accent tinting.",
-        "Keyboard shortcut for fast switching between spaces."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 3 Engineering Specification" },
-        { label: "Profile Engine", value: "Non-persistent or custom named WKWebsiteDataStore" },
-        { label: "Indicator", value: "Sidebar bottom Personal footer element" }
-      ],
-      interactiveType: "spaces-profiles"
-    }
-  },
-  {
-    id: "split-views",
-    category: "tabs",
-    categoryName: "Tab Management",
-    name: "Split Views & Tab Previews",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>`,
-    shortDesc: "Side-by-side pages with shared controls following the focused pane; visual thumbnail tab switcher.",
-    details: {
-      headline: "Multi-task side-by-side without juggling separate windows.",
-      summary: "View documentation alongside code, or compare two articles simultaneously. Split view embeds two live WebKit views in the content area with an adjustable divider, while tab hover previews provide quick visual confirmation.",
-      highlights: [
-        "Horizontal and vertical split ratios with smooth drag divider.",
-        "Active address bar and navigation controls dynamically track focused pane.",
-        "Live thumbnail tab peek on hover.",
-        "Swap or close split panes with a single shortcut."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 4 Master Build Plan" },
-        { label: "Architecture", value: "Dual NSViewRepresentable with shared coordinator" }
-      ],
-      interactiveType: "split-views"
-    }
-  },
-
-  // --- Category: Productivity & Performance ---
-  {
-    id: "media-controls",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "Media Controls & Tab Muting",
-    status: "Partial",
-    statusType: "partial",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`,
-    shortDesc: "Identify playing HTML audio or video. Speaker-click tab muting and per-site muting are planned.",
-    details: {
-      headline: "Instantly spot where that mystery sound is coming from.",
-      summary: "Early monitors audio playback across all open tabs. A speaker icon (`speaker.wave.2.fill`) appears directly in the sidebar row next to any tab producing sound, with direct click-to-mute and per-origin muting rules in progress.",
-      highlights: [
-        "Real-time WKWebView media playback observation.",
-        "Speaker indicator visible in sidebar row next to the tab title.",
-        "Phase 2 implementation tracks audio; Phase 5 completes direct speaker click-to-mute."
-      ],
-      techSpecs: [
-        { label: "Status", value: "Partial (Audio detection live, click-to-mute in Phase 5)" },
-        { label: "Observer", value: "MediaActivityObserver on WKWebView media state" }
-      ],
-      interactiveType: "media-controls"
-    }
-  },
-  {
-    id: "page-lifecycle",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "Page Lifecycle & Suspension",
-    status: "Partial",
-    statusType: "partial",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>`,
-    shortDesc: "Create pages on demand and release them when closed. Automatic suspension and memory recovery are planned.",
-    details: {
-      headline: "Run hundreds of tabs using a fraction of the memory.",
-      summary: "Unlike Chrome or Edge which hoard gigabytes of memory across inactive tabs, Early only creates live WebKit views for active tabs. Unloaded tabs remain lightweight Swift structs, consuming virtually 0 MB of RAM.",
-      highlights: [
-        "Lazy instantiation: Web views are only initialized when a tab is selected.",
-        "Immediate view teardown upon tab closure.",
-        "Automatic background tab suspension for idle pages planned in Phase 5.",
-        "Seamless session rehydration preserving scroll state."
-      ],
-      techSpecs: [
-        { label: "Status", value: "Partial (On-demand allocation live; suspension planned)" },
-        { label: "Memory Footprint", value: "~15MB base vs 800MB+ Chromium browsers" }
-      ],
-      interactiveType: "page-lifecycle"
-    }
-  },
-  {
-    id: "universal-search",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "Universal Search & Commands",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
-    shortDesc: "Find open tabs, history, and bookmarks, and run browser actions directly from the command bar.",
-    details: {
-      headline: "Your browser's Spotlight, Raycast, and Alfred in one.",
-      summary: "The command bar expands into a universal launcher. Type `>dark mode`, `>clear cache`, or search through thousands of history items and open tabs with fuzzy matching.",
-      highlights: [
-        "Fuzzy search across open tabs, bookmarks, and browsing history.",
-        "Action prefixes (e.g. `>` or `/`) to execute browser settings directly.",
-        "Quick tab switcher: jump between 50+ open tabs in milliseconds."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 4 Architecture Spec" },
-        { label: "Search Engine", value: "Fast local in-memory SQLite FTS5 index" }
-      ],
-      interactiveType: "universal-search"
-    }
-  },
-  {
-    id: "downloads-and-tools",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "Downloads & Page Tools",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
-    shortDesc: "Manage downloads, upload files, print, view PDFs natively, find text on page, and adjust zoom.",
-    details: {
-      headline: "Every utility you need, rendered with native macOS precision.",
-      summary: "Clean downloads manager in the sidebar, seamless native PDF viewing with PDFKit, inline Find on Page (⌘F) with highlight count, and full print preview dialogs.",
-      highlights: [
-        "Downloads dock with progress percentage and Finder reveal.",
-        "Integrated PDF reading powered by Apple PDFKit.",
-        "Smooth in-page find bar (⌘F) with match navigation."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 5 Development" },
-        { label: "Frameworks", value: "WebKit WKDownloadDelegate + Apple PDFKit" }
-      ],
-      interactiveType: "downloads-tools"
-    }
-  },
-  {
-    id: "reading-tools",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "Reading Tools & Reader Mode",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-    shortDesc: "Distraction-free Reader Mode for articles, custom typography, and instant page translation.",
-    details: {
-      headline: "Read without ads, popups, or cluttered layouts.",
-      summary: "Stripping clutter with one click, Reader Mode extracts article content into an elegant, typography-focused layout with customizable font sizes, serif/sans-serif toggles, and warm sepia themes.",
-      highlights: [
-        "Content readability algorithm stripping banners, cookies, and ads.",
-        "Custom typography choices (San Francisco, New York Serif, Mono).",
-        "Estimated reading time indicator and text-to-speech."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 6 Feature Plan" },
-        { label: "Engine", value: "Native Readability DOM parser" }
-      ],
-      interactiveType: "reading-tools"
-    }
-  },
-  {
-    id: "picture-in-picture",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "Picture in Picture",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="10" width="8" height="8" rx="1"/></svg>`,
-    shortDesc: "Watch videos in a floating window pinned over other applications with resize controls.",
-    details: {
-      headline: "Keep video streams in view while coding, reading, or writing.",
-      summary: "Pop video players into a system-level floating window that remains pinned above all other desktop applications. Controls include play/pause, skip 15s, and edge snapping.",
-      highlights: [
-        "Floating PIP window stays on top of all macOS applications.",
-        "Auto-pip option when switching tabs while video is actively playing.",
-        "Smooth corner snapping and trackpad resizing."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 7 Feature Plan" },
-        { label: "API", value: "Apple AVKit AVPictureInPictureController" }
-      ],
-      interactiveType: "picture-in-picture"
-    }
-  },
-  {
-    id: "github-live-folders",
-    category: "productivity",
-    categoryName: "Productivity",
-    name: "GitHub Live Folders",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`,
-    shortDesc: "Automatically collect pull requests and review requests in a smart folder linked to your GitHub account.",
-    details: {
-      headline: "A browser tailored for software engineers and makers.",
-      summary: "Connect your GitHub account to generate dynamic smart folders in the sidebar. Automatically stream PRs awaiting your review, CI build statuses, and assigned issues with live unread count badges.",
-      highlights: [
-        "Live syncing with GitHub GraphQL API.",
-        "Badges for failing CI, merge conflicts, and review approvals.",
-        "Zero tab clutter: automatically removes merged PR tabs."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 8 Developer Integration" },
-        { label: "Protocol", value: "GitHub OAuth / Personal Access Token" }
-      ],
-      interactiveType: "github-live-folders"
-    }
-  },
-
-  // --- Category: System, Privacy & Ecosystem ---
-  {
-    id: "credentials-autofill",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "Credentials and Autofill",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
-    shortDesc: "Integrate supported password managers, system autofill, and passkeys through platform facilities.",
-    details: {
-      headline: "Seamless sign-in with Touch ID and native password managers.",
-      summary: "Full integration with Apple Keychain, 1Password, Bitwarden, and FIDO2 Passkeys. Use Touch ID or Apple Watch to authenticate logins securely without copying and pasting passwords.",
-      highlights: [
-        "Native iCloud Keychain autofill support.",
-        "Passkeys and WebAuthn via Touch ID / Secure Enclave.",
-        "1Password and Bitwarden extension compatibility."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 6 Integration" },
-        { label: "Framework", value: "Apple AuthenticationServices & LocalAuthentication" }
-      ],
-      interactiveType: "credentials-autofill"
-    }
-  },
-  {
-    id: "default-browser",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "Default Browser Integration",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m4.93 19.07 4.24-4.24"/></svg>`,
-    shortDesc: "Set Early as your default macOS browser and handle externally clicked links seamlessly.",
-    details: {
-      headline: "Make Early the primary gateway to your web experience.",
-      summary: "Register Early as your system-wide default handler for `http://` and `https://` URLs. Links clicked in Slack, Mail, Messages, or Terminal open immediately in your active Space.",
-      highlights: [
-        "One-click 'Set as Default Browser' prompt.",
-        "Space-aware link routing: open work links directly into your Work Space.",
-        "Fast launch from cold boot when an external link is triggered."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 7 Release Integration" },
-        { label: "Mechanism", value: "NSWorkspace.setDefaultApplicationURL + CFBundleURLTypes" }
-      ],
-      interactiveType: "default-browser"
-    }
-  },
-  {
-    id: "state-portability",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "State Portability & Sync",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>`,
-    shortDesc: "Export/import settings, windows, tabs, folders, and pins; exclude credentials and private data.",
-    details: {
-      headline: "Your data belongs to you. Plain JSON export and backup.",
-      summary: "Easily backup your entire browser configuration or transfer it to a new Mac. Early outputs clean, human-readable JSON files that preserve tabs, nested folders, pins, and custom names.",
-      highlights: [
-        "Export entire workspace state with one click.",
-        "Privacy guarantee: Zero passwords, credentials, or session cookies are included in exports.",
-        "Instant import and merge without restarting the browser."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 8 Development" },
-        { label: "Format", value: "Standard UTF-8 JSON Schema v1.0" }
-      ],
-      interactiveType: "state-portability"
-    }
-  },
-  {
-    id: "developer-tools",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "WebKit Developer Tools",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
-    shortDesc: "Inspect pages, debug JavaScript, analyze network requests, and audit performance via WebKit inspector.",
-    details: {
-      headline: "The full power of Apple Web Inspector built right in.",
-      summary: "Right-click and select 'Inspect Element' (⌥⌘I) to summon the comprehensive WebKit Web Inspector. Inspect DOM trees, modify CSS styles live, debug JavaScript with breakpoints, and inspect network waterfalls.",
-      highlights: [
-        "Native Web Inspector window or docked bottom/side pane.",
-        "Console, Network, Sources, Timelines, Storage, and Audit tabs.",
-        "Modern CSS grid and flexbox visualization tools."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 8 Developer Features" },
-        { label: "Shortcut", value: "⌥⌘I (Inspect Element), ⌥⌘C (Inspect Console)" },
-        { label: "Backend", value: "WKPreferences._developerExtrasEnabled" }
-      ],
-      interactiveType: "developer-tools"
-    }
-  },
-  {
-    id: "history-and-privacy",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "History, Bookmarks & Privacy",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
-    shortDesc: "Search history, organize bookmarks, use Private Browsing sessions, manage permissions, and clear site data.",
-    details: {
-      headline: "Privacy is not a feature; it is our foundation.",
-      summary: "Early has zero telemetry, zero analytics tracking, and zero advertising partnerships. Browse freely in Private Windows that discard all cookies and cache the instant the window closes.",
-      highlights: [
-        "100% private: no tracking pixels, telemetry, or user analytics.",
-        "Dedicated Private Windows (⌘⇧N) with isolated memory stores.",
-        "Granular per-site permission manager (Camera, Microphone, Location)."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 9 Security & Privacy" },
-        { label: "Private Mode", value: "WKWebsiteDataStore.nonPersistent()" }
-      ],
-      interactiveType: "history-privacy"
-    }
-  },
-  {
-    id: "settings-customization",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "Settings and Customization",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>`,
-    shortDesc: "Choose search and startup preferences, appearance themes, keyboard shortcuts, and privacy toggles.",
-    details: {
-      headline: "Tailor the browser to your personal preferences.",
-      summary: "Configure your default search engine (Google, DuckDuckGo, Kagi, Ecosia), customize keyboard shortcuts, tweak sidebar behavior, and manage font rendering options.",
-      highlights: [
-        "Select default search provider or add custom search templates.",
-        "Customizable keyboard shortcut map.",
-        "Toggle search suggestions, auto-hide sidebar behavior, and sound effects."
-      ],
-      techSpecs: [
-        { label: "Roadmap", value: "Phase 9 Preferences Architecture" },
-        { label: "UI", value: "Native macOS Settings window (⌘,)" }
-      ],
-      interactiveType: "settings-customization"
-    }
-  },
-  {
-    id: "macos-distribution",
-    category: "system",
-    categoryName: "System & Privacy",
-    name: "macOS Distribution & Homebrew",
-    status: "Planned",
-    statusType: "planned",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16.5A2.5 2.5 0 0 1 18.5 19H5.5A2.5 2.5 0 0 1 3 16.5V7.5A2.5 2.5 0 0 1 5.5 5h13a2.5 2.5 0 0 1 2.5 2.5v9z"/><path d="M7 15h10"/><path d="M7 11h6"/></svg>`,
-    shortDesc: "Install packaged releases or use Homebrew Cask, with optional code signing and Apple notarization.",
-    details: {
-      headline: "Install in seconds via Homebrew or standalone DMG.",
-      summary: "Early ships as a zero-dependency macOS application. Install in one line via our official Homebrew tap: `brew tap earlybrowser/tap && brew install --cask early-browser` or download universal Apple Silicon & Intel binaries from GitHub Releases.",
-      highlights: [
-        "Official Homebrew tap (`earlybrowser/tap`).",
-        "Universal binary supporting Apple Silicon (M1/M2/M3/M4) & Intel Macs.",
-        "Automated GitHub Actions CI/CD release pipeline.",
-        "Automated notarization for effortless Gatekeeper verification."
-      ],
-      techSpecs: [
-        { label: "Homebrew Cask", value: "earlybrowser/tap/early-browser" },
-        { label: "Architecture", value: "Universal arm64 + x86_64" },
-        { label: "Min OS", value: "macOS 14.0 (Sonoma) or newer" }
-      ],
-      interactiveType: "macos-distribution"
-    }
+    id: "folder-system",
+    name: "Privacy & System",
+    isExpanded: false
   }
 ];
 
-// Special Today Pages
-window.EARLY_SPECIAL_TABS = [
+window.EARLY_TODAY_TABS = [
   {
     id: "home",
-    name: "Welcome to Early",
-    url: "early://welcome",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
-    badge: "Home"
+    name: "Early — Overview",
+    host: "earlybrowser.dev",
+    url: "https://earlybrowser.dev",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.8L8 2.2l5.5 4.6v6.2a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V6.8z"/><path d="M6.2 14V9.5h3.6V14"/></svg>`
   },
   {
     id: "download",
     name: "Download & Install",
-    url: "early://download",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
-    badge: "Install"
+    host: "earlybrowser.dev/download",
+    url: "https://earlybrowser.dev/download",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v7.5"/><polyline points="5 7.5 8 10.5 11 7.5"/><line x1="3" y1="13" x2="13" y2="13"/></svg>`
   },
   {
     id: "architecture",
     name: "Native Architecture",
-    url: "early://architecture",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`,
-    badge: "Swift 6"
+    host: "earlybrowser.dev/architecture",
+    url: "https://earlybrowser.dev/architecture",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="8 2 1.8 5.2 8 8.4 14.2 5.2 8 2"/><polyline points="1.8 10.8 8 14 14.2 10.8"/><polyline points="1.8 8 8 11.2 14.2 8"/></svg>`
   },
   {
     id: "roadmap",
-    name: "Roadmap & Master Plan",
-    url: "early://roadmap",
-    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
-    badge: "Phases 0-10"
+    name: "Feature Status (29)",
+    host: "earlybrowser.dev/features",
+    url: "https://earlybrowser.dev/features",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="4.5" x2="12" y2="4.5"/><line x1="4" y1="8" x2="12" y2="8"/><line x1="4" y1="11.5" x2="9" y2="11.5"/></svg>`
+  }
+];
+
+window.EARLY_FEATURES = [
+  // =========================================================================
+  // 1. INTERFACE & NAVIGATION (8 features)
+  // =========================================================================
+  {
+    id: "native-macos-interface",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Native macOS interface",
+    url: "https://earlybrowser.dev/features/native-macos-interface",
+    host: "earlybrowser.dev/features/native-macos-interface",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2.5"/><line x1="5.5" y1="2.5" x2="5.5" y2="13.5"/></svg>`,
+    readmeDesc: "Light/dark translucent chrome, native window controls, and opaque website content. Solid surfaces respect Reduce Transparency and increased contrast.",
+    summary: "Early is written natively in Swift 6 using SwiftUI, AppKit, and WebKit. The outer window frame and sidebar share a single translucent surface, while web pages render inside an inset, opaque WKWebView container.",
+    behavior: [
+      "Concentric window geometry: a 16 pt macOS window corner radius paired with a 6 pt frame inset yields a 10 pt inner content corner radius.",
+      "Native traffic light controls stay neutral monochrome at rest and reveal standard macOS colors and glyphs when hovering the control group.",
+      "Web content renders on an opaque surface so website backgrounds and typography are never washed out by desktop wallpaper bleed-through.",
+      "Respects macOS Reduce Transparency and Increase Contrast accessibility preferences with solid fills and higher border contrast."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView · WebContentView · SpaceAppearance" },
+      { label: "Frameworks", value: "SwiftUI · AppKit · WebKit" },
+      { label: "Appearances", value: "System, Light, and Dark" }
+    ]
+  },
+  {
+    id: "vertical-tabs",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Vertical tabs",
+    url: "https://earlybrowser.dev/features/vertical-tabs",
+    host: "earlybrowser.dev/features/vertical-tabs",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><line x1="6" y1="2.5" x2="6" y2="13.5"/><line x1="3" y1="5.5" x2="4.5" y2="5.5"/><line x1="3" y1="8" x2="4.5" y2="8"/></svg>`,
+    readmeDesc: "Organize pages in a resizable sidebar with an address bar, auto-hide, and edge-hover reveal.",
+    summary: "Tabs live in a vertical sidebar alongside the address bar and Favorites grid. The sidebar resizes between 220 pt and 360 pt (240 pt default) and can auto-hide so web content uses the full window width.",
+    behavior: [
+      "Drag the sidebar's right border to resize width between 220 pt and 360 pt.",
+      "Toggle sidebar auto-hide at any time with ⌘⇧S or the sidebar toolbar button.",
+      "When auto-hidden, hovering within 2 pt of the left window edge reveals the floating sidebar over the page.",
+      "Pinned folders, top-level pins, New Tab, and Today tabs scroll together in a single unified container."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView · SidebarWidth" },
+      { label: "Shortcut", value: "⌘⇧S (Toggle Auto-Hide)" },
+      { label: "Width Range", value: "220 pt – 360 pt (240 pt default)" }
+    ]
+  },
+  {
+    id: "command-bar-navigation",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Command-bar navigation",
+    url: "https://earlybrowser.dev/features/command-bar-navigation",
+    host: "earlybrowser.dev/features/command-bar-navigation",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>`,
+    readmeDesc: "Open URLs or Google searches with ⌘T; edit the current address with ⌘L. A tab is created when you submit.",
+    summary: "A floating command bar centered over the active web view handles both new tab creation (⌘T) and editing the current page's address (⌘L). Empty tabs are never created prematurely — a tab is created only when you submit.",
+    behavior: [
+      "Press ⌘T or click New Tab to open the command bar for a new tab; press ⌘L or click the sidebar address bar to edit the active tab's URL.",
+      "Automatically distinguishes direct URLs, localhost ports, and domains from search queries.",
+      "Positioned at 40% vertical height without a full-screen dimming backdrop.",
+      "Dismisses cleanly on Escape or clicking outside the card."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "CommandBarView · CommandBarInput · CommandBarLayout" },
+      { label: "Shortcuts", value: "⌘T (New Tab) · ⌘L (Edit Address) · Esc" },
+      { label: "Card Width", value: "min(680 pt, 68% of content area)" }
+    ]
+  },
+  {
+    id: "search-suggestions",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Search suggestions",
+    url: "https://earlybrowser.dev/features/search-suggestions",
+    host: "earlybrowser.dev/features/search-suggestions",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h10"/><path d="M3 8h7"/><path d="M3 11h5"/></svg>`,
+    readmeDesc: "Command bar shows direct URL actions, matching tabs, browsing history, and optional Google search suggestions.",
+    summary: "As you type in the command bar, Early ranks and displays up to 8 unified suggestions combining direct URL navigation, open tabs, local browsing history, and live Google search completions.",
+    behavior: [
+      "Deduplicates candidates across open tabs, history entries, and remote search completions.",
+      "Navigate suggestions with Up/Down arrow keys and confirm with Return.",
+      "Online search engine suggestions can be toggled on or off in Settings → Search."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "CommandBarView · SearchSuggestionProvider" },
+      { label: "Max Results", value: "Up to 8 ranked rows" },
+      { label: "Privacy", value: "Remote suggestions optional in Settings" }
+    ]
+  },
+  {
+    id: "copy-current-url",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Copy current URL",
+    url: "https://earlybrowser.dev/features/copy-current-url",
+    host: "earlybrowser.dev/features/copy-current-url",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6.8 9.2a3.2 3.2 0 0 0 4.5 0l2-2a3.2 3.2 0 0 0-4.5-4.5L7.7 3.8"/><path d="M9.2 6.8a3.2 3.2 0 0 0-4.5 0l-2 2a3.2 3.2 0 0 0 4.5 4.5l1.1-1.1"/></svg>`,
+    readmeDesc: "Copy the active tab's address from the address bar or with ⌘⇧C, with a confirmation toast.",
+    summary: "Copy the active tab's full URL with a single click on the link icon in the sidebar address bar or from the keyboard with ⌘⇧C.",
+    behavior: [
+      "When a tab is active, the address bar displays the concise host name on the left and a quick-copy link button on the right.",
+      "Pressing ⌘⇧C or clicking the link icon writes the canonical URL to NSPasteboard.",
+      "Displays a brief confirmation toast in the top-right corner of the content area."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView · BrowserWindowModel" },
+      { label: "Shortcut", value: "⌘⇧C" },
+      { label: "Feedback", value: "Top-trailing native toast" }
+    ]
+  },
+  {
+    id: "trackpad-zoom",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Trackpad zoom",
+    url: "https://earlybrowser.dev/features/trackpad-zoom",
+    host: "earlybrowser.dev/features/trackpad-zoom",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/><line x1="7" y1="5" x2="7" y2="9"/><line x1="5" y1="7" x2="9" y2="7"/></svg>`,
+    readmeDesc: "Native pinch-to-zoom and two-finger double-tap Smart Zoom.",
+    summary: "Early enables native AppKit and WebKit magnification gestures directly on the hosted WKWebView, supporting smooth trackpad pinch-to-zoom and two-finger double-tap Smart Zoom.",
+    behavior: [
+      "Continuous two-finger pinch gestures scale the page smoothly with hardware-accelerated WebKit compositing.",
+      "Two-finger double-tap triggers macOS Smart Zoom on the target column or element.",
+      "Maintains sharp vector text rendering across zoom levels."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWebView · WebViewManager" },
+      { label: "Gestures", value: "Two-finger Pinch · Two-finger Double-Tap" },
+      { label: "Engine", value: "WKWebView allowsMagnification" }
+    ]
+  },
+  {
+    id: "two-finger-history-swipe",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Two-finger history swipe",
+    url: "https://earlybrowser.dev/features/two-finger-history-swipe",
+    host: "earlybrowser.dev/features/two-finger-history-swipe",
+    status: "Partial",
+    statusType: "partial",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 4 2 8 6 12"/><polyline points="10 4 14 8 10 12"/></svg>`,
+    readmeDesc: "Swipe back and forward on a trackpad, with edge-arrow feedback in progress.",
+    summary: "Navigate back and forward through tab history using standard two-finger horizontal trackpad swipes over web content, or keyboard shortcuts ⌘[ and ⌘].",
+    behavior: [
+      "Enables WebKit back/forward swipe navigation gestures on the active web view.",
+      "Toolbar Back and Forward chevrons subtly open their interior angle on hover and compress on click.",
+      "Visual edge-arrow swipe feedback overlay is currently in progress."
+    ],
+    specs: [
+      { label: "Status", value: "Partial" },
+      { label: "Modules", value: "BrowserWebView · HistoryGestureFeedback" },
+      { label: "Shortcuts", value: "⌘[ (Back) · ⌘] (Forward)" },
+      { label: "In Progress", value: "Edge-arrow gesture feedback overlay" }
+    ]
+  },
+  {
+    id: "haptic-feedback",
+    folderId: "folder-interface",
+    category: "Interface & Navigation",
+    name: "Haptic feedback",
+    url: "https://earlybrowser.dev/features/haptic-feedback",
+    host: "earlybrowser.dev/features/haptic-feedback",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4.5a5 5 0 0 0 0 7"/><path d="M10.5 4.5a5 5 0 0 1 0 7"/><path d="M3 2.5a8 8 0 0 0 0 11"/><path d="M13 2.5a8 8 0 0 1 0 11"/><circle cx="8" cy="8" r="1" fill="currentColor"/></svg>`,
+    readmeDesc: "Subtle Force Touch trackpad haptics for sidebar drag, drop, reorder, and Space switching, with a Settings toggle.",
+    summary: "Early uses NSHapticFeedbackManager to deliver subtle alignment haptics on Force Touch trackpads during drag-and-drop reordering and Space transitions.",
+    behavior: [
+      "Triggers tactile feedback when a dragged tab crosses slot boundaries or drops into a folder, Favorites grid, or Today section.",
+      "Provides alignment haptics when switching Spaces via trackpad swipe.",
+      "Can be disabled at any time in Settings → Sidebar → Haptic feedback."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView · BrowserPreferences" },
+      { label: "API", value: "AppKit NSHapticFeedbackManager" },
+      { label: "Preference", value: "Toggleable in Settings → Sidebar" }
+    ]
+  },
+
+  // =========================================================================
+  // 2. TABS & WORKSPACE (10 features)
+  // =========================================================================
+  {
+    id: "pinned-and-today-tabs",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Pinned and Today tabs",
+    url: "https://earlybrowser.dev/features/pinned-and-today-tabs",
+    host: "earlybrowser.dev/features/pinned-and-today-tabs",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2.5l4 4-1.5 1.5-2-1-2.5 2.5.5 2.5-1.2 1.2-2.4-2.4L2 13.2l2.4-2.4-2.4-2.4L3.2 7.2l2.5.5L8.2 5.2l-1-2L9.5 2.5z"/></svg>`,
+    readmeDesc: "Keep persistent pinned tabs above the divider and temporary working tabs in Today.",
+    summary: "The sidebar separates persistent Pinned tabs and folders above the divider from ephemeral Today tabs below the New Tab button.",
+    behavior: [
+      "Pinned tabs render as 34 pt rounded islands (10 pt corner radius) above the horizontal divider.",
+      "Today tabs sit below the New Tab (⌘T) button for daily browsing sessions.",
+      "Tabs can be pinned or unpinned via drag-and-drop across the divider or from the context menu."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView · TabStore" },
+      { label: "Shortcut", value: "⌘W (Close Tab)" },
+      { label: "Geometry", value: "34 pt Pinned island / 10 pt radius" }
+    ]
+  },
+  {
+    id: "sidebar-folders",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Sidebar folders",
+    url: "https://earlybrowser.dev/features/sidebar-folders",
+    host: "earlybrowser.dev/features/sidebar-folders",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4.5A1.5 1.5 0 0 1 3.5 3h2.8l1.4 1.8h4.8A1.5 1.5 0 0 1 14 6.3v5.2a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 11.5v-7z"/></svg>`,
+    readmeDesc: "Group pinned tabs into collapsible folders with up to two folder levels, drag-in/out organization, and Space-aware colors.",
+    summary: "Organize pinned tabs into collapsible folders supporting up to two levels of nesting. Custom two-layer vector folder artwork (FolderBack and FolderCover) unfolds smoothly when expanded and adapts to the active Space's theme color.",
+    behavior: [
+      "Two-part FolderBack + FolderCover Bezier vector icon tilts its front cover open when expanded.",
+      "Supports up to 2 levels of folder nesting with 12 pt leading indentation per level.",
+      "Hovering anywhere over an open folder highlights a unified rounded island background covering the header and its children."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "SidebarFolderPreview · SidebarFolderBounce · SpaceAppearance" },
+      { label: "Nesting Depth", value: "Up to 2 levels (SidebarFolderTree.maxDepth = 2)" },
+      { label: "Rename", value: "Option-click folder or Context Menu" }
+    ]
+  },
+  {
+    id: "quick-rename",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Quick rename",
+    url: "https://earlybrowser.dev/features/quick-rename",
+    host: "earlybrowser.dev/features/quick-rename",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 2.5l2 2-8 8H3.5v-2l8-8z"/></svg>`,
+    readmeDesc: "Option-click a tab or folder to rename it, or use the context menu.",
+    summary: "Give any pinned tab, Today tab, or sidebar folder a custom title by Option-clicking it or choosing Rename from its context menu. There is no double-click timer delay on regular tab clicks.",
+    behavior: [
+      "Option-click any tab or folder row to open the native rename sheet immediately.",
+      "Custom tab titles persist across page navigations and session restarts.",
+      "Includes a 'Use Page Title' button to revert a renamed tab back to the live website title."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView (RenameTabSheet) · TabStore" },
+      { label: "Trigger", value: "Option-Click (⌥-Click) or Context Menu" },
+      { label: "Reset", value: "Use Page Title action" }
+    ]
+  },
+  {
+    id: "favorites-bar",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Favorites bar",
+    url: "https://earlybrowser.dev/features/favorites-bar",
+    host: "earlybrowser.dev/features/favorites-bar",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="3" width="3.8" height="10" rx="1"/><rect x="6.1" y="3" width="3.8" height="10" rx="1"/><rect x="10.7" y="3" width="3.8" height="10" rx="1"/></svg>`,
+    readmeDesc: "Pin high-frequency sites as compact icon tiles above the tab list.",
+    summary: "A responsive multi-column grid of compact icon tiles (43.2 pt height, 9 pt corner radius) directly below the address bar keeps your most visited sites one click away.",
+    behavior: [
+      "Automatically adapts column count (up to 4 columns per row) based on how many Favorites are pinned.",
+      "Drag any tab into the Favorites grid to convert it into a compact icon tile, or drag a Favorite back to the tab list.",
+      "Displays the website's favicon or symbol centered inside a bordered surface tile."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserWindowView · SidebarReorderLayout" },
+      { label: "Tile Geometry", value: "43.2 pt height · 9 pt corner radius · 6 pt gap" },
+      { label: "Grid Layout", value: "1 to 4 adaptive columns" }
+    ]
+  },
+  {
+    id: "drag-and-drop-tab-reordering",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Drag-and-drop tab reordering",
+    url: "https://earlybrowser.dev/features/drag-and-drop-tab-reordering",
+    host: "earlybrowser.dev/features/drag-and-drop-tab-reordering",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="5" x2="12" y2="5"/><line x1="4" y1="8" x2="12" y2="8"/><line x1="4" y1="11" x2="12" y2="11"/></svg>`,
+    readmeDesc: "Move tabs between Favorites, Pinned, folders, and Today.",
+    summary: "A unified drag-and-drop layout engine lets you reorder items within or across Favorites, Pinned tabs, nested folders, and Today tabs with live slot displacement previews.",
+    behavior: [
+      "Dragging a tab into the Favorites grid morphs the floating preview from a full row into a compact tile.",
+      "Hovering over a closed folder during a drag highlights and opens the folder drop target.",
+      "Sibling rows animate smoothly out of the way using live geometry frames."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "SidebarReorderLayout · SidebarFolderPreview" },
+      { label: "Zones", value: "Favorites ↔ Pinned ↔ Folders ↔ Today" },
+      { label: "Feedback", value: "Live slot displacement + Force Touch haptics" }
+    ]
+  },
+  {
+    id: "spaces-and-profiles",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Spaces and profiles",
+    url: "https://earlybrowser.dev/features/spaces-and-profiles",
+    host: "earlybrowser.dev/features/spaces-and-profiles",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="8" r="2.2"/><circle cx="11" cy="8" r="2.2"/></svg>`,
+    readmeDesc: "Separate contexts with per-Space tabs, folders, icons, theme colors, swipe switching, and profile-isolated website data.",
+    summary: "Organize work, personal, and project contexts into distinct Spaces. Each Space maintains its own Pinned folders and Today tabs, custom SF Symbol icon, and theme color, backed by Profile-level website data isolation.",
+    behavior: [
+      "Switch Spaces from the bottom footer strip, keyboard shortcuts, or a two-finger horizontal trackpad swipe over the sidebar.",
+      "Each Space can be assigned one of 8 curated theme colors and 56 SF Symbols.",
+      "Each Profile uses its own isolated WKWebsiteDataStore so cookies, logins, and storage never leak across profiles."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "SpaceControls · SpaceAppearance · SpaceNavigation" },
+      { label: "Isolation", value: "Per-Profile WKWebsiteDataStore" },
+      { label: "Customization", value: "8 Theme Swatches · 56 SF Symbols" }
+    ]
+  },
+  {
+    id: "tab-search-and-switcher",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Tab search and switcher",
+    url: "https://earlybrowser.dev/features/tab-search-and-switcher",
+    host: "earlybrowser.dev/features/tab-search-and-switcher",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="12" height="10" rx="2"/><path d="M5 7h6"/><path d="M5 9.5h4"/></svg>`,
+    readmeDesc: "Search open tabs and switch recent tabs from the keyboard.",
+    summary: "Dedicated keyboard tab switching (⌃Tab MRU cycling) and instant filtering across all open tabs and Spaces.",
+    behavior: [
+      "Cycle through most-recently-used tabs with ⌃Tab and ⌃⇧Tab.",
+      "Quickly filter open tabs across Pinned folders and Today sections by title or domain."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "CommandBarView · BrowserWindowModel" },
+      { label: "Shortcuts", value: "⌃Tab · ⌃⇧Tab" },
+      { label: "Note", value: "Command bar already surfaces matching open tabs" }
+    ]
+  },
+  {
+    id: "split-view",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Split view",
+    url: "https://earlybrowser.dev/features/split-view",
+    host: "earlybrowser.dev/features/split-view",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><line x1="8" y1="2.5" x2="8" y2="13.5"/></svg>`,
+    readmeDesc: "View two tabs side by side in one window.",
+    summary: "Pair two tabs side-by-side inside a single browser window with an adjustable divider for reference reading, comparisons, and development.",
+    behavior: [
+      "Drag a tab onto the content edge or use the context menu to create a split pair.",
+      "Independent focus and scrolling for each pane with a draggable center divider."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "BrowserWindowView · WebContentView" },
+      { label: "Layout", value: "Dual-pane WebKit container" },
+      { label: "Roadmap", value: "Planned workspace multitasking feature" }
+    ]
+  },
+  {
+    id: "peek-preview",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Peek preview",
+    url: "https://earlybrowser.dev/features/peek-preview",
+    host: "earlybrowser.dev/features/peek-preview",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><rect x="4" y="4.5" width="8" height="7" rx="1.2"/></svg>`,
+    readmeDesc: "Preview a link in a lightweight overlay before promoting it to a full tab.",
+    summary: "Open external links or Shift-clicked anchors in a lightweight modal sheet over the current page without cluttering your sidebar tab list.",
+    behavior: [
+      "Shift-click any link to preview the destination in a floating overlay card.",
+      "Dismiss with Escape to return immediately to your reading position, or promote to a full tab."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "WebContentView · EarlyWeb" },
+      { label: "Triggers", value: "Shift-Click · Force Click" },
+      { label: "Dismiss", value: "Escape or click outside" }
+    ]
+  },
+  {
+    id: "auto-archive-inactive-tabs",
+    folderId: "folder-workspace",
+    category: "Tabs & Workspace",
+    name: "Auto-archive inactive tabs",
+    url: "https://earlybrowser.dev/features/auto-archive-inactive-tabs",
+    host: "earlybrowser.dev/features/auto-archive-inactive-tabs",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><polyline points="8 4.5 8 8 10.5 9.5"/></svg>`,
+    readmeDesc: "Automatically clean up old Today tabs after a configurable period.",
+    summary: "Keep the Today section tidy by automatically archiving unvisited Today tabs after a configurable idle threshold while leaving Pinned tabs, folders, and Favorites untouched.",
+    behavior: [
+      "Configurable archive threshold (e.g., 12 hours, 24 hours, 7 days).",
+      "Pinned tabs, folders, and Favorites are never auto-archived.",
+      "Archived tabs remain searchable and restorable from History."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "TabStore · BrowserPreferences" },
+      { label: "Scope", value: "Today tabs only (Pins preserved)" },
+      { label: "Recovery", value: "Restorable from History" }
+    ]
+  },
+
+  // =========================================================================
+  // 3. MEDIA & PAGE TOOLS (5 features)
+  // =========================================================================
+  {
+    id: "media-indicator-and-mute-control",
+    folderId: "folder-media",
+    category: "Media & Page Tools",
+    name: "Media indicator and mute control",
+    url: "https://earlybrowser.dev/features/media-indicator-and-mute-control",
+    host: "earlybrowser.dev/features/media-indicator-and-mute-control",
+    status: "Partial",
+    statusType: "partial",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 6.5 6 10 3 10 13 6.5 10 3 10 3 6"/><path d="M12.2 5.5a3.5 3.5 0 0 1 0 5"/></svg>`,
+    readmeDesc: "Show a speaker indicator on tabs playing media; mute/unmute controls are planned.",
+    summary: "Tabs playing audio or video automatically display a speaker indicator (`speaker.wave.2.fill`) in the sidebar so you can spot noisy tabs immediately.",
+    behavior: [
+      "Observes WebKit media playback state per tab and surfaces a speaker badge in both Pinned and Today rows.",
+      "Direct click-to-mute and per-tab audio controls are planned."
+    ],
+    specs: [
+      { label: "Status", value: "Partial" },
+      { label: "Modules", value: "BrowserWindowView · WebViewManager" },
+      { label: "Implemented", value: "Live speaker indicator on playing tabs" },
+      { label: "Planned", value: "Per-tab click-to-mute control" }
+    ]
+  },
+  {
+    id: "website-fullscreen",
+    folderId: "folder-media",
+    category: "Media & Page Tools",
+    name: "Website fullscreen",
+    url: "https://earlybrowser.dev/features/website-fullscreen",
+    host: "earlybrowser.dev/features/website-fullscreen",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="10 2 14 2 14 6"/><polyline points="6 14 2 14 2 10"/><line x1="14" y1="2" x2="9.5" y2="6.5"/><line x1="2" y1="14" x2="6.5" y2="9.5"/></svg>`,
+    readmeDesc: "Let compatible website players enter and exit fullscreen.",
+    summary: "Compatible HTML5 video players and web applications can enter and exit native macOS fullscreen seamlessly.",
+    behavior: [
+      "Enables WebKit element fullscreen APIs so web video players expand to full display.",
+      "Safely coordinates focus and view hierarchy while a web view is temporarily reparented during fullscreen playback.",
+      "Prevents opaque grey titlebar boxes when revealing the macOS menu bar in fullscreen."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "WebContentView · BrowserWebView" },
+      { label: "Shortcuts", value: "Esc (Exit Fullscreen) · fn F" },
+      { label: "Engine", value: "WKPreferences isElementFullscreenEnabled" }
+    ]
+  },
+  {
+    id: "picture-in-picture",
+    folderId: "folder-media",
+    category: "Media & Page Tools",
+    name: "Picture in Picture",
+    url: "https://earlybrowser.dev/features/picture-in-picture",
+    host: "earlybrowser.dev/features/picture-in-picture",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="1.5" y="2.5" width="13" height="11" rx="2"/><rect x="8" y="7.5" width="5" height="4.5" rx="1" fill="currentColor" fill-opacity="0.25"/></svg>`,
+    readmeDesc: "Watch compatible videos in a floating window, with an on/off preference.",
+    summary: "Pop playing HTML5 videos into a native macOS floating Picture in Picture window that stays visible across Spaces and applications.",
+    behavior: [
+      "Supports standard WebKit Picture in Picture controls on compatible video elements.",
+      "Includes a preference in Settings to enable or disable automatic Picture in Picture when switching away from a video tab."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "EarlyWeb · BrowserPreferences" },
+      { label: "Integration", value: "macOS native PiP window controller" },
+      { label: "Preference", value: "On/off toggle in Settings" }
+    ]
+  },
+  {
+    id: "downloads-and-page-tools",
+    folderId: "folder-media",
+    category: "Media & Page Tools",
+    name: "Downloads and page tools",
+    url: "https://earlybrowser.dev/features/downloads-and-page-tools",
+    host: "earlybrowser.dev/features/downloads-and-page-tools",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><polyline points="5.5 8.5 8 11 10.5 8.5"/><line x1="8" y1="5" x2="8" y2="11"/></svg>`,
+    readmeDesc: "Manage downloads, upload files, print, view PDFs, find text, and adjust zoom.",
+    summary: "Integrated download management anchored in the sidebar footer (`arrow.down.circle`), file upload open panels, in-page find (⌘F), page zoom controls, printing, and native PDF viewing.",
+    behavior: [
+      "The sidebar footer reserves the bottom-left `arrow.down.circle` slot for quick access to active and recent downloads.",
+      "In-page find bar (⌘F) to highlight and step through text matches.",
+      "Keyboard zoom controls (⌘+, ⌘-, ⌘0), native macOS print sheets (⌘P), and file upload panels."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "SpaceControls (Footer Slot) · EarlyWeb" },
+      { label: "Shortcuts", value: "⌘F (Find) · ⌘P (Print) · ⌘+ / ⌘- (Zoom)" },
+      { label: "Footer UI", value: "Reserved arrow.down.circle slot in SpaceFooter" }
+    ]
+  },
+  {
+    id: "reading-tools",
+    folderId: "folder-media",
+    category: "Media & Page Tools",
+    name: "Reading tools",
+    url: "https://earlybrowser.dev/features/reading-tools",
+    host: "earlybrowser.dev/features/reading-tools",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h4.5a1.5 1.5 0 0 1 1.5 1.5v8.5a1 1 0 0 0-1-1H2V3z"/><path d="M14 3H9.5A1.5 1.5 0 0 0 8 4.5v8.5a1 1 0 0 1 1-1H14V3z"/></svg>`,
+    readmeDesc: "Reader Mode for supported articles and page translation.",
+    summary: "Strip away page clutter with a clean, typography-focused Reader Mode for supported articles, paired with integrated page translation.",
+    behavior: [
+      "Extracts article body text and images into a calm, distraction-free reading layout.",
+      "Adjustable typeface, font size, and reading theme options.",
+      "Integrated page translation for foreign-language articles."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "EarlyWeb · Reading View" },
+      { label: "Shortcut", value: "⌘⇧R (Toggle Reader Mode)" },
+      { label: "Features", value: "Article extraction & translation" }
+    ]
+  },
+
+  // =========================================================================
+  // 4. PRIVACY & SYSTEM (6 features)
+  // =========================================================================
+  {
+    id: "session-restoration",
+    folderId: "folder-system",
+    category: "Privacy & System",
+    name: "Session restoration",
+    url: "https://earlybrowser.dev/features/session-restoration",
+    host: "earlybrowser.dev/features/session-restoration",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 8a5.5 5.5 0 1 1 1.1 3.3"/><polyline points="2.5 14 2.5 11 5.5 11"/></svg>`,
+    readmeDesc: "Persist tabs, folders, Favorites, and navigation history locally on disk.",
+    summary: "Early automatically persists your Spaces, profiles, Favorites, nested folders, Pinned and Today tabs, custom titles, and per-tab back/forward history stacks to a local JSON store on disk.",
+    behavior: [
+      "Debounced atomic writes to `~/Library/Application Support/Early/browser-session.json` keep disk I/O minimal.",
+      "Restored tabs use lazy WebKit loading — only the selected tab instantiates a live WKWebView on launch.",
+      "Settings → Sessions lets you toggle automatic session restoration, inspect the last save timestamp, or trigger 'Save Now'."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "BrowserSessionStore · BrowserCoordinator" },
+      { label: "Storage", value: "~/Library/Application Support/Early/browser-session.json" },
+      { label: "Memory", value: "Lazy WKWebView instantiation on selection" }
+    ]
+  },
+  {
+    id: "history-and-bookmarks",
+    folderId: "folder-system",
+    category: "Privacy & System",
+    name: "History and bookmarks",
+    url: "https://earlybrowser.dev/features/history-and-bookmarks",
+    host: "earlybrowser.dev/features/history-and-bookmarks",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 2.5h8a1 1 0 0 1 1 1v10l-5-3-5 3v-10a1 1 0 0 1 1-1z"/></svg>`,
+    readmeDesc: "Search browsing history, reopen closed tabs, and manage saved bookmarks.",
+    summary: "Full-text search across chronological browsing history, ⌘⇧T to reopen recently closed tabs, and structured bookmark management.",
+    behavior: [
+      "Reopen recently closed tabs in order with ⌘⇧T.",
+      "Search and clear chronological browsing history entries.",
+      "Import and export standard HTML bookmark collections."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "EarlyCore · HistoryStore" },
+      { label: "Shortcuts", value: "⌘Y (History) · ⌘⇧T (Reopen Closed Tab)" },
+      { label: "Note", value: "Basic history matching is already active in Command Bar" }
+    ]
+  },
+  {
+    id: "privacy-and-site-controls",
+    folderId: "folder-system",
+    category: "Privacy & System",
+    name: "Privacy and site controls",
+    url: "https://earlybrowser.dev/features/privacy-and-site-controls",
+    host: "earlybrowser.dev/features/privacy-and-site-controls",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L3 4.2v3.6c0 3.3 2.1 5.6 5 6.4 2.9-.8 5-3.1 5-6.4V4.2L8 2z"/></svg>`,
+    readmeDesc: "Private windows, site data clearing, permissions, and content blocking.",
+    summary: "Ephemeral private browsing windows (⌘⇧N) backed by non-persistent WebKit data stores, granular per-site permissions, website data clearing, and native WKContentRuleList content blocking.",
+    behavior: [
+      "Private windows use `WKWebsiteDataStore.nonPersistent()` so no cookies, cache, or history are written to disk.",
+      "Manage camera, microphone, location, and notification permissions per domain.",
+      "Compile content-blocking filter lists into native WebKit bytecode."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "EarlyWeb · WKContentRuleList" },
+      { label: "Shortcut", value: "⌘⇧N (New Private Window)" },
+      { label: "Isolation", value: "Non-persistent WKWebsiteDataStore" }
+    ]
+  },
+  {
+    id: "settings-and-customization",
+    folderId: "folder-system",
+    category: "Privacy & System",
+    name: "Settings and customization",
+    url: "https://earlybrowser.dev/features/settings-and-customization",
+    host: "earlybrowser.dev/features/settings-and-customization",
+    status: "Partial",
+    statusType: "partial",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="2.2"/><path d="M13.5 8a5.5 5.5 0 0 0-.1-1l1.3-1-1.2-2.1-1.5.6a5.5 5.5 0 0 0-1.7-1L10 2H7.6l-.3 1.5a5.5 5.5 0 0 0-1.7 1l-1.5-.6-1.2 2.1 1.3 1a5.5 5.5 0 0 0 0 2l-1.3 1 1.2 2.1 1.5-.6a5.5 5.5 0 0 0 1.7 1L7.6 14H10l.3-1.5a5.5 5.5 0 0 0 1.7-1l1.5.6 1.2-2.1-1.3-1c.1-.3.1-.7.1-1z"/></svg>`,
+    readmeDesc: "Native Settings for profiles, Space assignment, appearance, sidebar behavior, search suggestions, and local session restoration. More customization is planned.",
+    summary: "A native macOS Settings window (⌘,) organized into five sections: General, Profiles, Sidebar, Search, and Sessions.",
+    behavior: [
+      "General: Switch between System, Light, and Dark appearance, toggle Space theme colors, and control Translucent chrome.",
+      "Profiles: Create, rename, color-code, open, and delete isolated profiles, and move Spaces between profiles.",
+      "Sidebar: Adjust exact sidebar width (220–360 pt), toggle Auto-hide sidebar, enable/disable two-finger Space swipes, and toggle Haptic feedback.",
+      "Search & Sessions: Control online Google search suggestions, toggle 'Restore previous session', or trigger 'Save Now'."
+    ],
+    specs: [
+      { label: "Status", value: "Partial" },
+      { label: "Modules", value: "BrowserSettingsView · BrowserPreferences" },
+      { label: "Shortcut", value: "⌘, (Settings)" },
+      { label: "Planned", value: "Custom search engines & shortcut remapping" }
+    ]
+  },
+  {
+    id: "developer-tools",
+    folderId: "folder-system",
+    category: "Privacy & System",
+    name: "Developer tools",
+    url: "https://earlybrowser.dev/features/developer-tools",
+    host: "earlybrowser.dev/features/developer-tools",
+    status: "Planned",
+    statusType: "planned",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 5 2 8 5 11"/><polyline points="11 5 14 8 11 11"/><line x1="9" y1="3.5" x2="7" y2="12.5"/></svg>`,
+    readmeDesc: "Web Inspector, page source, JavaScript console, and localhost workflows.",
+    summary: "First-class WebKit Web Inspector integration (⌥⌘I), Inspect Element context menu actions, View Page Source (⌥⌘U), and ergonomics for localhost development.",
+    behavior: [
+      "Enables WebKit developer extras for full Element, Network, Console, and Timelines inspection.",
+      "Command bar already recognizes `localhost:<port>` and loopback addresses as direct URLs rather than search queries."
+    ],
+    specs: [
+      { label: "Status", value: "Planned" },
+      { label: "Modules", value: "EarlyWeb · WKPreferences" },
+      { label: "Shortcuts", value: "⌥⌘I (Web Inspector) · ⌥⌘U (Page Source)" },
+      { label: "Localhost", value: "Direct localhost:<port> routing in Command Bar" }
+    ]
+  },
+  {
+    id: "macos-distribution-and-updates",
+    folderId: "folder-system",
+    category: "Privacy & System",
+    name: "macOS distribution and updates",
+    url: "https://earlybrowser.dev/features/macos-distribution-and-updates",
+    host: "earlybrowser.dev/features/macos-distribution-and-updates",
+    status: "Implemented",
+    statusType: "implemented",
+    icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.5v7.5"/><polyline points="5 7.5 8 10.5 11 7.5"/><path d="M2.5 11.5v1a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-1"/></svg>`,
+    readmeDesc: "Release DMG packaging, Developer ID signing, Apple notarization, Homebrew Cask support, and Sparkle in-app updates.",
+    summary: "Early ships as a Developer ID signed, Apple-notarized macOS `.app` and `.dmg`, installable via Homebrew Cask (`earlybrowser/tap/early`), with integrated Sparkle 2 in-app updates.",
+    behavior: [
+      "Install via Homebrew with `brew install --cask earlybrowser/tap/early` or download `Early.dmg` from GitHub Releases.",
+      "Integrates Sparkle (`SPUStandardUpdaterController`) for signed delta updates via `Early → Check for Updates…`.",
+      "Automated packaging, code signing, notarization, and appcast generation scripts in `Scripts/`."
+    ],
+    specs: [
+      { label: "Status", value: "Implemented" },
+      { label: "Modules", value: "EarlyUpdateController · Sparkle 2" },
+      { label: "Homebrew", value: "brew install --cask earlybrowser/tap/early" },
+      { label: "Security", value: "Developer ID signed & Apple notarized" }
+    ]
   }
 ];
