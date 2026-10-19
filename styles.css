@@ -77,10 +77,10 @@ svg { display: block; flex-shrink: 0; }
 .traffic-minimize { left: 22px; }
 .traffic-zoom { left: 44px; }
 .toolbar-btn { display: flex; align-items: center; justify-content: center; flex: 0 0 32px; width: 32px; height: 32px; border-radius: 8px; color: var(--secondary); }
-.toolbar-btn:hover:not(:disabled) { background: var(--selected); color: var(--text); }
-.toolbar-btn:active:not(:disabled) { background: var(--pressed); }
+button.toolbar-btn:hover:not(:disabled) { background: var(--selected); color: var(--text); }
+button.toolbar-btn:active:not(:disabled) { background: var(--pressed); }
 .toolbar-btn:disabled { color: var(--tertiary); opacity: .6; }
-#sidebar-toggle-btn:disabled { color: var(--secondary); opacity: 1; }
+#sidebar-toggle-btn { color: var(--secondary); opacity: 1; }
 .toolbar-spacer { flex: 1; min-width: 0; }
 .reload-stop-rotator { position: relative; width: 16px; height: 16px; transition: transform 160ms linear; }
 .reload-stop-rotator svg { position: absolute; inset: 0; transition: opacity 80ms linear; }
@@ -218,7 +218,7 @@ svg { display: block; flex-shrink: 0; }
 .page-container .feature-lede { margin-top: 16px; font-size: 19px; line-height: 1.5; color: var(--text); letter-spacing: -.01em; }
 .behavior-list { padding-left: 20px; margin: 0; }
 .behavior-list li { padding-left: 4px; margin-bottom: 12px; }
-.information-note { margin-top: 24px; padding: 14px 18px; border-left: 2px solid var(--strong-border); border-radius: 10px; background: var(--hover); color: var(--secondary); font-size: 13px; line-height: 1.8; }
+.information-note { margin-top: 24px; padding: 14px 18px; border-radius: 10px; background: var(--hover); color: var(--secondary); font-size: 13px; line-height: 1.8; }
 .code-block { margin: 20px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--hover); }
 .code-caption { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--secondary); }
 .copy-code { min-height: 28px; padding: 0 8px; border-radius: 5px; }
