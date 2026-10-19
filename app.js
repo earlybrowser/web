@@ -65,7 +65,7 @@
     $("address-search-icon").setAttribute("hidden", "");
     $("address-copy-link-btn").style.display = "";
     $("address-edit-btn").setAttribute("aria-label", `Edit address for ${byId.get(state.active).name}`);
-    document.title = state.active === "home" ? "Early — A native macOS browser" : `${byId.get(state.active).name} — Early`;
+    document.title = state.active === "home" ? "Early: A native macOS browser" : `${byId.get(state.active).name} — Early`;
   }
   function navigate(id, { push = true, focus = true } = {}) {
     if (!byId.has(id)) return;

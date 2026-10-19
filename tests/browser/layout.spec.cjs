@@ -38,6 +38,38 @@ for (const colorScheme of ["light", "dark"]) {
       expect(errors).toEqual([]);
     });
 
+    test("the footer download icon matches the tray artwork used for the download page", async ({ page }) => {
+      await page.goto("/");
+      const button = page.getByRole("button", { name: "Download and installation information" });
+      const icon = button.locator("svg");
+      await expect(icon).toBeVisible();
+      await expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
+      await expect(icon.locator("circle")).toHaveCount(0);
+      const paths = (locator) => locator.locator("path").evaluateAll((nodes) => nodes.map((path) => path.getAttribute("d")));
+      expect(await paths(icon)).toEqual(await paths(page.locator("[data-tab-id=download] svg")));
+      await button.click();
+      await expect(page.locator("h1")).toHaveText("Download & Install");
+    });
+
+    test("homepage copy keeps sentence case and flows beside the right-aligned app icon", async ({ page }) => {
+      await page.goto("/");
+      const header = page.locator(".home-header");
+      const icon = header.locator(".app-icon");
+      const eyebrow = header.locator(".eyebrow");
+      await expect(eyebrow).toHaveText("Made for macOS");
+      await expect(eyebrow).toHaveCSS("text-transform", "none");
+      for (const width of [1200, 1000, 820, 390, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        const headerBox = await header.boundingBox();
+        const iconBox = await icon.boundingBox();
+        const headingBox = await header.locator("h1").boundingBox();
+        expect(iconBox.x).toBeGreaterThan(headingBox.x);
+        expect(iconBox.x + iconBox.width).toBeCloseTo(headerBox.x + headerBox.width, 0);
+        expect(iconBox.y).toBeLessThan(headingBox.y);
+        expect(await page.locator("#content-viewport").evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
+      }
+    });
+
     test("New Tab shows main pages and filtering never adds a Google fallback", async ({ page }) => {
       await page.goto("/");
       await page.locator("#new-tab-btn").click();
