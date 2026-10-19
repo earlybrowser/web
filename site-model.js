@@ -41,14 +41,18 @@
         return { kind: "url", url: url.href };
       } catch { return { kind: "invalid" }; }
     }
-    return { kind: "search", url: `https://www.google.com/search?q=${encodeURIComponent(value)}` };
+    return { kind: "text" };
+  }
+  function commandBarPages(query, catalog) {
+    if (!query.trim()) return [...catalog.tabs];
+    return rankPages(query, [...catalog.tabs, ...catalog.features]).slice(0, 6);
   }
   function pageURL(id, base) {
     const url = new URL(base);
     url.hash = id === "home" ? "" : id;
     return url.href;
   }
-  const model = { normalize, resolveRoute, rankPages, classifyInput, pageURL };
+  const model = { normalize, resolveRoute, rankPages, classifyInput, commandBarPages, pageURL };
   root.EarlySiteModel = model;
   if (typeof module === "object" && module.exports) module.exports = model;
 })(typeof globalThis === "object" ? globalThis : this);

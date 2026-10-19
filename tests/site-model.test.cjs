@@ -2,7 +2,7 @@
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 const catalog = require("../features-data.js");
-const { resolveRoute, rankPages, classifyInput, pageURL } = require("../site-model.js");
+const { resolveRoute, rankPages, classifyInput, commandBarPages, pageURL } = require("../site-model.js");
 const pages = [...catalog.tabs, ...catalog.features];
 
 test("catalog has distinct, valid routes and only major feature tabs", () => {
@@ -62,6 +62,19 @@ test("empty queries do not display arbitrary results", () => {
   assert.deepEqual(rankPages("nonexistentword", pages), []);
 });
 
+test("New Tab shows the three main tabs in sidebar order", () => {
+  for (const query of ["", " ", "\n"]) {
+    assert.deepEqual(commandBarPages(query, catalog).map((page) => page.id), ["home", "download", "roadmap"]);
+  }
+});
+
+test("typing filters main tabs and features, clearing restores main tabs", () => {
+  assert.equal(commandBarPages("pr", catalog)[0].id, "profiles");
+  assert.equal(commandBarPages("spaces", catalog)[0].id, "spaces-and-profiles");
+  assert.deepEqual(commandBarPages("nonexistentword", catalog), []);
+  assert.deepEqual(commandBarPages("", catalog), catalog.tabs);
+});
+
 test("safe web addresses are recognized, including ports and paths", () => {
   for (const input of ["https://github.com/earlybrowser", "http://localhost:4177/#profiles", "github.com", "example.com:8080/docs?q=spaces", "localhost:4177"]) {
     const result = classifyInput(input);
@@ -76,12 +89,11 @@ test("unsupported schemes, malformed URLs, and credentials cannot be opened", ()
   }
 });
 
-test("plain text becomes an encoded explicit web-search action", () => {
+test("plain text stays local and never becomes a Google search action", () => {
   assert.equal(classifyInput(" ").kind, "empty");
-  const result = classifyInput("mac browser & privacy");
-  assert.equal(result.kind, "search");
-  assert.equal(new URL(result.url).searchParams.get("q"), "mac browser & privacy");
-  assert.equal(classifyInput("work\npersonal").kind, "search");
+  for (const input of ["pr", "mac browser & privacy", "work\npersonal", "nonexistentword"]) {
+    assert.deepEqual(classifyInput(input), { kind: "text" });
+  }
 });
 
 test("copyable URLs use the actual deployment path, not invented routes", () => {

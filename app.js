@@ -196,12 +196,14 @@
   }
   function updateSuggestions() {
     const query = state.prefilled ? "" : $("command-bar-input").value.trim();
-    state.results = model.rankPages(query, pages).slice(0, 6).map((page) => ({ kind: "page", page, label: page.name, detail: "On this site", icon: page.icon }));
+    const matches = state.prefilled ? [] : model.commandBarPages(query, catalog);
+    state.results = matches.map((page) => ({ kind: "page", page, label: page.name, detail: "On this site", icon: page.icon }));
     const action = model.classifyInput(state.prefilled ? "" : query);
-    if (action.kind === "url" || action.kind === "search") state.results.push({ ...action, label: action.kind === "url" ? query : `Search Google for “${query}”`, detail: "Opens a new tab", icon: catalog.features.find((feature) => feature.id === "command-bar-navigation").icon });
+    if (action.kind === "url") state.results.push({ ...action, label: query, detail: "Opens a new tab", icon: catalog.features.find((feature) => feature.id === "command-bar-navigation").icon });
     state.selected = 0;
-    $("command-bar-hint").textContent = action.kind === "invalid" ? "Enter an http or https address without account credentials." : !query ? "Search Early’s features, or enter a web address. ⌘K / Ctrl K" : "↑ ↓ to select · → to fill · Return to open";
-    $("command-bar-hint").classList.toggle("sr-only", action.kind !== "invalid");
+    const noMatches = action.kind === "text" && !state.results.length;
+    $("command-bar-hint").textContent = action.kind === "invalid" ? "Enter an http or https address without account credentials." : noMatches ? "No matching pages. Try “Spaces”, “Profiles”, or “Home”." : !query ? "Choose a main tab, search Early’s features, or enter a web address. ⌘K / Ctrl K" : "↑ ↓ to select · → to fill · Return to open";
+    $("command-bar-hint").classList.toggle("sr-only", action.kind !== "invalid" && !noMatches);
     $("command-bar-suggestions-wrap").hidden = state.results.length === 0;
     $("command-bar-input").setAttribute("aria-expanded", String(state.results.length > 0));
     $("command-bar-suggestions").innerHTML = state.results.map((result, index) => `<div class="command-bar-suggestion" id="suggestion-${index}" role="option" aria-selected="false" data-index="${index}"><span class="suggestion-icon" aria-hidden="true">${result.icon}</span><span class="suggestion-label">${escapeHTML(result.label)}</span><span class="suggestion-detail">${result.detail}</span></div>`).join("");
