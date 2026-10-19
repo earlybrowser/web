@@ -30,10 +30,9 @@ for (const colorScheme of ["light", "dark"]) {
       expect(contentBox.width).toBeGreaterThan(600);
       await expect(page.locator(".favorite-tile")).toHaveCount(3);
       const sponsors = page.locator("#fav-sponsors");
-      await expect(sponsors).toHaveAttribute("aria-disabled", "true");
-      await expect(sponsors).not.toHaveAttribute("href");
+      await expect(sponsors).toHaveAttribute("href", "https://github.com/sponsors/rangaNP");
       await expect(sponsors.locator("svg")).toHaveAttribute("fill", "#EA4AAA");
-      await expect(page.getByRole("link", { name: "Sponsor Early", exact: true })).toHaveAttribute("aria-disabled", "true");
+      await expect(page.locator(".page-footer").getByRole("link", { name: /Sponsor Early/ })).toHaveAttribute("href", "https://github.com/sponsors/rangaNP");
       await expect(page.locator(".folder-header")).toHaveCount(3);
       await expect(icon).toHaveAttribute("role", "img");
       await expect(icon.locator("svg")).toBeVisible();

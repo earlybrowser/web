@@ -108,7 +108,7 @@
     navigate(link.dataset.route);
   });
 
-  const footer = () => `<footer class="page-footer"><span>Early · Open source · MPL-2.0</span><nav aria-label="Project links">${externalLink(repo, "GitHub")}<a href="mailto:earlybrowser.dev@gmail.com">Email</a><span role="link" aria-disabled="true" title="GitHub Sponsors (not available yet)">Sponsor Early</span></nav></footer>`;
+  const footer = () => `<footer class="page-footer"><span>Early · Open source · MPL-2.0</span><nav aria-label="Project links">${externalLink(repo, "GitHub")}<a href="mailto:earlybrowser.dev@gmail.com">Email</a>${externalLink("https://github.com/sponsors/rangaNP", "Sponsor Early")}</nav></footer>`;
   const breadcrumb = (label) => `<nav class="breadcrumb" aria-label="Breadcrumb">${routeLink("home", "Home")}<span aria-hidden="true">/</span><span>${label}</span></nav>`;
   function renderPage() {
     let content;
