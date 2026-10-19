@@ -49,12 +49,12 @@
 
   --command-bar-bg: rgba(28, 28, 31, 0.92);
 
-  /* Restrained, Native Semantic Status Colors */
-  --status-implemented-fg: #30d158;
-  --status-implemented-bg: rgba(48, 209, 88, 0.10);
+  /* Restrained, Muted Semantic Status Colors */
+  --status-implemented-fg: rgba(114, 178, 128, 0.78);
+  --status-implemented-bg: rgba(114, 178, 128, 0.08);
 
-  --status-partial-fg: #ff9f0a;
-  --status-partial-bg: rgba(255, 159, 10, 0.10);
+  --status-partial-fg: rgba(196, 156, 98, 0.78);
+  --status-partial-bg: rgba(196, 156, 98, 0.08);
 
   --status-planned-fg: rgba(255, 255, 255, 0.48);
   --status-planned-bg: rgba(255, 255, 255, 0.055);
