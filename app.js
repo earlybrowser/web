@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MPL-2.0
-// Early Official Website — Clean, Minimal Native Browser Interface & Feature Documentation
+// Early Official Website — User-Focused Native Browser Interface
 
 (function () {
   "use strict";
 
   // =========================================================================
-  // 1. EXACT FOLDER SVG PATHS (BrowserWindowView.swift lines 2208–2293)
+  // 1. EXACT FOLDER SVG PATHS (BrowserWindowView.swift)
   // =========================================================================
   const FOLDER_BACK_PATH =
     "M 3.42 17.60 Q 1.14 17.60 1.14 15.20 L 1.14 4.60 Q 1.14 2.20 3.42 2.20 L 6.46 2.20 Q 7.22 2.20 7.79 3.00 L 8.93 4.60 Q 9.50 5.40 10.26 5.40 L 14.44 5.40 Q 16.72 5.40 16.72 7.80 L 16.72 15.20 Q 16.72 17.60 14.44 17.60 Z";
@@ -185,19 +185,16 @@
   }
 
   function renderSidebar() {
-    // 1. Feature-wise folders in Pinned section
     dom.pinnedContainer.innerHTML = "";
     folders.forEach((folder) => {
       dom.pinnedContainer.appendChild(renderFolderBlock(folder));
     });
 
-    // 2. Today tabs (starting with Homepage tab)
     dom.todayContainer.innerHTML = "";
     todayTabs.forEach((tab) => {
       dom.todayContainer.appendChild(createTodayTabRow(tab));
     });
 
-    // 3. Update address bar and Back/Forward buttons
     updateAddressBarAndControls();
   }
 
@@ -275,10 +272,6 @@
       renderDownloadPage();
       return;
     }
-    if (state.activeTabId === "architecture") {
-      renderArchitecturePage();
-      return;
-    }
     if (state.activeTabId === "roadmap") {
       renderRoadmapPage();
       return;
@@ -293,7 +286,7 @@
   }
 
   // =========================================================================
-  // 6. TODAY PAGES: HOME, DOWNLOAD, ARCHITECTURE, FEATURE STATUS
+  // 6. TODAY PAGES: HOME, DOWNLOAD, ALL FEATURES
   // =========================================================================
   function buildFeatureTableSectionHTML() {
     const counts = {
@@ -311,7 +304,7 @@
       <section aria-label="Features Directory">
         <div class="directory-section-header">
           <div class="directory-title-group">
-            <h2 class="directory-title">All Features</h2>
+            <h2 class="directory-title">Features</h2>
             <span class="directory-subtitle">${counts.implemented} Implemented · ${counts.partial} Partial · ${counts.planned} Planned</span>
           </div>
 
@@ -407,9 +400,7 @@
             <div class="overview-title-group">
               <div class="overview-title-row">
                 <h1 class="overview-title">Early</h1>
-                <span class="overview-meta-pill">macOS 26+</span>
-                <span class="overview-meta-pill">Swift 6.2 · SwiftUI · AppKit · WebKit</span>
-                <span class="overview-meta-pill">MPL-2.0</span>
+                <span class="overview-meta-pill">macOS</span>
               </div>
               <p class="overview-tagline">
                 A fast, lightweight native macOS browser built around vertical tabs, Spaces, and a clean command bar.
@@ -418,7 +409,7 @@
           </div>
 
           <p class="overview-lead">
-            <strong>Early</strong> is an open-source macOS browser focused on quiet speed and native desktop ergonomics. Expand the feature folders in the sidebar to inspect individual features, or install directly via Homebrew:
+            <strong>Early</strong> is designed for calm, focused everyday browsing on your Mac. Open any folder in the sidebar to explore Early's features, or install it right now with Homebrew:
           </p>
 
           <div class="code-box">
@@ -430,7 +421,7 @@
         ${buildFeatureTableSectionHTML()}
 
         <footer class="overview-footer-note">
-          <span>Early Browser · Mozilla Public License 2.0</span>
+          <span>Early Browser</span>
           <span>
             <a href="https://github.com/earlybrowser/early-browser" target="_blank" rel="noopener noreferrer">GitHub</a>
             ·
@@ -459,14 +450,14 @@
         <header class="feature-hero-block">
           <h1 class="feature-main-title" style="margin-bottom: 8px;">Download & Install</h1>
           <p class="feature-summary-paragraph">
-            Early is distributed as a Developer ID signed, Apple-notarized macOS application with Sparkle in-app updates, or can be built directly from source with Xcode 26.
+            Install Early using Homebrew or download the signed macOS disk image directly.
           </p>
         </header>
 
         <div class="info-stack">
           <div class="info-card">
-            <h3>Homebrew Cask (Recommended)</h3>
-            <p>Install Early from the official Homebrew tap:</p>
+            <h3>Install with Homebrew</h3>
+            <p>Run the following command in Terminal to install Early:</p>
             <div class="code-box">
               <code>brew install --cask earlybrowser/tap/early</code>
               <button type="button" class="copy-btn" data-copy="brew install --cask earlybrowser/tap/early">Copy</button>
@@ -476,19 +467,10 @@
           <div class="info-card">
             <h3>Direct DMG Download</h3>
             <p>
-              Download the latest universal <code>Early.dmg</code> from
+              Download the latest <code>Early.dmg</code> installer from
               <a href="https://github.com/earlybrowser/early-browser/releases/latest" target="_blank" rel="noopener noreferrer" style="color: var(--text-primary);">GitHub Releases</a>,
-              open the disk image, and drag <strong>Early.app</strong> to <strong>Applications</strong>.
+              open the disk image, and drag <strong>Early</strong> into your <strong>Applications</strong> folder.
             </p>
-          </div>
-
-          <div class="info-card">
-            <h3>Build from Source</h3>
-            <p>Requires macOS 26.0 or newer, Xcode 26.0+, and Swift 6.2:</p>
-            <div class="code-box">
-              <code>git clone https://github.com/earlybrowser/early-browser.git && cd early-browser && ./Scripts/run-app.sh</code>
-              <button type="button" class="copy-btn" data-copy="git clone https://github.com/earlybrowser/early-browser.git && cd early-browser && ./Scripts/run-app.sh">Copy</button>
-            </div>
           </div>
         </div>
       </div>
@@ -498,52 +480,6 @@
     wireFeatureTableInteractions();
   }
 
-  function renderArchitecturePage() {
-    dom.contentViewport.innerHTML = `
-      <div class="page-container">
-        <div class="page-top-nav">
-          <div class="breadcrumb-row">
-            <button type="button" class="breadcrumb-btn" id="back-home-btn">Early</button>
-            <span>/</span>
-            <span>Native Architecture</span>
-          </div>
-        </div>
-
-        <header class="feature-hero-block">
-          <h1 class="feature-main-title" style="margin-bottom: 8px;">Native Architecture</h1>
-          <p class="feature-summary-paragraph">
-            Early is structured as a modular Swift 6 package and Xcode project with strict concurrency checking and a clear boundary between pure domain state, WebKit hosting, and SwiftUI/AppKit presentation.
-          </p>
-        </header>
-
-        <div class="info-stack">
-          <div class="info-card">
-            <h3>EarlyCore (Domain & State Layer)</h3>
-            <p>
-              Pure Swift models and layout geometry with zero AppKit or WebKit UI dependencies: <code>BrowserCoordinator</code>, <code>TabStore</code>, <code>BrowserSessionStore</code>, <code>SpaceAppearance</code>, <code>SidebarWidth</code>, <code>SidebarReorderLayout</code>, and <code>CommandBarLayout</code>.
-            </p>
-          </div>
-
-          <div class="info-card">
-            <h3>EarlyWeb (WebKit Hosting Layer)</h3>
-            <p>
-              Manages <code>WKWebView</code> lifecycle, per-Profile <code>WKWebsiteDataStore</code> isolation, lazy tab loading, trackpad magnification, fullscreen coordination, and history swipe navigation via <code>WebViewManager</code> and <code>BrowserWebView</code>.
-            </p>
-          </div>
-
-          <div class="info-card">
-            <h3>Early (AppKit & SwiftUI Window Layer)</h3>
-            <p>
-              Implements the native macOS window chrome, custom traffic light overlay, vertical sidebar, two-part Bezier folder icons, floating <code>CommandBarView</code>, <code>SpaceControls</code> footer, and <code>BrowserSettingsView</code>.
-            </p>
-          </div>
-        </div>
-      </div>
-    `;
-
-    document.getElementById("back-home-btn").addEventListener("click", () => navigateToTab("home"));
-  }
-
   function renderRoadmapPage() {
     dom.contentViewport.innerHTML = `
       <div class="page-container">
@@ -551,14 +487,14 @@
           <div class="breadcrumb-row">
             <button type="button" class="breadcrumb-btn" id="back-home-btn">Early</button>
             <span>/</span>
-            <span>Feature Status</span>
+            <span>All Features</span>
           </div>
         </div>
 
         <header class="feature-hero-block">
-          <h1 class="feature-main-title" style="margin-bottom: 8px;">Feature Status</h1>
+          <h1 class="feature-main-title" style="margin-bottom: 8px;">All Features</h1>
           <p class="feature-summary-paragraph">
-            Complete implementation status for all 29 features in the Early repository. Click any feature row to read its specification.
+            Explore what is available in Early today and what is coming next. Click any feature to learn more.
           </p>
         </header>
 
@@ -571,7 +507,7 @@
   }
 
   // =========================================================================
-  // 7. INDIVIDUAL FEATURE DETAIL PAGE
+  // 7. INDIVIDUAL FEATURE DETAIL PAGE (User-Focused, Zero Dev Jargon)
   // =========================================================================
   function renderFeatureDetailPage(feature) {
     const idx = features.findIndex((f) => f.id === feature.id);
@@ -600,29 +536,13 @@
           <p class="feature-summary-paragraph">${escapeHTML(feature.summary)}</p>
         </header>
 
-        <!-- Two-Column Details: Behavior & Technical Specs -->
-        <section class="feature-details-grid">
+        <!-- Clean Single-Column User Highlights -->
+        <section class="feature-highlights-section">
           <div class="detail-card">
-            <h2 class="detail-card-heading">Behavior & Design</h2>
+            <h2 class="detail-card-heading">How It Works</h2>
             <ul class="behavior-list">
               ${feature.behavior.map((item) => `<li>${escapeHTML(item)}</li>`).join("")}
             </ul>
-          </div>
-
-          <div class="detail-card">
-            <h2 class="detail-card-heading">Specifications</h2>
-            <div class="scope-rows">
-              ${feature.specs
-                .map(
-                  (s) => `
-                <div class="scope-row">
-                  <span class="scope-label">${escapeHTML(s.label)}</span>
-                  <span class="scope-value">${escapeHTML(s.value)}</span>
-                </div>
-              `
-                )
-                .join("")}
-            </div>
           </div>
         </section>
 
@@ -662,7 +582,7 @@
   }
 
   // =========================================================================
-  // 8. FLOATING COMMAND BAR (CommandBarView.swift)
+  // 8. FLOATING COMMAND BAR
   // =========================================================================
   function openCommandBar(mode = "newTab") {
     state.commandBarOpen = true;
@@ -771,7 +691,7 @@
   }
 
   // =========================================================================
-  // 9. SIDEBAR RESIZE & AUTO-HIDE (SidebarWidth.swift: 220–360pt)
+  // 9. SIDEBAR RESIZE & AUTO-HIDE
   // =========================================================================
   function setSidebarWidth(width) {
     const clamped = Math.max(220, Math.min(360, width));

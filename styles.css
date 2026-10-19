@@ -1441,11 +1441,8 @@ button, input {
   color: var(--text-secondary);
 }
 
-/* Two-Column Specification Grid */
-.feature-details-grid {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 16px;
+/* Single-Column User Highlights */
+.feature-highlights-section {
   margin-bottom: 28px;
 }
 
@@ -1489,37 +1486,6 @@ button, input {
   height: 4px;
   border-radius: 50%;
   background: var(--text-tertiary);
-}
-
-.scope-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
-
-.scope-row {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--primary-04);
-}
-
-.scope-row:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.scope-label {
-  font-size: 11px;
-  color: var(--text-tertiary);
-}
-
-.scope-value {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  line-height: 1.45;
 }
 
 /* Clean Section Cards for Today Tabs (Download, Architecture) */
