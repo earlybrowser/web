@@ -27,7 +27,7 @@ window.EARLY_FOLDERS = [
 window.EARLY_TODAY_TABS = [
   {
     id: "home",
-    name: "Early — Overview",
+    name: "Overview",
     host: "earlybrowser.dev",
     url: "https://earlybrowser.dev",
     icon: `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.8L8 2.2l5.5 4.6v6.2a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V6.8z"/><path d="M6.2 14V9.5h3.6V14"/></svg>`

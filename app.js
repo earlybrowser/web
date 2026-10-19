@@ -280,15 +280,23 @@
       state.historyIndex = state.history.length - 1;
     }
 
-    const targetHash = tabId === "home" ? "" : `#${tabId}`;
-    if (window.location.hash !== targetHash) {
-      history.replaceState(null, "", targetHash || window.location.pathname);
-    }
-
     triggerLoadingLine();
     renderSidebar();
     renderMainContent();
     dom.contentViewport.scrollTop = 0;
+
+    const activeRow = dom.sidebar.querySelector(`.tab-item-row[data-tab-id="${tabId}"]`);
+    if (activeRow) {
+      activeRow.scrollIntoView({ block: "nearest" });
+    }
+
+    try {
+      const targetHash = tabId === "home" ? "" : `#${tabId}`;
+      if (window.location.hash !== targetHash) {
+        const cleanUrl = targetHash || (window.location.pathname + window.location.search);
+        history.replaceState(null, "", cleanUrl);
+      }
+    } catch (_) {}
   }
 
   function renderMainContent() {
@@ -544,7 +552,6 @@
 
     dom.contentViewport.innerHTML = `
       <div class="page-container">
-        <!-- Breadcrumb & Status -->
         <div class="page-top-nav">
           <div class="breadcrumb-row">
             <button type="button" class="breadcrumb-btn" id="spec-back-home">Early</button>
@@ -554,7 +561,6 @@
           <span class="status-badge ${feature.statusType}">${feature.status}</span>
         </div>
 
-        <!-- Feature Title & Summary -->
         <header class="feature-hero-block">
           <div class="feature-title-line">
             <div class="feature-title-icon">${feature.icon}</div>
@@ -564,7 +570,6 @@
           <p class="feature-summary-paragraph">${escapeHTML(feature.summary)}</p>
         </header>
 
-        <!-- Clean Single-Column User Highlights -->
         <section class="feature-highlights-section">
           <div class="detail-card">
             <h2 class="detail-card-heading">How It Works</h2>
@@ -574,7 +579,6 @@
           </div>
         </section>
 
-        <!-- Prev / Next Feature Navigation -->
         <nav class="feature-pagination" aria-label="Feature navigation">
           ${
             prevFeature
@@ -612,6 +616,8 @@
   // =========================================================================
   // 8. FLOATING COMMAND BAR
   // =========================================================================
+  const SEARCH_ICON_SVG = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="4.5"/><line x1="10.5" y1="10.5" x2="14" y2="14"/></svg>`;
+
   function openCommandBar(mode = "newTab") {
     state.commandBarOpen = true;
     state.commandBarMode = mode;
@@ -619,11 +625,13 @@
     const current = getActiveTabItem();
     if (mode === "editCurrentTab" && current && current.id !== "home") {
       state.commandBarQuery = current.url;
+      state.commandBarInitialPrefill = true;
     } else {
       state.commandBarQuery = "";
+      state.commandBarInitialPrefill = false;
     }
 
-    dom.commandBarLayer.style.display = "flex";
+    dom.commandBarLayer.style.display = "block";
     dom.commandBarInput.value = state.commandBarQuery;
     updateCommandBarSuggestions();
 
@@ -639,16 +647,25 @@
     dom.commandBarLayer.style.display = "none";
   }
 
-  function buildCommandBarSuggestions(rawQuery) {
-    const q = rawQuery.trim().toLowerCase();
+  function buildCommandBarSuggestions(rawQuery, isInitialPrefill = false) {
+    const q = isInitialPrefill ? "" : rawQuery.trim().toLowerCase();
     const results = [];
 
     todayTabs.forEach((tab) => {
-      if (!q || tab.name.toLowerCase().includes(q) || tab.url.toLowerCase().includes(q)) {
+      const matchesHomeAlias = tab.id === "home" && ("home".includes(q) || "overview".includes(q));
+      if (
+        !q ||
+        matchesHomeAlias ||
+        tab.name.toLowerCase().includes(q) ||
+        tab.url.toLowerCase().includes(q) ||
+        (tab.host && tab.host.toLowerCase().includes(q)) ||
+        tab.id.toLowerCase().includes(q)
+      ) {
         results.push({
+          type: "tab",
           id: tab.id,
           title: tab.name,
-          badge: "Tab",
+          badge: tab.id === "home" ? "Home" : "Tab",
           statusType: "planned",
           icon: tab.icon
         });
@@ -660,10 +677,15 @@
         !q ||
         f.name.toLowerCase().includes(q) ||
         f.readmeDesc.toLowerCase().includes(q) ||
+        f.summary.toLowerCase().includes(q) ||
         f.status.toLowerCase().includes(q) ||
-        f.category.toLowerCase().includes(q)
+        f.category.toLowerCase().includes(q) ||
+        f.url.toLowerCase().includes(q) ||
+        (f.host && f.host.toLowerCase().includes(q)) ||
+        f.id.toLowerCase().includes(q)
       ) {
         results.push({
+          type: "tab",
           id: f.id,
           title: `${f.name} — ${f.readmeDesc}`,
           badge: f.status,
@@ -673,13 +695,55 @@
       }
     });
 
+    const trimmed = rawQuery.trim();
+    if (!isInitialPrefill && trimmed) {
+      results.push({
+        type: "search",
+        query: trimmed,
+        title: `Search Google for “${trimmed}”`,
+        badge: "Search",
+        statusType: "planned",
+        icon: SEARCH_ICON_SVG
+      });
+    }
+
     return results.slice(0, 8);
   }
 
+  function executeCommandBarItem(item) {
+    if (!item) return;
+    closeCommandBar();
+    if (item.type === "tab" && item.id) {
+      navigateToTab(item.id);
+    } else if (item.type === "search" && item.query) {
+      const q = item.query;
+      if (/^https?:\/\//i.test(q)) {
+        window.open(q, "_blank", "noopener,noreferrer");
+      } else {
+        window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, "_blank", "noopener,noreferrer");
+      }
+    }
+  }
+
   function updateCommandBarSuggestions() {
-    state.commandBarItems = buildCommandBarSuggestions(state.commandBarQuery);
+    state.commandBarItems = buildCommandBarSuggestions(
+      state.commandBarQuery,
+      state.commandBarInitialPrefill
+    );
     state.commandBarSelectedIndex = 0;
     renderCommandBarSuggestionRows();
+  }
+
+  function updateCommandBarSelectionHighlight(scrollIntoView = false) {
+    const rows = dom.commandBarSuggestions.querySelectorAll(".command-suggestion-row");
+    rows.forEach((row, idx) => {
+      const isSelected = idx === state.commandBarSelectedIndex;
+      row.classList.toggle("is-selected", isSelected);
+      row.setAttribute("aria-selected", isSelected ? "true" : "false");
+      if (isSelected && scrollIntoView) {
+        row.scrollIntoView({ block: "nearest" });
+      }
+    });
   }
 
   function renderCommandBarSuggestionRows() {
@@ -707,13 +771,15 @@
     dom.commandBarSuggestions.querySelectorAll(".command-suggestion-row").forEach((row) => {
       const idx = Number(row.getAttribute("data-cmd-idx"));
       row.addEventListener("mouseenter", () => {
-        state.commandBarSelectedIndex = idx;
-        renderCommandBarSuggestionRows();
+        if (state.commandBarSelectedIndex !== idx) {
+          state.commandBarSelectedIndex = idx;
+          updateCommandBarSelectionHighlight(false);
+        }
       });
       row.addEventListener("mousedown", (e) => {
         e.preventDefault();
-        closeCommandBar();
-        navigateToTab(items[idx].id);
+        e.stopPropagation();
+        executeCommandBarItem(items[idx]);
       });
     });
   }
@@ -853,6 +919,7 @@
     dom.newTabBtn.addEventListener("click", () => openCommandBar("newTab"));
 
     dom.commandBarInput.addEventListener("input", (e) => {
+      state.commandBarInitialPrefill = false;
       state.commandBarQuery = e.target.value;
       updateCommandBarSuggestions();
     });
@@ -863,20 +930,19 @@
         e.preventDefault();
         if (items.length) {
           state.commandBarSelectedIndex = (state.commandBarSelectedIndex + 1) % items.length;
-          renderCommandBarSuggestionRows();
+          updateCommandBarSelectionHighlight(true);
         }
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
         if (items.length) {
           state.commandBarSelectedIndex = (state.commandBarSelectedIndex - 1 + items.length) % items.length;
-          renderCommandBarSuggestionRows();
+          updateCommandBarSelectionHighlight(true);
         }
       } else if (e.key === "Enter") {
         e.preventDefault();
         if (items.length) {
           const chosen = items[state.commandBarSelectedIndex] || items[0];
-          closeCommandBar();
-          navigateToTab(chosen.id);
+          executeCommandBarItem(chosen);
         } else {
           closeCommandBar();
         }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Early — A Native macOS Browser</title>
+  <title>Early - A Native macOS Browser</title>
   <meta name="description" content="A fast, lightweight native macOS browser built with Swift 6, SwiftUI, AppKit, and WebKit.">
   <link rel="icon" type="image/png" href="assets/Early-Default-64.png">
   <link rel="apple-touch-icon" href="assets/Early-Default-1024.png">
@@ -11,32 +11,24 @@
 </head>
 <body data-appearance="dark">
 
-  <!-- Desktop Viewport -->
   <div class="desktop-viewport">
 
-    <!-- Browser Window (BrowserWindowView.swift) -->
     <div id="browser-window" class="browser-window" role="application" aria-label="Early Browser">
 
-      <!-- Left Edge Hover Sensor for Auto-Hide Sidebar Reveal (2pt width at rest) -->
       <div id="sidebar-edge-sensor" class="sidebar-edge-sensor" aria-label="Reveal sidebar"></div>
 
-      <!-- LEFT SIDEBAR (BrowserWindowView.sidebar) -->
       <aside id="sidebar" class="sidebar" aria-label="Sidebar">
 
-        <!-- Top Group: VStack(spacing: 8) { navigationControls; addressBar } -->
         <div class="sidebar-top-group">
 
-          <!-- navigationControls: HStack(spacing: 6) -->
           <div class="navigation-controls" id="window-drag-region">
 
-            <!-- WindowControls().frame(width: 60, height: 32) -->
             <div id="traffic-lights" class="traffic-lights" aria-hidden="true">
               <span class="traffic-btn traffic-close"></span>
               <span class="traffic-btn traffic-minimize"></span>
               <span class="traffic-btn traffic-zoom"></span>
             </div>
 
-            <!-- Sidebar Toggle Button: Image(systemName: "sidebar.left").frame(width: 32, height: 32) -->
             <button type="button" id="sidebar-toggle-btn" class="toolbar-btn" aria-label="Toggle sidebar auto-hide" title="Toggle sidebar auto-hide (⌘⇧S)">
               <svg width="16" height="16" viewBox="0 0 18 16" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <rect x="1.5" y="1.75" width="15" height="12.5" rx="2.5"/>
@@ -49,21 +41,18 @@
 
             <div class="toolbar-spacer"></div>
 
-            <!-- Back Button: NavigationChevron(pointsRight: false) -->
             <button type="button" id="nav-back" class="toolbar-btn nav-chevron-btn" disabled aria-label="Back" title="Back (⌘[)">
               <svg class="chevron-svg" width="14" height="18" viewBox="0 0 14 18" fill="none" aria-hidden="true">
                 <path class="chevron-path-back" d="M 10.08 2.88 L 3.36 9.00 L 10.08 15.12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
 
-            <!-- Forward Button: NavigationChevron(pointsRight: true) -->
             <button type="button" id="nav-forward" class="toolbar-btn nav-chevron-btn" disabled aria-label="Forward" title="Forward (⌘])">
               <svg class="chevron-svg" width="14" height="18" viewBox="0 0 14 18" fill="none" aria-hidden="true">
                 <path class="chevron-path-forward" d="M 3.92 2.88 L 10.64 9.00 L 3.92 15.12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
 
-            <!-- Reload Button: ReloadStopArtwork (NavigationSymbolMotion) -->
             <button type="button" id="nav-reload" class="toolbar-btn" aria-label="Reload" title="Reload (⌘R)">
               <div id="reload-stop-rotator" class="reload-stop-rotator">
                 <svg class="reload-glyph" width="16" height="16" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -78,7 +67,6 @@
 
           </div>
 
-          <!-- addressBar: Button (36pt height, cornerRadius 12) -->
           <div id="sidebar-address-bar" class="sidebar-address-bar" role="button" tabindex="0" aria-label="Address bar" title="Search or enter a URL (⌘L)">
             <svg id="address-search-icon" class="address-search-icon" width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="7" cy="7" r="4.8"/>
@@ -96,17 +84,14 @@
 
         </div>
 
-        <!-- favoritesSection: GitHub, Mail, Buy Me a Coffee (43.2pt height, cornerRadius 9) -->
         <div class="favorites-section" aria-label="Favorites">
           <div class="favorites-grid">
-            <!-- GitHub -->
             <a href="https://github.com/earlybrowser/early-browser" target="_blank" rel="noopener noreferrer" class="favorite-tile" id="fav-github" title="GitHub&#10;https://github.com/earlybrowser/early-browser">
               <svg width="20" height="20" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8C0 11.54 2.29 14.53 5.47 15.59C5.87 15.66 6.02 15.42 6.02 15.21C6.02 15.02 6.01 14.39 6.01 13.72C4 14.09 3.48 13.23 3.32 12.78C3.23 12.55 2.84 11.84 2.5 11.65C2.22 11.5 1.82 11.13 2.49 11.12C3.12 11.11 3.57 11.7 3.72 11.94C4.44 13.15 5.59 12.81 6.05 12.6C6.12 12.08 6.33 11.73 6.56 11.53C4.78 11.33 2.92 10.64 2.92 7.58C2.92 6.71 3.23 5.99 3.74 5.43C3.66 5.23 3.38 4.41 3.82 3.31C3.82 3.31 4.49 3.1 6.02 4.13C6.66 3.95 7.34 3.86 8.02 3.86C8.7 3.86 9.38 3.95 10.02 4.13C11.55 3.09 12.22 3.31 12.22 3.31C12.66 4.41 12.38 5.23 12.3 5.43C12.81 5.99 13.12 6.7 13.12 7.58C13.12 10.65 11.25 11.33 9.47 11.53C9.76 11.78 10.01 12.26 10.01 13.01C10.01 14.08 10 14.94 10 15.21C10 15.42 10.15 15.67 10.55 15.59C13.71 14.53 16 11.53 16 8C16 3.58 12.42 0 8 0Z" transform="scale(64)" fill="#ffffff"/>
               </svg>
             </a>
 
-            <!-- Mail -->
             <a href="mailto:earlybrowser.dev@gmail.com" class="favorite-tile" id="fav-mail" title="Mail&#10;earlybrowser.dev@gmail.com">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 192 192" aria-hidden="true">
                 <path fill="url(#a)" d="M146 44h38v110c0 6.627-5.373 12-12 12h-20a6 6 0 0 1-6-6z"/>
@@ -135,7 +120,6 @@
               </svg>
             </a>
 
-            <!-- Buy Me a Coffee -->
             <a href="https://buymeacoffee.com/earlybrowser" target="_blank" rel="noopener noreferrer" class="favorite-tile" id="fav-bmac" title="Buy Me a Coffee&#10;https://buymeacoffee.com/earlybrowser">
               <svg width="16" height="22" viewBox="0 0 884 1279" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M791.109 297.518L790.231 297.002L788.201 296.383C789.018 297.072 790.04 297.472 791.109 297.518V297.518Z" fill="#ffffff"/>
@@ -157,33 +141,25 @@
           </div>
         </div>
 
-        <!-- spacePager -> spaceContents: VStack(alignment: .leading, spacing: 16) -->
         <div class="space-contents">
 
-          <!-- Space Header: Text(space.name).font(.callout.weight(.medium)).foregroundStyle(.secondary).padding(.horizontal, 8) -->
           <div class="space-header-row">
             <span id="active-space-title" class="space-header-title">Personal</span>
           </div>
 
-          <!-- Unified ScrollView for Feature Folders, Divider, New Tab, and Today Tabs -->
           <div id="sidebar-scroll" class="sidebar-scroll" role="region" aria-label="Tabs">
             <div class="sidebar-list">
 
-              <!-- pinnedStart spacer (4pt) -->
               <div class="pinned-spacer"></div>
 
-              <!-- Feature-Wise Folders Container -->
               <div id="pinned-items-container" class="pinned-items-container"></div>
 
-              <!-- pinnedEnd spacer (4pt) -->
               <div class="pinned-spacer"></div>
 
-              <!-- Divider().padding(.vertical, 8) -->
               <div class="sidebar-divider-wrap">
                 <div class="sidebar-divider"></div>
               </div>
 
-              <!-- newTabButton: Label("New Tab", systemImage: "plus") + Spacer() + Text("⌘T") -->
               <button type="button" id="new-tab-btn" class="new-tab-btn" title="Open the command bar (⌘T)">
                 <span class="new-tab-left">
                   <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
@@ -195,7 +171,6 @@
                 <span class="new-tab-shortcut">⌘T</span>
               </button>
 
-              <!-- Today Tabs Container (Homepage tab + Today tabs) -->
               <div id="today-tabs-container" class="today-tabs-container"></div>
 
             </div>
@@ -203,9 +178,7 @@
 
         </div>
 
-        <!-- sidebarFooter: SpaceFooter (SpaceControls.swift) -->
         <div id="sidebar-footer" class="sidebar-footer" aria-label="Spaces">
-          <!-- Reserved Downloads icon: Image(systemName: "arrow.down.circle").foregroundStyle(.tertiary).frame(width: 28, height: 28) -->
           <div class="footer-icon-btn is-tertiary" aria-label="Downloads" title="Downloads">
             <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="8" cy="8" r="6.2"/>
@@ -214,14 +187,12 @@
             </svg>
           </div>
 
-          <!-- indicatorStrip: Space dot -->
           <div id="space-indicator-strip" class="space-indicator-strip" aria-label="Active Space">
             <div class="space-dot-btn is-active" title="Personal">
               <span class="space-default-dot"></span>
             </div>
           </div>
 
-          <!-- New Space icon: Image(systemName: "plus").frame(width: 28, height: 28) -->
           <div class="footer-icon-btn" aria-label="New Space" title="New Space">
             <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
               <line x1="8" y1="3.2" x2="8" y2="12.8"/>
@@ -230,18 +201,14 @@
           </div>
         </div>
 
-        <!-- Sidebar Resize Handle (220pt–360pt) -->
         <div id="sidebar-resize-handle" class="sidebar-resize-handle" role="separator" aria-label="Sidebar width" title="Drag to resize sidebar (220–360 pt)"></div>
 
       </aside>
 
-      <!-- RIGHT WEB CONTENT AREA (BrowserWindowView ZStack content area) -->
       <main id="content-area" class="content-area" aria-label="Web Content">
 
-        <!-- 2pt Top Page Loading Line -->
         <div id="page-loading-line" class="page-loading-line" aria-hidden="true"></div>
 
-        <!-- FLOATING COMMAND BAR (CommandBarView.swift — No full-screen backdrop) -->
         <div id="command-bar-layer" class="command-bar-layer" style="display: none;">
           <div id="command-bar-card" class="command-bar-card" role="dialog" aria-label="Command Bar">
             <div class="command-bar-input-row">
@@ -264,10 +231,8 @@
           </div>
         </div>
 
-        <!-- Top-Trailing Native Toast (BrowserWindowView.toast) -->
         <div id="toast-host" class="toast-host" aria-live="polite"></div>
 
-        <!-- SCROLLABLE VIEWPORT -->
         <div id="content-viewport" class="content-viewport"></div>
 
       </main>
