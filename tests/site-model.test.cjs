@@ -28,6 +28,12 @@ test("feature and tab icons share a scalable grid and restrained stroke", () => 
   }
 });
 
+test("feature pages omit the removed explanatory callouts", () => {
+  for (const id of ["command-bar-navigation", "native-macos-interface", "session-restoration"]) {
+    assert.equal(catalog.features.find((feature) => feature.id === id).note, undefined);
+  }
+});
+
 test("Home and every feature support direct links", () => {
   for (const page of pages) {
     assert.equal(resolveRoute(`#${page.id}`, pages), page.id);

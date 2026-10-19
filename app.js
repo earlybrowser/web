@@ -311,7 +311,9 @@
     else { showSidebar(true); $("address-edit-btn").focus(); }
   });
   $("sidebar-edge-sensor").addEventListener("pointerenter", (event) => {
-    if (state.autoHide && event.pointerType === "mouse") showSidebar();
+    // Narrow layouts use the explicit reveal button. A pointer already at the
+    // viewport edge can otherwise open the drawer as it mounts or resizes.
+    if (state.autoHide && !narrow.matches && event.pointerType === "mouse") showSidebar();
   });
   $("sidebar").addEventListener("pointerleave", () => {
     if (state.autoHide && !state.sidebarPinnedOpen && !$("sidebar").contains(document.activeElement)) hideSidebar();

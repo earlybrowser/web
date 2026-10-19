@@ -58,6 +58,9 @@ for (const colorScheme of ["light", "dark"]) {
     test("mobile navigation remains usable without the desktop toggle", async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 });
       await page.goto("/");
+      // Linux Chromium can deliver an initial mouse-enter at the viewport edge
+      // as the responsive sidebar mounts. It must not open the mobile drawer.
+      await page.locator("#sidebar-edge-sensor").dispatchEvent("pointerenter", { pointerType: "mouse" });
       await expect(page.locator("#sidebar")).not.toBeVisible();
       expect((await page.locator("#content-area").boundingBox()).width).toBeGreaterThan(370);
       await page.locator("#sidebar-reveal").click();
@@ -87,6 +90,18 @@ for (const colorScheme of ["light", "dark"]) {
       await expect(page.locator("h1")).toHaveText("Early");
       await expect(page).toHaveURL(/\/web\/$/);
       await expect(page.locator(".app-icon")).toHaveJSProperty("naturalWidth", 1024);
+    });
+
+    test("feature pages no longer show the removed explanatory callouts", async ({ page }) => {
+      for (const [id, title] of [
+        ["command-bar-navigation", "Command bar"],
+        ["native-macos-interface", "Native macOS"],
+        ["session-restoration", "Session restoration"]
+      ]) {
+        await page.goto(`/#${id}`);
+        await expect(page.locator("h1")).toHaveText(title);
+        await expect(page.locator(".information-note")).toHaveCount(0);
+      }
     });
   });
 }

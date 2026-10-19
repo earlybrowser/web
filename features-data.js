@@ -62,16 +62,14 @@
         aliases: ["search", "address", "navigation", "suggestions"],
         description: "Start with an address, or just a thought.",
         summary: "Open a URL or search Google from a floating command bar. It stays out of the way until you need it, then puts navigation right under your fingers.",
-        behavior: ["Open the command bar with ⌘T, or edit the current address with ⌘L.", "Choose optional Google suggestions with the keyboard or pointer. Suggestions can be turned off in Settings.", "Fill the selected suggestion with the Right Arrow key before submitting.", "Dismiss with Escape or click outside. The page remains scrollable while the bar is open."],
-        note: "The command bar on this website searches these feature pages. Searching your browser’s tabs, history, and bookmarks, and running browser commands, are planned for Early."
+        behavior: ["Open the command bar with ⌘T, or edit the current address with ⌘L.", "Choose optional Google suggestions with the keyboard or pointer. Suggestions can be turned off in Settings.", "Fill the selected suggestion with the Right Arrow key before submitting.", "Dismiss with Escape or click outside. The page remains scrollable while the bar is open."]
       },
       {
         id: "native-macos-interface", folderId: "browsing", name: "Native macOS", icon: icons.mac,
         aliases: ["webkit", "swift", "appearance", "macos", "native"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Respect for macOS accessibility preferences, including reduced motion and transparency."],
-        note: "This website recreates Early’s interface in the browser. It is not the macOS app."
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Respect for macOS accessibility preferences, including reduced motion and transparency."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
@@ -85,8 +83,7 @@
         aliases: ["restore", "sessions", "persistence", "saved"],
         description: "A familiar place to return to.",
         summary: "Early saves your browsing organization locally so you can return to your tabs, saved pages, and Spaces after quitting the app.",
-        behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need."],
-        note: "Session restoration saves browser organization and page addresses, not a website’s live form state or a complete page snapshot. Cross-device sync is not available yet."
+        behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need."]
       }
     ],
     planned: [

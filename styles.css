@@ -253,6 +253,7 @@ pre { margin: 0; padding: 18px 16px; overflow-x: auto; white-space: pre; font-fa
   .suggestion-detail { display: none; }
   .editorial-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
   .sidebar-autohide .sidebar { max-width: calc(100% - 32px); }
+  .sidebar-autohide .sidebar-edge-sensor { display: none; }
   .feature-pagination { gap: 16px; }
   .page-footer { padding-top: 32px; }
   .development-note { align-items: flex-start; }
