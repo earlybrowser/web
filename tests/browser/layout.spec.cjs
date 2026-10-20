@@ -48,7 +48,7 @@ for (const colorScheme of ["light", "dark"]) {
       const icon = button.locator("svg");
       await expect(icon).toBeVisible();
       await expect(icon).toHaveAttribute("viewBox", "0 0 24 24");
-      await expect(icon.locator("circle")).toHaveCount(0);
+      await expect(icon.locator("circle")).toHaveCount(1);
       const paths = (locator) => locator.locator("path").evaluateAll((nodes) => nodes.map((path) => path.getAttribute("d")));
       expect(await paths(icon)).toEqual(await paths(page.locator("[data-tab-id=download] svg")));
       await button.click();

@@ -8,7 +8,7 @@
   const icons = {
     home: icon('<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),
     // Keep in sync with early-browser's DownloadGlyph and the footer in index.html.
-    download: icon('<path d="M12 3v9.5"/><path d="M8.5 9 12 12.5 15.5 9"/><path d="M3 13.5h4l2 3.5h6l2-3.5h4v5Q21 21 18.5 21h-13Q3 21 3 18.5Z"/>'),
+    download: icon('<circle cx="12" cy="12" r="9"/><path d="M12 7.25v6.25"/><path d="M9.25 10.75 12 13.5 14.75 10.75"/><path d="M8 14.25v1.25Q8 17.25 9.75 17.25h4.5Q16 17.25 16 15.5v-1.25"/>'),
     list: icon('<path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13"/>'),
     sidebar: icon('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>'),
     pin: icon('<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>'),
