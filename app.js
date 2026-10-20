@@ -121,7 +121,7 @@
         <p class="development-note"><span class="notice-dot" aria-hidden="true"></span>Actively in development. Not production-ready yet.</p></header>
         <section class="home-command-bar" aria-labelledby="command-bar-heading"><h2 id="command-bar-heading">Find your tab. Run a command.</h2>
           <p>Find existing tabs, pins, and Favorites, switch Spaces or profiles, and run browser actions from one command bar. Return to a saved page without opening a duplicate.</p>
-          <p>Type naturally: <strong>Pin Tab</strong>, <strong>Duplicate Tab</strong>, <strong>New Space</strong>, or <strong>Open Settings</strong>. Choose the matching result and keep going.</p>
+          <p>Type naturally: Pin Tab, Duplicate Tab, New Space, or Open Settings. Choose the matching result and keep going.</p>
           ${routeLink("command-bar-navigation", "Explore the command bar <span aria-hidden=\"true\">→</span>", "text-link")}</section>
         <section class="home-overview" aria-labelledby="overview-heading"><h2 id="overview-heading">Less clutter. More context.</h2>
           <div class="editorial-row"><h3>${routeLink("vertical-tabs", "A sidebar that makes sense")}</h3><p>Keep Favorites close, group pins into folders, and leave everyday pages in Today tabs.</p></div>
@@ -150,6 +150,7 @@
       const folder = catalog.folders.find((item) => item.id === feature.folderId);
       content = `${breadcrumb(folder.name)}<header class="article-header"><span class="article-icon">${feature.icon}</span><p class="eyebrow">${folder.name}</p><h1 id="page-heading" tabindex="-1">${feature.name}</h1><p class="feature-lede">${feature.description}</p><p class="intro">${feature.summary}</p></header>
         <section><h2>How it works</h2><ul class="behavior-list">${feature.behavior.map((item) => `<li>${item}</li>`).join("")}</ul>${feature.note ? `<aside class="information-note">${feature.note}</aside>` : ""}</section>
+        ${feature.commandGroups ? `<section aria-labelledby="browser-commands-heading"><h2 id="browser-commands-heading">Available commands</h2><p>With command-bar actions enabled, type a command and select its result. Only commands available for your current page, saved tabs, Spaces, and profiles appear.</p>${feature.commandGroups.map((group) => `<div class="command-group"><h3>${escapeHTML(group.name)}</h3><dl class="command-reference">${group.commands.map((command) => `<div><dt>${escapeHTML(command.name)}</dt><dd>${escapeHTML(command.description)}</dd></div>`).join("")}</dl></div>`).join("")}</section>` : ""}
         <nav class="feature-pagination" aria-label="Feature navigation">${routeLink(previous?.id || "roadmap", `<span>Previous</span><strong>← ${previous?.name || "All Features"}</strong>`)}${routeLink(next?.id || "roadmap", `<span>Next</span><strong>${next?.name || "All Features"} →</strong>`)}</nav>`;
     }
     $("content-viewport").innerHTML = `<article class="page-container">${content}${footer()}</article>`;

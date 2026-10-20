@@ -42,7 +42,7 @@ for (const colorScheme of ["light", "dark"]) {
       expect(errors).toEqual([]);
     });
 
-    test("the footer download icon matches the tray artwork used for the download page", async ({ page }) => {
+    test("the footer download icon matches the Download tab artwork", async ({ page }) => {
       await page.goto("/");
       const button = page.getByRole("button", { name: "Download and installation information" });
       const icon = button.locator("svg");

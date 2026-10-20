@@ -220,6 +220,11 @@ button.toolbar-btn:active:not(:disabled) { background: var(--pressed); }
 .page-container .feature-lede { margin-top: 16px; font-size: 19px; line-height: 1.5; color: var(--text); letter-spacing: -.01em; }
 .behavior-list { padding-left: 20px; margin: 0; }
 .behavior-list li { padding-left: 4px; margin-bottom: 12px; }
+.command-group { margin-top: 24px; }
+.command-reference { margin: 10px 0 0; }
+.command-reference > div { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr); gap: 24px; padding: 13px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.command-reference dt { font-weight: 500; }
+.command-reference dd { margin: 0; color: var(--secondary); }
 .information-note { margin-top: 24px; padding: 14px 18px; border-radius: 10px; background: var(--hover); color: var(--secondary); font-size: 13px; line-height: 1.8; }
 .code-block { margin: 20px 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--hover); }
 .code-caption { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: 11px; color: var(--secondary); }
@@ -255,6 +260,7 @@ pre { margin: 0; padding: 18px 16px; overflow-x: auto; white-space: pre; font-fa
   .command-bar-card { left: 16px; right: 16px; padding: 20px; }
   .suggestion-detail { display: none; }
   .editorial-row { grid-template-columns: 1fr; gap: 6px; padding: 18px 0; }
+  .command-reference > div { grid-template-columns: 1fr; gap: 4px; }
   .sidebar-autohide .sidebar { max-width: calc(100% - 32px); }
   .sidebar-autohide .sidebar-edge-sensor { display: none; }
   .feature-pagination { gap: 16px; }

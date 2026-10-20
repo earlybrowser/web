@@ -8,7 +8,7 @@
   const icons = {
     home: icon('<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),
     // Keep in sync with early-browser's DownloadGlyph and the footer in index.html.
-    download: icon('<circle cx="12" cy="12" r="9"/><path d="M12 7.25v6.25"/><path d="M9.25 10.75 12 13.5 14.75 10.75"/><path d="M8 14.25v1.25Q8 17.25 9.75 17.25h4.5Q16 17.25 16 15.5v-1.25"/>'),
+    download: icon('<circle cx="12" cy="12" r="9"/><path d="M12 7.75v7.75"/><path d="M8.5 12 12 15.5 15.5 12"/>'),
     list: icon('<path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13"/>'),
     sidebar: icon('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>'),
     pin: icon('<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>'),
@@ -71,6 +71,49 @@
           "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional Google suggestions.",
           "Pressing Return without selecting a result opens your typed address or web search. Right Arrow fills a selected Google suggestion before submitting.",
           "Turn command-bar actions or online suggestions on or off in Settings → Search. Escape or an outside click dismisses the bar without creating a tab."
+        ],
+        commandGroups: [
+          {
+            name: "Tabs and saved pages",
+            commands: [
+              { name: "Pin Tab", description: "Save the current tab as a pin in its Space." },
+              { name: "Unpin Tab", description: "Return the current pin to Today tabs." },
+              { name: "Add to Favorites", description: "Keep the current page in your profile’s Favorites." },
+              { name: "Remove from Favorites", description: "Return the current Favorite to the Space’s Today tabs." },
+              { name: "Reset Pinned Tab", description: "Return a pin to its saved address." },
+              { name: "Rename Tab", description: "Change the current tab’s sidebar name." },
+              { name: "Duplicate Tab", description: "Open a copy of the current page in a new Today tab." },
+              { name: "Open Tab in New Window", description: "Open a copy of the current page in another browser window." },
+              { name: "Close Tab", description: "Close the current page. Pins and Favorites stay saved." },
+              { name: "Reopen Closed Tab", description: "Restore the most recently closed tab." },
+              { name: "Move Tab to [Space name]", description: "Move the current tab to another Space and follow it there." }
+            ]
+          },
+          {
+            name: "Page navigation",
+            commands: [
+              { name: "Copy Current URL", description: "Copy the current page’s address." },
+              { name: "Back", description: "Go to the previous page in this tab." },
+              { name: "Forward", description: "Go forward in this tab’s page history." },
+              { name: "Reload Page", description: "Refresh the current page." },
+              { name: "Stop Loading", description: "Stop the current page’s load." }
+            ]
+          },
+          {
+            name: "Spaces and profiles",
+            commands: [
+              { name: "New Space", description: "Open the editor to create a Space." },
+              { name: "Switch Space", description: "Type a Space’s name and choose its Switch Space result." },
+              { name: "Switch Profile", description: "Type a profile’s name and choose its Switch Profile result to open or focus that profile’s window." }
+            ]
+          },
+          {
+            name: "Browser controls",
+            commands: [
+              { name: "Toggle Sidebar", description: "Turn sidebar auto-hide on or off." },
+              { name: "Open Settings", description: "Open Early’s native Settings window." }
+            ]
+          }
         ]
       },
       {
