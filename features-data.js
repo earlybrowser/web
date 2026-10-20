@@ -123,7 +123,7 @@
         aliases: ["webkit", "swift", "appearance", "macos", "native"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab or on a Favorite to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops.", "Respect for macOS accessibility preferences, including reduced motion and transparency."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
