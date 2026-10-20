@@ -82,6 +82,8 @@
               { name: "Remove from Favorites", description: "Return the current Favorite to the Space’s Today tabs." },
               { name: "Reset Pinned Tab", description: "Return a pin to its saved address." },
               { name: "Rename Tab", description: "Change the current tab’s sidebar name." },
+              { name: "Mute Tab", description: "Silence the current tab’s HTML audio/video without pausing playback." },
+              { name: "Unmute Tab", description: "Restore the player mute settings from before the tab was muted." },
               { name: "Duplicate Tab", description: "Open a copy of the current page in a new Today tab." },
               { name: "Open Tab in New Window", description: "Open a copy of the current page in another browser window." },
               { name: "Close Tab", description: "Close the current page. Pins and Favorites stay saved." },
@@ -121,7 +123,7 @@
         aliases: ["webkit", "swift", "appearance", "macos", "native"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Respect for macOS accessibility preferences, including reduced motion and transparency."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab or on a Favorite to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops.", "Respect for macOS accessibility preferences, including reduced motion and transparency."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
