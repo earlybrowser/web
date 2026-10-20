@@ -119,6 +119,10 @@
         <p class="intro">Open source and inspired by Arc’s sidebar workflow. Built with Swift and WebKit, with tabs, folders, and Spaces that keep your browsing organized.</p>
         <div class="page-actions">${routeLink("download", "Get Early", "button button-primary")}${externalLink(repo, "View on GitHub", "button")}</div>
         <p class="development-note"><span class="notice-dot" aria-hidden="true"></span>Actively in development. Not production-ready yet.</p></header>
+        <section class="home-command-bar" aria-labelledby="command-bar-heading"><h2 id="command-bar-heading">Find your tab. Run a command.</h2>
+          <p>Find existing tabs, pins, and Favorites, switch Spaces or profiles, and run browser actions from one command bar. Return to a saved page without opening a duplicate.</p>
+          <p>Type naturally: <strong>Pin Tab</strong>, <strong>Duplicate Tab</strong>, <strong>New Space</strong>, or <strong>Open Settings</strong>. Choose the matching result and keep going.</p>
+          ${routeLink("command-bar-navigation", "Explore the command bar <span aria-hidden=\"true\">→</span>", "text-link")}</section>
         <section class="home-overview" aria-labelledby="overview-heading"><h2 id="overview-heading">Less clutter. More context.</h2>
           <div class="editorial-row"><h3>${routeLink("vertical-tabs", "A sidebar that makes sense")}</h3><p>Keep Favorites close, group pins into folders, and leave everyday pages in Today tabs.</p></div>
           <div class="editorial-row"><h3>${routeLink("spaces-and-profiles", "A Space for each part of your day")}</h3><p>Separate projects with Spaces. Keep accounts and website data apart with profiles.</p></div>

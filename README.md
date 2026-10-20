@@ -22,7 +22,7 @@ Pages use hash routes so deep links work on static hosting, including project su
 
 Stylesheet and script URLs include content hashes so previews and published pages request matching assets after an update. After editing CSS or JavaScript, run `npm run assets:stamp` and commit the updated `index.html` with those changes. If a live preview still displays an old layout, restart its server from this repository and reload the page.
 
-Feature-page and tab icons are bundled SVGs adapted from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0/icons), with a lighter stroke to suit Early’s chrome. The [ISC notice](licenses/lucide.txt) is included. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
+Feature-page and tab icons are bundled SVGs adapted from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0/icons), with a lighter stroke to suit Early’s chrome. The [ISC notice](licenses/lucide.txt) is included. The download glyph is original Early artwork, shared by the footer, Download tab, and native app. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
 
 ## Checks
 

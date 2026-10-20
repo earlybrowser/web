@@ -1,12 +1,14 @@
 // SPDX-License-Identifier: MPL-2.0
 // Keep this catalog limited to major features available in Early today.
-// SVG artwork adapted from Lucide 0.468.0 (ISC); see licenses/lucide.txt.
+// SVG artwork, except the original Early download glyph, adapted from Lucide
+// 0.468.0 (ISC); see licenses/lucide.txt.
 (function (root) {
   "use strict";
   const icon = (paths) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
   const icons = {
     home: icon('<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>'),
-    download: icon('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/>'),
+    // Keep in sync with early-browser's DownloadGlyph and the footer in index.html.
+    download: icon('<path d="M12 3v9.5"/><path d="M8.5 9 12 12.5 15.5 9"/><path d="M3 13.5h4l2 3.5h6l2-3.5h4v5Q21 21 18.5 21h-13Q3 21 3 18.5Z"/>'),
     list: icon('<path d="M3 6h.01M3 12h.01M3 18h.01M8 6h13M8 12h13M8 18h13"/>'),
     sidebar: icon('<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>'),
     pin: icon('<path d="M12 17v5"/><path d="M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/>'),
@@ -59,10 +61,17 @@
       },
       {
         id: "command-bar-navigation", folderId: "browsing", name: "Command bar", icon: icons.search,
-        aliases: ["search", "address", "navigation", "suggestions"],
-        description: "Start with an address, or just a thought.",
-        summary: "Open a URL or search Google from a floating command bar. It stays out of the way until you need it, then puts navigation right under your fingers.",
-        behavior: ["Open the command bar with ⌘T, or edit the current address with ⌘L.", "Choose optional Google suggestions with the keyboard or pointer. Suggestions can be turned off in Settings.", "Fill the selected suggestion with the Right Arrow key before submitting.", "Dismiss with Escape or click outside. The page remains scrollable while the bar is open."]
+        aliases: ["search", "address", "navigation", "suggestions", "commands", "actions"],
+        description: "Find your tab. Run a command. Keep moving.",
+        summary: "One floating bar for web searches, existing pages, and browser commands. Type what you need, then choose a matching tab, Space, profile, or action without leaving the keyboard.",
+        behavior: [
+          "Open with ⌘T, or edit the current address with ⌘L. Typing or dismissing the bar doesn’t add a tab.",
+          "Find tabs and pins in your current Space, plus your profile’s Favorites, by title or address. Switch to an existing page or reopen a closed pin or Favorite in place, without duplicates. Parent folders expand to reveal the tab.",
+          "Type naturally: “Pin Tab”, “Duplicate Tab”, “New Space”, or “Open Settings”. Choose the matching command with the arrow keys and Return, or click it. Commands appear when they can be used.",
+          "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional Google suggestions.",
+          "Pressing Return without selecting a result opens your typed address or web search. Right Arrow fills a selected Google suggestion before submitting.",
+          "Turn command-bar actions or online suggestions on or off in Settings → Search. Escape or an outside click dismisses the bar without creating a tab."
+        ]
       },
       {
         id: "native-macos-interface", folderId: "browsing", name: "Native macOS", icon: icons.mac,
@@ -87,7 +96,7 @@
       }
     ],
     planned: [
-      { name: "Universal search & commands", description: "Find tabs, history, and bookmarks, and run browser actions from the command bar." },
+      { name: "History & bookmark search", description: "Find browsing history and saved bookmarks alongside command-bar tab results." },
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
       { name: "Everyday browser essentials", description: "Downloads, history, bookmarks, site controls, and reading tools." },
       { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
