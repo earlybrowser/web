@@ -141,9 +141,9 @@
       }
     ],
     planned: [
-      { name: "History & bookmark search", description: "Find browsing history and saved bookmarks alongside command-bar tab results." },
+      { name: "History search", description: "Find pages you visited alongside command-bar tab, pin, and Favorite results." },
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
-      { name: "Everyday browser essentials", description: "Downloads, history, bookmarks, site controls, and reading tools." },
+      { name: "Everyday browser essentials", description: "Find in page, zoom, history, private windows, site controls, and reading tools." },
       { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
     ]
   };
