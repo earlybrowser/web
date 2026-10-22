@@ -198,7 +198,8 @@
           "Open History with ⌘Y to browse your visits by day, search them, and delete any of them. The command bar finds history pages too.",
           "Clear history together with cookies and website data from the last hour, today, today and yesterday, or all time.",
           "Press ⌘⇧N for a private window. Its only Space is named Private, it records no history, and its cookies and website data are erased when the last private window closes.",
-          "Right-click or hold Back and Forward to jump through a tab’s pages, and reopen a closed tab or window."
+          "The History menu lists the pages you visited today and your recently closed tabs and windows, ready to reopen.",
+          "Right-click or hold Back and Forward to jump through a tab’s pages."
         ]
       }
     ],
