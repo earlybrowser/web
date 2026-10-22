@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 // Keep this catalog limited to major features available in Early today.
-// SVG artwork, except the original Early download glyph, adapted from Lucide
-// 0.468.0 (ISC); see licenses/lucide.txt.
+// SVG artwork adapted from Lucide 0.468.0 (ISC; see licenses/lucide.txt),
+// except Early's original download, reading and privacy glyphs.
 (function (root) {
   "use strict";
   const icon = (paths) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
@@ -18,7 +18,10 @@
     mac: icon('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01"/>'),
     profile: icon('<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>'),
     restore: icon('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/>'),
-    book: icon('<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>')
+    // Original artwork: a domino mask for private browsing.
+    mask: icon('<path d="M3 10.6c0-1.9 1.5-3.3 3.4-3.1 1.9.2 3.6 1 5.6 1s3.7-.8 5.6-1c1.9-.2 3.4 1.2 3.4 3.1 0 3.5-2.3 6.4-5.2 6.4-1.7 0-3-.9-3.8-2.3-.8 1.4-2.1 2.3-3.8 2.3C5.3 17 3 14.1 3 10.6z"/><ellipse cx="7.9" cy="11.7" rx="1.9" ry="1.3"/><ellipse cx="16.1" cy="11.7" rx="1.9" ry="1.3"/>'),
+    // Original artwork: an open book for reading tools.
+    book: icon('<path d="M12 6.4C10.2 5.1 7.8 4.5 5 4.5c-.6 0-1 .4-1 1v11c0 .6.4 1 1 1 2.8 0 5.2.6 7 1.9 1.8-1.3 4.2-1.9 7-1.9.6 0 1-.4 1-1v-11c0-.6-.4-1-1-1-2.8 0-5.2.6-7 1.9z"/><path d="M12 6.4v13"/>')
   };
   const catalog = {
     folders: [
@@ -67,7 +70,7 @@
         summary: "One floating bar for web searches, existing pages, and browser commands. Type what you need, then choose a matching tab, Space, profile, or action without leaving the keyboard.",
         behavior: [
           "Open with ⌘T, or edit the current address with ⌘L. Typing or dismissing the bar doesn’t add a tab.",
-          "Find tabs and pins in your current Space, plus your profile’s Favorites, by title or address. Switch to an existing page or reopen a closed pin or Favorite in place, without duplicates. Parent folders expand to reveal the tab.",
+          "Find tabs and pins in your current Space, your profile’s Favorites, and pages from your history, by title or address. Switch to an existing page or reopen a closed pin or Favorite in place, without duplicates. Parent folders expand to reveal the tab.",
           "Type naturally: “Pin Tab”, “Duplicate Tab”, “New Space”, or “Open Settings”. Choose the matching command with the arrow keys and Return, or click it. Commands appear when they can be used.",
           "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional Google suggestions.",
           "Pressing Return without selecting a result opens your typed address or web search. Right Arrow fills a selected Google suggestion before submitting.",
@@ -89,6 +92,10 @@
               { name: "Open Tab in New Window", description: "Open a copy of the current page in another browser window." },
               { name: "Close Tab", description: "Close the current page. Pins and Favorites stay saved." },
               { name: "Reopen Closed Tab", description: "Restore the most recently closed tab." },
+              { name: "Reopen Closed Window", description: "Bring back the most recently closed window and its Today tabs." },
+              { name: "Close Other Tabs", description: "Close the Space’s other Today tabs. Pins and Favorites stay." },
+              { name: "Close Tabs Below", description: "Close the Today tabs below the current one." },
+              { name: "Clear Today Tabs", description: "Close every Today tab in the Space. Closed tabs can be reopened." },
               { name: "Move Tab to [Space name]", description: "Move the current tab to another Space and follow it there." }
             ]
           },
@@ -129,6 +136,14 @@
               { name: "New Space", description: "Open the editor to create a Space." },
               { name: "Switch Space", description: "Type a Space’s name and choose its Switch Space result." },
               { name: "Switch Profile", description: "Type a profile’s name and choose its Switch Profile result to open or focus that profile’s window." }
+            ]
+          },
+          {
+            name: "History and privacy",
+            commands: [
+              { name: "Show All History", description: "Browse, search, and delete the pages you visited." },
+              { name: "Clear History…", description: "Clear history and website data from the last hour, today, or all time." },
+              { name: "New Private Window", description: "Browse in a window that keeps no history, cookies, or website data after it closes." }
             ]
           },
           {
@@ -173,12 +188,23 @@
         description: "A familiar place to return to.",
         summary: "Early saves your browsing organization locally so you can return to your tabs, saved pages, and Spaces after quitting the app.",
         behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need."]
+      },
+      {
+        id: "history-and-private-windows", folderId: "browsing", name: "History & privacy", icon: icons.mask,
+        aliases: ["history", "private", "private browsing", "incognito", "clear history", "cookies"],
+        description: "Find where you’ve been, or leave no trace.",
+        summary: "Early remembers the pages you visit in each profile so you can find them again, and opens private windows when you’d rather it didn’t.",
+        behavior: [
+          "Open History with ⌘Y to browse your visits by day, search them, and delete any of them. The command bar finds history pages too.",
+          "Clear history together with cookies and website data from the last hour, today, today and yesterday, or all time.",
+          "Press ⌘⇧N for a private window. Its only Space is named Private, it records no history, and its cookies and website data are erased when the last private window closes.",
+          "Right-click or hold Back and Forward to jump through a tab’s pages, and reopen a closed tab or window."
+        ]
       }
     ],
     planned: [
-      { name: "History search", description: "Find pages you visited alongside command-bar tab, pin, and Favorite results." },
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
-      { name: "Everyday browser essentials", description: "History, private windows, site controls, and password autofill." },
+      { name: "Everyday browser essentials", description: "Site permissions, security details, and password autofill." },
       { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
     ]
   };

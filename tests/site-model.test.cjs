@@ -9,7 +9,7 @@ test("catalog has distinct, valid routes and only major feature tabs", () => {
   assert.equal(new Set(pages.map((page) => page.id)).size, pages.length);
   assert.equal(catalog.tabs[0].id, "home");
   assert.equal(catalog.tabs[0].name, "Home");
-  assert.equal(catalog.features.length, 9);
+  assert.equal(catalog.features.length, 10);
   for (const feature of catalog.features) {
     assert.ok(catalog.folders.some((folder) => folder.id === feature.folderId));
     assert.ok(feature.description && feature.summary && feature.behavior.length);
