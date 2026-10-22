@@ -17,7 +17,8 @@
     search: icon('<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>'),
     mac: icon('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01"/>'),
     profile: icon('<path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/>'),
-    restore: icon('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/>')
+    restore: icon('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/>'),
+    book: icon('<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>')
   };
   const catalog = {
     folders: [
@@ -102,6 +103,27 @@
             ]
           },
           {
+            name: "Page tools",
+            commands: [
+              { name: "Find on Page…", description: "Search the current page’s text, with a match count." },
+              { name: "Zoom In", description: "Enlarge the current tab’s page." },
+              { name: "Zoom Out", description: "Shrink the current tab’s page." },
+              { name: "Actual Size", description: "Return the current tab to 100% zoom." },
+              { name: "Show Reader", description: "Read the current article in a clean, distraction-free view." },
+              { name: "Translate to [language]", description: "Translate the page into your language on this Mac (macOS 15 and later)." }
+            ]
+          },
+          {
+            name: "Downloads and documents",
+            commands: [
+              { name: "Show Downloads", description: "Open the downloads list in the sidebar footer." },
+              { name: "Open File…", description: "Open a local HTML page, PDF, or image in a new tab." },
+              { name: "Save Page As…", description: "Save the current page as HTML, or a viewed PDF as itself." },
+              { name: "Export as PDF…", description: "Save the current page as a PDF." },
+              { name: "Print Page…", description: "Print the current page." }
+            ]
+          },
+          {
             name: "Spaces and profiles",
             commands: [
               { name: "New Space", description: "Open the editor to create a Space." },
@@ -116,6 +138,19 @@
               { name: "Open Settings", description: "Open Early’s native Settings window." }
             ]
           }
+        ]
+      },
+      {
+        id: "reading-tools", folderId: "browsing", name: "Reading tools", icon: icons.book,
+        aliases: ["find", "zoom", "reader", "reader mode", "translate", "translation"],
+        description: "Find, zoom, read, and translate without leaving the page.",
+        summary: "Tools for the page in front of you: a find bar with a match count, zoom for each tab, a clean Reader view for articles, and translation that stays on your Mac.",
+        behavior: [
+          "Press ⌘F to find text. A small bar at the page’s top right, in your Space’s theme, counts the matches; ⌘G and ⇧⌘G step through them.",
+          "Zoom a tab with ⌘+, ⌘− and ⌘0. Each tab keeps its own zoom, and trackpad pinch and Smart Zoom still work.",
+          "Open Reader with ⇧⌘R or the address bar’s Reader button when a page is an article. Show Original returns to the page.",
+          "Translate a page into your language with Apple’s on-device translation on macOS 15 and later.",
+          "Hover a link to see its address at the bottom of the page, and right-click the address bar to Paste and Go."
         ]
       },
       {
@@ -143,7 +178,7 @@
     planned: [
       { name: "History search", description: "Find pages you visited alongside command-bar tab, pin, and Favorite results." },
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
-      { name: "Everyday browser essentials", description: "Find in page, zoom, history, private windows, site controls, and reading tools." },
+      { name: "Everyday browser essentials", description: "History, private windows, site controls, and password autofill." },
       { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
     ]
   };
