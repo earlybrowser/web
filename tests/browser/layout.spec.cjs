@@ -64,6 +64,10 @@ for (const colorScheme of ["light", "dark"]) {
       await expect(eyebrow).toHaveCSS("text-transform", "none");
       for (const width of [1200, 1000, 820, 390, 320]) {
         await page.setViewportSize({ width, height: 900 });
+        // The narrow layout is applied by a media-query listener after the
+        // resize; measure once it has run.
+        await page.waitForFunction((narrow) =>
+          document.getElementById("browser-window").classList.contains("sidebar-autohide") === narrow, width <= 760);
         const headerBox = await header.boundingBox();
         const iconBox = await icon.boundingBox();
         const headingBox = await header.locator("h1").boundingBox();
