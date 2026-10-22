@@ -148,7 +148,7 @@
         behavior: [
           "Press ⌘F to find text. A small bar at the page’s top right, in your Space’s theme, counts the matches; ⌘G and ⇧⌘G step through them.",
           "Zoom a tab with ⌘+, ⌘− and ⌘0. Each tab keeps its own zoom, and trackpad pinch and Smart Zoom still work.",
-          "Open Reader with ⇧⌘R or the address bar’s Reader button when a page is an article. Show Original returns to the page.",
+          "Open Reader with ⇧⌘R or from the address bar’s site controls when a page is an article. Show Original returns to the page.",
           "Translate a page into your language with Apple’s on-device translation on macOS 15 and later.",
           "Hover a link to see its address at the bottom of the page, and right-click the address bar to Paste and Go."
         ]

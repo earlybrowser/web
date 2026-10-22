@@ -132,6 +132,22 @@ for (const colorScheme of ["light", "dark"]) {
       await expect(page.locator(".app-icon")).toHaveJSProperty("naturalWidth", 1024);
     });
 
+    test("site controls open a panel that copies the link and closes with Escape", async ({ page }) => {
+      await page.goto("/#reading-tools");
+      const button = page.locator("#address-site-controls-btn");
+      const panel = page.locator("#site-controls-panel");
+      await expect(button).toBeVisible();
+      await expect(panel).toBeHidden();
+      await button.click();
+      await expect(panel).toBeVisible();
+      await expect(button).toHaveAttribute("aria-expanded", "true");
+      await expect(page.locator("#site-controls-host")).toHaveText("Reading tools");
+      await expect(page.locator("#site-controls-copy")).toBeFocused();
+      await page.keyboard.press("Escape");
+      await expect(panel).toBeHidden();
+      await expect(button).toBeFocused();
+    });
+
     test("feature pages no longer show the removed explanatory callouts", async ({ page }) => {
       for (const [id, title] of [
         ["command-bar-navigation", "Command bar"],

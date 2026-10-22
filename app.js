@@ -63,13 +63,14 @@
     $("address-bar-label").textContent = location.host || "Early";
     $("address-bar-label").classList.remove("is-placeholder");
     $("address-search-icon").setAttribute("hidden", "");
-    $("address-copy-link-btn").style.display = "";
+    $("address-site-controls-btn").style.display = "";
     $("address-edit-btn").setAttribute("aria-label", `Edit address for ${byId.get(state.active).name}`);
     document.title = state.active === "home" ? "Early: A native macOS browser" : `${byId.get(state.active).name} — Early`;
   }
   function navigate(id, { push = true, focus = true } = {}) {
     if (!byId.has(id)) return;
     closeCommandBar(false);
+    setSiteControls(false);
     const changed = state.active !== id;
     state.active = id;
     if (push && changed) {
@@ -362,7 +363,26 @@
       toast(message);
     } catch { toast("Couldn’t copy. Check your browser’s clipboard permission."); }
   }
-  $("address-copy-link-btn").addEventListener("click", () => copyText(model.pageURL(state.active, location.href), "Copied Current URL"));
+  // Site controls, like the browser's: the current page and Copy Link.
+  function setSiteControls(open) {
+    const panel = $("site-controls-panel");
+    panel.hidden = !open;
+    $("address-site-controls-btn").setAttribute("aria-expanded", String(open));
+    if (!open) return;
+    $("site-controls-host").textContent = byId.get(state.active).name;
+    $("site-controls-url").textContent = model.pageURL(state.active, location.href);
+    $("site-controls-copy").focus();
+  }
+  $("address-site-controls-btn").addEventListener("click", () => setSiteControls($("site-controls-panel").hidden));
+  $("site-controls-copy").addEventListener("click", () => {
+    setSiteControls(false);
+    $("address-site-controls-btn").focus();
+    copyText(model.pageURL(state.active, location.href), "Copied Current URL");
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if ($("site-controls-panel").hidden || event.target.closest("#site-controls-panel, #address-site-controls-btn")) return;
+    setSiteControls(false);
+  });
   document.addEventListener("keydown", (event) => {
     if (event.isComposing || event.keyCode === 229) return;
     const modifier = event.metaKey || event.ctrlKey;
@@ -371,6 +391,8 @@
       event.preventDefault(); openCommandBar(key === "l");
     } else if (modifier && event.shiftKey && key === "c") {
       event.preventDefault(); copyText(model.pageURL(state.active, location.href), "Copied Current URL");
+    } else if (event.key === "Escape" && !$("site-controls-panel").hidden) {
+      setSiteControls(false); $("address-site-controls-btn").focus();
     } else if (event.key === "Escape" && state.sidebarVisible && !state.open) {
       hideSidebar(); $("sidebar-reveal").focus();
     }
