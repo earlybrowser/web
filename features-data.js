@@ -24,6 +24,8 @@
     shield: icon('<path d="M12 3.2 5 6v5.2c0 4.3 2.9 7.8 7 9.6 4.1-1.8 7-5.3 7-9.6V6l-7-2.8Z"/><path d="m9 12 2.1 2.1L15.2 10"/>'),
     // Original artwork: angle brackets for developer tools.
     code: icon('<path d="M8.5 7 3.5 12l5 5"/><path d="m15.5 7 5 5-5 5"/><path d="m13.6 5-3.2 14"/>'),
+    // Original artwork: a key for passwords.
+    key: icon('<circle cx="8" cy="16" r="4.2"/><circle cx="8" cy="16" r="1.1"/><path d="M11 13 20 4"/><path d="m16.8 7.2 2.6 2.6"/><path d="m14.3 9.7 1.9 1.9"/>'),
     // Original artwork: an open book for reading tools.
     book: icon('<path d="M12 6.4C10.2 5.1 7.8 4.5 5 4.5c-.6 0-1 .4-1 1v11c0 .6.4 1 1 1 2.8 0 5.2.6 7 1.9 1.8-1.3 4.2-1.9 7-1.9.6 0 1-.4 1-1v-11c0-.6-.4-1-1-1-2.8 0-5.2.6-7 1.9z"/><path d="M12 6.4v13"/>')
   };
@@ -187,6 +189,20 @@
         behavior: ["Create and manage profiles in the native Settings window.", "Give Spaces the profile they should use for browsing.", "Choose a default profile for fresh sessions. Restored sessions keep their last active profile."]
       },
       {
+        id: "passwords", folderId: "your-setup", name: "Passwords", icon: icons.key,
+        aliases: ["passwords", "password manager", "logins", "autofill", "strong password", "import passwords", "export passwords"],
+        description: "Sign in without remembering every password.",
+        summary: "Early saves the passwords you sign in with, fills them in when you come back, and suggests strong ones for new accounts. They stay encrypted on your Mac.",
+        behavior: [
+          "After you sign in, Early offers to save the password, or to update it when it changed. Choose Never for sites you’d rather it forgot.",
+          "Click a sign-in field to choose a saved account from the list below it. Nothing is filled until you choose.",
+          "New-password fields offer a strong password, saved as soon as you use it.",
+          "Settings › Passwords opens with Touch ID or your Mac’s password. Search, edit, copy, and delete passwords there.",
+          "Import passwords exported from Chrome, Safari, Firefox, 1Password, or Bitwarden, and export them as a CSV file.",
+          "Private windows fill saved passwords but never save new ones. Passwords are encrypted with a key in your Keychain and aren’t synced."
+        ]
+      },
+      {
         id: "session-restoration", folderId: "your-setup", name: "Session restoration", icon: icons.restore,
         aliases: ["restore", "sessions", "persistence", "saved"],
         description: "A familiar place to return to.",
@@ -233,7 +249,7 @@
     ],
     planned: [
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
-      { name: "Passwords & passkeys", description: "Password autofill and passkeys through macOS." },
+      { name: "Passkeys", description: "Sign in with passkeys once Early is signed, which Apple requires for browsers." },
       { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
     ]
   };
