@@ -26,6 +26,8 @@
     code: icon('<path d="M8.5 7 3.5 12l5 5"/><path d="m15.5 7 5 5-5 5"/><path d="m13.6 5-3.2 14"/>'),
     // Original artwork: a key for passwords.
     key: icon('<circle cx="8" cy="16" r="4.2"/><circle cx="8" cy="16" r="1.1"/><path d="M11 13 20 4"/><path d="m16.8 7.2 2.6 2.6"/><path d="m14.3 9.7 1.9 1.9"/>'),
+    // Original artwork: a puzzle piece for extensions.
+    puzzle: icon('<path d="M4.8 7.2h3.6a2.4 2.4 0 1 1 4.8 0h3.6v3.6a2.4 2.4 0 1 1 0 4.8v3.6h-12Z"/>'),
     // Original artwork: an open book for reading tools.
     book: icon('<path d="M12 6.4C10.2 5.1 7.8 4.5 5 4.5c-.6 0-1 .4-1 1v11c0 .6.4 1 1 1 2.8 0 5.2.6 7 1.9 1.8-1.3 4.2-1.9 7-1.9.6 0 1-.4 1-1v-11c0-.6-.4-1-1-1-2.8 0-5.2.6-7 1.9z"/><path d="M12 6.4v13"/>')
   };
@@ -200,6 +202,19 @@
           "Settings › Passwords opens with Touch ID or your Mac’s password. Search, edit, copy, and delete passwords there.",
           "Import passwords exported from Chrome, Safari, Firefox, 1Password, or Bitwarden, and export them as a CSV file.",
           "Private windows fill saved passwords but never save new ones. Passwords are encrypted with a key in your Keychain and aren’t synced."
+        ]
+      },
+      {
+        id: "extensions", folderId: "your-setup", name: "Extensions", icon: icons.puzzle,
+        aliases: ["extensions", "add-ons", "plugins", "ad blocker", "content blocker", "safari extensions", "web extensions"],
+        description: "Add features with Safari Web Extensions.",
+        summary: "Early runs Safari Web Extensions with the same part of macOS that Safari uses. Each profile keeps its own, and you decide which websites each one can use.",
+        behavior: [
+          "Install a Mac app that comes with a Safari extension, such as a content blocker, then add its extension in Settings › Extensions. You can also install one from a folder or ZIP file.",
+          "Let an extension work on every website, or only on a page after you click it, plus the sites you allow.",
+          "Use an extension on a page from the site controls in the address bar, or from the Extensions menu, and open its options from either.",
+          "Extensions stay out of private windows unless you allow them. Parts of an extension that talk to its Mac app work only in Safari.",
+          "Extensions need macOS 15.4 or later."
         ]
       },
       {
