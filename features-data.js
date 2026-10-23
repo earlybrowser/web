@@ -59,10 +59,10 @@
       },
       {
         id: "sidebar-folders", folderId: "organization", name: "Nested folders", icon: icons.folder,
-        aliases: ["folders", "grouping", "organization", "github", "pull requests", "live folder"],
+        aliases: ["folders", "grouping", "organization", "github", "pull requests", "live folder", "live folders"],
         description: "Give a project a home, and put its pages together.",
         summary: "Group your saved pages into folders and subfolders. Collapse a project when you’re done with it, and open it again when you need the context back.",
-        behavior: ["Organize pinned pages with up to two levels of nested folders.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a Pull Requests folder to a Space to see your open pull requests on GitHub: ones you opened, ones assigned to you, and ones waiting for your review. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
+        behavior: ["Organize pinned pages with up to two levels of nested folders.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a GitHub live folder to keep your open pull requests as pinned tabs: ones you opened, ones assigned to you, and ones waiting for your review. Merged and closed ones leave by themselves. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
       },
       {
         id: "spaces-and-profiles", folderId: "organization", name: "Spaces", icon: icons.spaces,
