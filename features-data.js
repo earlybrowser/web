@@ -20,6 +20,10 @@
     restore: icon('<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/>'),
     // Original artwork: a domino mask for private browsing.
     mask: icon('<path d="M3 10.6c0-1.9 1.5-3.3 3.4-3.1 1.9.2 3.6 1 5.6 1s3.7-.8 5.6-1c1.9-.2 3.4 1.2 3.4 3.1 0 3.5-2.3 6.4-5.2 6.4-1.7 0-3-.9-3.8-2.3-.8 1.4-2.1 2.3-3.8 2.3C5.3 17 3 14.1 3 10.6z"/><ellipse cx="7.9" cy="11.7" rx="1.9" ry="1.3"/><ellipse cx="16.1" cy="11.7" rx="1.9" ry="1.3"/>'),
+    // Original artwork: a shield with a check for site security.
+    shield: icon('<path d="M12 3.2 5 6v5.2c0 4.3 2.9 7.8 7 9.6 4.1-1.8 7-5.3 7-9.6V6l-7-2.8Z"/><path d="m9 12 2.1 2.1L15.2 10"/>'),
+    // Original artwork: angle brackets for developer tools.
+    code: icon('<path d="M8.5 7 3.5 12l5 5"/><path d="m15.5 7 5 5-5 5"/><path d="m13.6 5-3.2 14"/>'),
     // Original artwork: an open book for reading tools.
     book: icon('<path d="M12 6.4C10.2 5.1 7.8 4.5 5 4.5c-.6 0-1 .4-1 1v11c0 .6.4 1 1 1 2.8 0 5.2.6 7 1.9 1.8-1.3 4.2-1.9 7-1.9.6 0 1-.4 1-1v-11c0-.6-.4-1-1-1-2.8 0-5.2.6-7 1.9z"/><path d="M12 6.4v13"/>')
   };
@@ -201,11 +205,35 @@
           "The History menu lists the pages you visited today and your recently closed tabs and windows, ready to reopen.",
           "Right-click or hold Back and Forward to jump through a tab’s pages."
         ]
+      },
+      {
+        id: "site-security", folderId: "browsing", name: "Security & permissions", icon: icons.shield,
+        aliases: ["security", "permissions", "camera", "microphone", "location", "certificate", "phishing", "picture in picture"],
+        description: "Know who you’re connected to, and decide what each site may use.",
+        summary: "The site controls in the address bar show how safe a page’s connection is and what the site is allowed to use, and change it in place.",
+        behavior: [
+          "See whether a page is secure, not secure, or has a certificate problem, and open its certificate.",
+          "Websites ask before using your camera, microphone, or location (macOS 27). Allow, block, or ask again for each site, and stop a camera or microphone that’s in use.",
+          "Clear one site’s cache and cookies without touching any other site.",
+          "Deceptive and malware sites show a warning page, and links for other apps, such as Mail, ask before they open.",
+          "Automatic Picture in Picture keeps a playing video in a floating window when you switch away from its tab."
+        ]
+      },
+      {
+        id: "developer-tools", folderId: "browsing", name: "Developer tools", icon: icons.code,
+        aliases: ["inspect", "web inspector", "devtools", "console", "view source", "page source"],
+        description: "Inspect any page with Web Inspector, docked beside it.",
+        summary: "Every page can be inspected right away: there is no developer mode to turn on.",
+        behavior: [
+          "Right-click a page and choose Inspect, or press ⌥⌘I, to open Web Inspector docked beside the page.",
+          "Dock it on the right, at the bottom, or in its own window. It stays with its tab when you switch away and back.",
+          "View Page Source (⌥⌘U) opens the page’s current markup in a new tab, without downloading it again."
+        ]
       }
     ],
     planned: [
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
-      { name: "Everyday browser essentials", description: "Site permissions, security details, and password autofill." },
+      { name: "Passwords & passkeys", description: "Password autofill and passkeys through macOS." },
       { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
     ]
   };
