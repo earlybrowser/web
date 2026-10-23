@@ -195,7 +195,7 @@
         summary: "Early saves the passwords you sign in with, fills them in when you come back, and suggests strong ones for new accounts. They stay encrypted on your Mac.",
         behavior: [
           "After you sign in, Early offers to save the password, or to update it when it changed. Choose Never for sites you’d rather it forgot.",
-          "Click a sign-in field to choose a saved account from the list below it. Nothing is filled until you choose.",
+          "Sign-in pages you’ve saved a password for are filled in as they open, on secure pages only and never over what you’ve typed. Click a field to pick another account from the list below it, or turn automatic filling off in Settings.",
           "New-password fields offer a strong password, saved as soon as you use it.",
           "Settings › Passwords opens with Touch ID or your Mac’s password. Search, edit, copy, and delete passwords there.",
           "Import passwords exported from Chrome, Safari, Firefox, 1Password, or Bitwarden, and export them as a CSV file.",
