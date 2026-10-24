@@ -80,8 +80,8 @@
           "Open with ⌘T, or edit the current address with ⌘L. Typing or dismissing the bar doesn’t add a tab.",
           "Find tabs and pins in your current Space, your profile’s Favorites, and pages from your history, by title or address. Switch to an existing page or reopen a closed pin or Favorite in place, without duplicates. Parent folders expand to reveal the tab.",
           "Type naturally: “Pin Tab”, “Duplicate Tab”, “New Space”, or “Open Settings”. Choose the matching command with the arrow keys and Return, or click it. Commands appear when they can be used.",
-          "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional Google suggestions.",
-          "Pressing Return without selecting a result opens your typed address or web search. Right Arrow fills a selected Google suggestion before submitting.",
+          "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional suggestions from your search engine: Google, DuckDuckGo, Bing, Ecosia, Brave Search or Kagi.",
+          "Pressing Return without selecting a result opens your typed address or web search. Right Arrow fills a selected suggestion before submitting.",
           "Turn command-bar actions or online suggestions on or off in Settings → Search. Escape or an outside click dismisses the bar without creating a tab."
         ],
         commandGroups: [
@@ -178,10 +178,10 @@
       },
       {
         id: "native-macos-interface", folderId: "browsing", name: "Native macOS", icon: icons.mac,
-        aliases: ["webkit", "swift", "appearance", "macos", "native"],
+        aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
@@ -234,7 +234,8 @@
           "Clear history together with cookies and website data from the last hour, today, today and yesterday, or all time.",
           "Press ⌘⇧N for a private window. Its only Space is named Private, it records no history, and its cookies and website data are erased when the last private window closes.",
           "The History menu lists the pages you visited today and your recently closed tabs and windows, ready to reopen.",
-          "Right-click or hold Back and Forward to jump through a tab’s pages."
+          "Right-click or hold Back and Forward to jump through a tab’s pages.",
+          "Settings › Privacy shows each profile’s website permissions and the websites that stored data, to change or remove them, and clears its history."
         ]
       },
       {
