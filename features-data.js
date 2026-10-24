@@ -6,39 +6,39 @@
   const icon = (paths) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
   const icons = {
     // A house with a pitched roof and an arched door.
-    home: icon('<path d="M3.8 10.6 12 3.8l8.2 6.8"/><path d="M6 8.9v9.6c0 .6.4 1 1 1h10c.6 0 1-.4 1-1V8.9"/><path d="M10 19.5v-3.7a2 2 0 0 1 4 0v3.7"/>'),
+    home: icon('<path d="M3.75 10.5 12 3.75l8.25 6.75"/><path d="M6 9v9.75c0 .41.34.75.75.75h10.5c.41 0 .75-.34.75-.75V9"/><path d="M9.75 19.5v-3.75a2.25 2.25 0 0 1 4.5 0v3.75"/>'),
     // Keep in sync with early-browser's DownloadGlyph and the footer in index.html.
     download: icon('<circle cx="12" cy="12" r="9"/><path d="M12 7.75v7.75"/><path d="M8.5 12 12 15.5 15.5 12"/>'),
     // A checklist: two features done, one still ahead.
-    list: icon('<path d="m3.9 6.6 1.5 1.5 2.7-2.9"/><path d="m3.9 12.1 1.5 1.5 2.7-2.9"/><circle cx="6" cy="17.6" r="1.7"/><path d="M11 6.6h9M11 12.1h9M11 17.6h9"/>'),
+    list: icon('<path d="m3.75 6 1.5 1.5 3-3"/><path d="m3.75 12 1.5 1.5 3-3"/><circle cx="6" cy="18" r="1.5"/><path d="M11.25 6h9M11.25 12h9M11.25 18h9"/>'),
     // A window with its sidebar of tabs.
-    sidebar: icon('<rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="M9.5 4.5v15"/><path d="M5.6 8.5h1.4M5.6 11.5h1.4M5.6 14.5h1.4"/>'),
+    sidebar: icon('<rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="M9.75 4.5v15"/><path d="M5.25 8.25h2.25M5.25 11.25h2.25M5.25 14.25h2.25"/>'),
     // A pushpin, tilted as if pressed into the page.
-    pin: icon('<path d="M15.32 3.44 20.56 8.68"/><path d="M16.31 4.43 12.64 8.11 7.9 8.46 15.54 16.1 15.89 11.36 19.57 7.69"/><path d="M11.72 12.28 5.21 18.79"/>'),
+    pin: icon('<path d="M14.39 4.31 19.69 9.61"/><path d="M15.45 5.37 11.73 9.08 6.96 9.61 14.39 17.04 14.92 12.27 18.63 8.55"/><path d="M10.67 13.33 4.31 19.69"/>'),
     // A folder in front of another.
-    folder: icon('<path d="M3 9.6c0-.9.7-1.6 1.6-1.6h3.6l1.7 1.9h6.5c.9 0 1.6.7 1.6 1.6v6.4c0 .9-.7 1.6-1.6 1.6H4.6c-.9 0-1.6-.7-1.6-1.6Z"/><path d="M6 8V5.6C6 4.7 6.7 4 7.6 4h3.3l1.7 1.9h6.8c.9 0 1.6.7 1.6 1.6v7.9c0 .9-.7 1.6-1.6 1.6H18"/>'),
+    folder: icon('<path d="M3 9.75c0-.83.67-1.5 1.5-1.5h3.75l1.5 1.5h6.75c.83 0 1.5.67 1.5 1.5v6.75c0 .83-.67 1.5-1.5 1.5H4.5c-.83 0-1.5-.67-1.5-1.5Z"/><path d="M6 8.25v-3c0-.83.67-1.5 1.5-1.5h3l1.5 1.5h7.5c.83 0 1.5.67 1.5 1.5v8.25c0 .83-.67 1.5-1.5 1.5H18"/>'),
     // A stack of cards, one for each Space.
-    spaces: icon('<rect x="3" y="8.5" width="18" height="12" rx="2.8"/><path d="M5 8.5v-.9C5 6.7 5.7 6 6.6 6h10.8c.9 0 1.6.7 1.6 1.6v.9"/><path d="M7.6 6v-.8c0-.8.6-1.4 1.4-1.4h6c.8 0 1.4.6 1.4 1.4V6"/>'),
+    spaces: icon('<rect x="3" y="9.75" width="18" height="10.5" rx="2.25"/><path d="M5.25 9.75v-1.5c0-.83.67-1.5 1.5-1.5h10.5c.83 0 1.5.67 1.5 1.5v1.5"/><path d="M7.5 6.75v-1.5c0-.83.67-1.5 1.5-1.5h6c.83 0 1.5.67 1.5 1.5v1.5"/>'),
     // The command bar's magnifying glass, as in index.html.
-    search: icon('<circle cx="10.5" cy="10.5" r="7.2"/><path d="m15.9 15.9 5.1 5.1"/>'),
+    search: icon('<circle cx="10.5" cy="10.5" r="6.75"/><path d="m15.75 15.75 4.5 4.5"/>'),
     // A Mac's display on its stand.
-    mac: icon('<rect x="2.5" y="3.5" width="19" height="13.5" rx="2.2"/><path d="M2.5 13.6h19"/><path d="M12 17v3.2M8.5 20.2h7"/>'),
+    mac: icon('<rect x="3" y="3.75" width="18" height="12.75" rx="2.25"/><path d="M3 13.5h18"/><path d="M12 16.5v3.75M8.25 20.25h7.5"/>'),
     // A person in a circle.
-    profile: icon('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.6 18.4c1.1-2.3 3.1-3.6 5.4-3.6s4.3 1.3 5.4 3.6"/>'),
+    profile: icon('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="9.75" r="3"/><path d="M6.75 19.3c1.13-2.62 3.04-4.05 5.25-4.05s4.12 1.43 5.25 4.05"/>'),
     // A clock, with an arrow turning back around it.
-    restore: icon('<path d="M8.7 18.93A8 8 0 1 0 4.7 12"/><path d="M2.5 9.9 4.7 12.4l2.4-2.3"/><path d="M12.7 7.8V12l2.9 1.8"/>'),
+    restore: icon('<path d="M8.75 18.93A8 8 0 1 0 4.75 12"/><path d="M2.6 10.25 4.75 12.4l2.15-2.15"/><path d="M12.75 8.25V12l3 1.5"/>'),
     // A domino mask for private browsing.
     mask: icon('<path d="M3 10.6c0-1.9 1.5-3.3 3.4-3.1 1.9.2 3.6 1 5.6 1s3.7-.8 5.6-1c1.9-.2 3.4 1.2 3.4 3.1 0 3.5-2.3 6.4-5.2 6.4-1.7 0-3-.9-3.8-2.3-.8 1.4-2.1 2.3-3.8 2.3C5.3 17 3 14.1 3 10.6z"/><ellipse cx="7.9" cy="11.7" rx="1.9" ry="1.3"/><ellipse cx="16.1" cy="11.7" rx="1.9" ry="1.3"/>'),
     // A shield with a check for site security.
-    shield: icon('<path d="M12 3.2 5 6v5.2c0 4.3 2.9 7.8 7 9.6 4.1-1.8 7-5.3 7-9.6V6l-7-2.8Z"/><path d="m9 12 2.1 2.1L15.2 10"/>'),
+    shield: icon('<path d="M12 3 5.25 5.75v5.5c0 4.25 2.85 7.75 6.75 9.5 3.9-1.75 6.75-5.25 6.75-9.5v-5.5L12 3Z"/><path d="m9 12 2.25 2.25 4.5-4.5"/>'),
     // Angle brackets for developer tools.
-    code: icon('<path d="M8.5 7 3.5 12l5 5"/><path d="m15.5 7 5 5-5 5"/><path d="m13.6 5-3.2 14"/>'),
-    // A key for passwords.
-    key: icon('<circle cx="8" cy="16" r="4.2"/><circle cx="8" cy="16" r="1.1"/><path d="M11 13 20 4"/><path d="m16.8 7.2 2.6 2.6"/><path d="m14.3 9.7 1.9 1.9"/>'),
+    code: icon('<path d="M8.25 6.75 3 12l5.25 5.25"/><path d="m15.75 6.75 5.25 5.25-5.25 5.25"/><path d="m13.5 4.5-3 15"/>'),
+    // A round key for passwords.
+    key: icon('<path d="M10.12 10.79A5.25 5.25 0 1 1 12.59 13.26L10.44 15.42L12.2 17.19L10.61 18.78L8.84 17.01L7.96 17.9L9.2 19.13L7.61 20.72L3.89 17.01Z"/><circle cx="16.09" cy="7.29" r="1"/>'),
     // A puzzle piece for extensions.
-    puzzle: icon('<path d="M4.8 7.2h3.6a2.4 2.4 0 1 1 4.8 0h3.6v3.6a2.4 2.4 0 1 1 0 4.8v3.6h-12Z"/>'),
+    puzzle: icon('<path d="M5.25 7.5H9a2.25 2.25 0 1 1 4.5 0h3.75v3.75a2.25 2.25 0 1 1 0 4.5v3.75h-12Z"/>'),
     // An open book for reading tools.
-    book: icon('<path d="M12 6.4C10.2 5.1 7.8 4.5 5 4.5c-.6 0-1 .4-1 1v11c0 .6.4 1 1 1 2.8 0 5.2.6 7 1.9 1.8-1.3 4.2-1.9 7-1.9.6 0 1-.4 1-1v-11c0-.6-.4-1-1-1-2.8 0-5.2.6-7 1.9z"/><path d="M12 6.4v13"/>')
+    book: icon('<path d="M12 6.75C10.2 5.25 7.8 4.5 4.5 4.5c-.41 0-.75.34-.75.75V16.5c0 .41.34.75.75.75 3.3 0 5.7.75 7.5 2.25 1.8-1.5 4.2-2.25 7.5-2.25.41 0 .75-.34.75-.75V5.25c0-.41-.34-.75-.75-.75-3.3 0-5.7.75-7.5 2.25Z"/><path d="M12 6.75v12.75"/>')
   };
   const catalog = {
     folders: [
