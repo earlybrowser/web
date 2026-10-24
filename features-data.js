@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MPL-2.0
 // Keep this catalog limited to major features available in Early today.
 // SVG artwork adapted from Lucide 0.468.0 (ISC; see licenses/lucide.txt),
-// except Early's original download, reading and privacy glyphs.
+// except Early's original download, mask, shield, code, key, puzzle and book glyphs.
 (function (root) {
   "use strict";
   const icon = (paths) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
