@@ -178,10 +178,10 @@
       },
       {
         id: "native-macos-interface", folderId: "browsing", name: "Native macOS", icon: icons.mac,
-        aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard"],
+        aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard", "default browser", "links", "welcome"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher, without getting in the way of typing."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
@@ -219,10 +219,10 @@
       },
       {
         id: "session-restoration", folderId: "your-setup", name: "Session restoration", icon: icons.restore,
-        aliases: ["restore", "sessions", "persistence", "saved"],
+        aliases: ["restore", "sessions", "persistence", "saved", "export", "import", "backup", "new mac"],
         description: "A familiar place to return to.",
         summary: "Early saves your browsing organization locally so you can return to your tabs, saved pages, and Spaces after quitting the app.",
-        behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need."]
+        behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need.", "Export your profiles, Spaces, folders, pins, Favorites, windows, tabs, and settings from Settings › Sessions, and import them on another Mac. You see what a file holds before anything changes, a backup of what you had is saved first, and tabs load only when you choose them.", "Passwords, cookies, history, and private windows are never exported, so websites ask you to sign in again after an import."]
       },
       {
         id: "history-and-private-windows", folderId: "browsing", name: "History & privacy", icon: icons.mask,
@@ -266,7 +266,7 @@
     planned: [
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
       { name: "Passkeys", description: "Sign in with passkeys once Early is signed, which Apple requires for browsers." },
-      { name: "Distribution & portability", description: "Packaged macOS releases, Homebrew installation, and export/import." }
+      { name: "Distribution", description: "Packaged macOS releases and Homebrew installation." }
     ]
   };
   root.EarlyCatalog = catalog;
