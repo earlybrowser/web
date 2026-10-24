@@ -22,7 +22,7 @@ Pages use hash routes so deep links work on static hosting, including project su
 
 Stylesheet and script URLs include content hashes so previews and published pages request matching assets after an update. After editing CSS or JavaScript, run `npm run assets:stamp` and commit the updated `index.html` with those changes. If a live preview still displays an old layout, restart its server from this repository and reload the page.
 
-Feature-page and tab icons are bundled SVGs adapted from [Lucide 0.468.0](https://github.com/lucide-icons/lucide/tree/0.468.0/icons), with a lighter stroke to suit Early’s chrome. The [ISC notice](licenses/lucide.txt) is included. The download, mask, shield, code, key, puzzle, and book glyphs are original Early artwork; the download glyph is shared by the footer, Download tab, and native app. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
+Feature-page and tab icons are original Early artwork: bundled SVGs drawn on a 24-point grid with a 1.75 stroke. The download glyph is shared by the footer, Download tab, and native app. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
 
 ## Checks
 
@@ -51,7 +51,7 @@ The test runner starts and stops its own local preview server when one is not al
 
 The **Website** workflow runs syntax, unit, asset-version, and browser checks for pull requests targeting `main` and pushes to `main`. Successful `main` runs deploy to GitHub Pages. Other branches can be tested with **Run workflow**, but cannot deploy. Pull requests have read-only permissions and never deploy.
 
-Only the public HTML, CSS, JavaScript, images, and icon license are staged for publication. Source-control metadata, test dependencies, and test results are not published. Failed browser checks attach their screenshots to the workflow run.
+Only the public HTML, CSS, JavaScript, and images are staged for publication. Source-control metadata, test dependencies, and test results are not published. Failed browser checks attach their screenshots to the workflow run.
 
 One-time setup:
 
