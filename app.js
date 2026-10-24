@@ -131,14 +131,27 @@
           ${routeLink("roadmap", "Explore all features <span aria-hidden=\"true\">→</span>", "text-link")}</section>
         <section class="contribute-section"><h2>Help shape what comes next.</h2><p>Early is a work in progress. Code, bug reports, testing, and thoughtful design feedback are welcome.</p>${externalLink(`${repo}/blob/main/CONTRIBUTING.md`, "Contribute to Early <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else if (state.active === "download") {
-      const command = `git clone ${repo}.git\ncd early-browser\nopen Early.xcodeproj`;
-      content = `${breadcrumb("Download & Install")}<header class="article-header"><p class="eyebrow">Try the development build</p><h1 id="page-heading" tabindex="-1">Download & Install</h1><p class="intro">Early is still in active development. For now, building from source is the documented way to try it.</p></header>
-        <aside class="information-note">Not production-ready. Keep another browser available for important work, and expect features and behavior to change.</aside>
-        <section><h2>Build on your Mac</h2><p>You’ll need macOS 14 or later and Xcode with Swift 6 support. Use an Xcode version compatible with your macOS release.</p>
-          <div class="code-block"><div class="code-caption"><span>Terminal</span><button type="button" class="copy-code">Copy</button></div><pre><code>${escapeHTML(command)}</code></pre></div>
-          <p>In Xcode, select the <strong>Early</strong> scheme and <strong>My Mac</strong>, then build and run. The repository has the full build and test instructions.</p>
-          ${externalLink(`${repo}#commands`, "Read the build instructions <span aria-hidden=\"true\">↗</span>", "text-link")}</section>
-        <section><h2>Packaged releases</h2><p>Packaged macOS releases and Homebrew installation are planned. Check GitHub for release availability and installation notes as development progresses.</p>${externalLink(`${repo}/releases`, "Check releases on GitHub <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
+      const codeBlock = (code, copied) => `<div class="code-block"><div class="code-caption"><span>Terminal</span><button type="button" class="copy-code" data-copied="${copied}">Copy</button></div><pre><code>${escapeHTML(code)}</code></pre></div>`;
+      content = `${breadcrumb("Download & Install")}<header class="article-header"><p class="eyebrow">Get Early</p><h1 id="page-heading" tabindex="-1">Download & Install</h1><p class="intro">Install Early with Homebrew, or download it from GitHub. It needs a Mac with Apple Silicon and macOS 14 or later.</p></header>
+        <aside class="information-note">Early is still in active development. Keep another browser for important work, and expect features to change.</aside>
+        <section><h2>Install with Homebrew</h2>
+          ${codeBlock("brew install --cask earlybrowser/tap/early", "Copied Install Command")}
+          <p>Homebrew lets Early open the first time. After that, Early updates itself.</p></section>
+        <section><h2>Download from GitHub</h2><p>Download <strong>Early-&lt;version&gt;.zip</strong> from the latest release, check it against <strong>SHA256SUMS</strong>, and move Early to Applications.</p>
+          <p>Early isn’t notarized by Apple yet, so macOS blocks the first launch of a downloaded copy. Open it once, then choose <strong>Open Anyway</strong> in System Settings › Privacy & Security, or run:</p>
+          ${codeBlock("xattr -dr com.apple.quarantine /Applications/Early.app", "Copied Command")}
+          ${externalLink(`${repo}/releases/latest`, "Get the latest release <span aria-hidden=\"true\">↗</span>", "text-link")}</section>
+        <section><h2>Current limitations</h2><p>We’re working on these and will fix them as soon as we can.</p><ul class="behavior-list">
+          <li>Not notarized yet: macOS asks you to allow Early the first time you open a downloaded copy.</li>
+          <li>macOS asks once after each update before Early can open your saved passwords. Choose Always Allow.</li>
+          <li>No passkeys yet: sign in with a password instead.</li>
+          <li>Apple Silicon only: there’s no Intel build.</li>
+          <li>Extensions: Safari Web Extensions only, on macOS 15.4 and later. No Chrome Web Store.</li>
+          <li>Local files you opened don’t reopen after Early restarts.</li></ul></section>
+        <section><h2>Build from source</h2><p>You’ll need Xcode with Swift 6 support.</p>
+          ${codeBlock(`git clone ${repo}.git\ncd early-browser\nopen Early.xcodeproj`, "Copied Build Instructions")}
+          <p>In Xcode, select the <strong>Early</strong> scheme and <strong>My Mac</strong>, then build and run.</p>
+          ${externalLink(`${repo}#commands`, "Read the build instructions <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else if (state.active === "roadmap") {
       content = `${breadcrumb("All Features")}<header class="article-header"><p class="eyebrow">What’s in Early</p><h1 id="page-heading" tabindex="-1">All Features</h1><p class="intro">The essentials available today, and a clear view of what’s still ahead.</p></header>
         ${catalog.folders.map((folder) => `<section class="feature-group"><h2>${folder.name}</h2><div class="feature-list">${catalog.features.filter((feature) => feature.folderId === folder.id).map((feature) => routeLink(feature.id, `<span class="feature-list-icon">${feature.icon}</span><span><strong>${feature.name}</strong><span class="feature-description">${feature.description}</span></span><span class="list-arrow" aria-hidden="true">↗</span>`, "feature-list-row")).join("")}</div></section>`).join("")}
@@ -155,8 +168,9 @@
         <nav class="feature-pagination" aria-label="Feature navigation">${routeLink(previous?.id || "roadmap", `<span>Previous</span><strong>← ${previous?.name || "All Features"}</strong>`)}${routeLink(next?.id || "roadmap", `<span>Next</span><strong>${next?.name || "All Features"} →</strong>`)}</nav>`;
     }
     $("content-viewport").innerHTML = `<article class="page-container">${content}${footer()}</article>`;
-    const copy = document.querySelector(".copy-code");
-    copy?.addEventListener("click", () => copyText(document.querySelector("pre code").textContent, "Copied Build Instructions"));
+    for (const copy of document.querySelectorAll(".copy-code")) {
+      copy.addEventListener("click", () => copyText(copy.closest(".code-block").querySelector("pre code").textContent, copy.dataset.copied));
+    }
   }
 
   function animateReload() {

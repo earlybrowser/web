@@ -266,7 +266,7 @@
     planned: [
       { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
       { name: "Passkeys", description: "Sign in with passkeys once Early is signed, which Apple requires for browsers." },
-      { name: "Distribution", description: "Packaged macOS releases and Homebrew installation." }
+      { name: "Notarized releases", description: "Signed and notarized by Apple, so macOS opens Early without asking and the password prompt after updates goes away." }
     ]
   };
   root.EarlyCatalog = catalog;
