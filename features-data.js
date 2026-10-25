@@ -13,6 +13,10 @@
     list: icon('<path d="m3.75 6 1.5 1.5 3-3"/><path d="m3.75 12 1.5 1.5 3-3"/><circle cx="6" cy="18" r="1.5"/><path d="M11.25 6h9M11.25 12h9M11.25 18h9"/>'),
     // A window with its sidebar of tabs.
     sidebar: icon('<rect x="3" y="4.5" width="18" height="15" rx="3"/><path d="M9.75 4.5v15"/><path d="M5.25 8.25h2.25M5.25 11.25h2.25M5.25 14.25h2.25"/>'),
+    // Two page panes with a divider between them.
+    split: icon('<rect x="3" y="4.5" width="7.5" height="15" rx="1.5"/><rect x="13.5" y="4.5" width="7.5" height="15" rx="1.5"/>'),
+    // A selected preview with neighboring cards on either side.
+    previews: icon('<rect x="6.75" y="5.25" width="10.5" height="13.5" rx="1.5"/><path d="M3.75 7.5H2.25v9h1.5M20.25 7.5h1.5v9h-1.5M9.75 14.25h4.5"/>'),
     // A pushpin, tilted as if pressed into the page.
     pin: icon('<path d="M14.39 4.31 19.69 9.61"/><path d="M15.45 5.37 11.73 9.08 6.96 9.61 14.39 17.04 14.92 12.27 18.63 8.55"/><path d="M10.67 13.33 4.31 19.69"/>'),
     // A folder in front of another.
@@ -57,7 +61,7 @@
         aliases: ["sidebar", "tabs"],
         description: "A place for your tabs, not a row of tiny titles.",
         summary: "Early puts your pages in a resizable sidebar. Titles stay readable, your saved pages stay close, and the website gets the rest of the window.",
-        behavior: ["Keep everyday browsing in Today tabs, separate from saved pins and Favorites.", "Resize the sidebar, or hide it and reveal it from the window’s left edge.", "Reorder pages by dragging them where they belong."]
+        behavior: ["Keep everyday browsing in Today tabs, separate from saved pins and Favorites.", "Resize the sidebar, or hide it and reveal it from the window’s left edge.", "Reorder pages by dragging them where they belong.", "Early keeps recent pages ready and releases older background pages when needed to manage memory. Released pages reload when selected; their live forms and exact back/forward history are not preserved.", "Visible pages, playing media, and pages you’re editing are protected from routine background release."]
       },
       {
         id: "pinned-and-today-tabs", folderId: "organization", name: "Favorites & pins", icon: icons.pin,
@@ -70,7 +74,7 @@
         id: "sidebar-folders", folderId: "organization", name: "Nested folders", icon: icons.folder,
         aliases: ["folders", "grouping", "organization", "github", "pull requests", "live folder", "live folders"],
         description: "Give a project a home, and put its pages together.",
-        summary: "Group your saved pages into folders and subfolders. Collapse a project when you’re done with it, and open it again when you need the context back.",
+        summary: "Group your saved pages into folders and subfolders. Collapse a project when you’re done with it, and open it again when you need the context back. A GitHub live folder can keep your open pull requests together and up to date.",
         behavior: ["Organize pinned pages with up to two levels of nested folders.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a GitHub live folder to keep your open pull requests as pinned tabs: ones you opened, ones assigned to you, and ones waiting for your review. Merged and closed ones leave by themselves. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
       },
       {
@@ -173,6 +177,42 @@
         ]
       },
       {
+        id: "split-views", folderId: "browsing", name: "Split views", icon: icons.split,
+        aliases: ["split", "split view", "side by side", "panes", "compare", "resize"],
+        description: "Keep two pages in view, side by side.",
+        summary: "Compare, read, or work across two pages in one window. Resize the panes to give each page the room it needs.",
+        behavior: [
+          "Drag a sidebar tab into the page area, then drop it onto the left or right split card.",
+          "Drag the divider to resize the pages. Browser controls follow the pane you’re using.",
+          "Swap sides or exit split view from the tab’s context menu.",
+          "Leaving split view keeps the tabs open."
+        ]
+      },
+      {
+        id: "tab-previews", folderId: "browsing", name: "Tab previews", icon: icons.previews,
+        aliases: ["tab switcher", "thumbnails", "preview", "switch tabs", "control tab"],
+        description: "See the page before you switch to it.",
+        summary: "The thumbnail tab switcher gives your open pages a visual preview, so it’s easier to find the one you want.",
+        behavior: [
+          "Use the keyboard to browse previews, then confirm the tab you want to open.",
+          "Dismiss the switcher to stay on the page you were using.",
+          "The preview is available even when only one tab is open; pages without a thumbnail have a clear fallback.",
+          "Choose in Settings whether Control-Tab shows the thumbnail switcher."
+        ]
+      },
+      {
+        id: "downloads-and-documents", folderId: "browsing", name: "Downloads & documents", icon: icons.download,
+        aliases: ["downloads", "files", "uploads", "pdf", "print", "save page", "documents"],
+        description: "Keep downloads and documents close to your browsing.",
+        summary: "Download files, upload documents, view PDFs, and save or print pages without leaving Early.",
+        behavior: [
+          "Open Downloads from the sidebar footer to see progress, stop or resume a download, and reveal a file in Finder.",
+          "Upload files through websites’ file pickers.",
+          "Save pages as HTML, export PDFs, or print. Saved pages and PDFs appear in the downloads list too.",
+          "Open local files in tabs. Early remembers access for restoration after a restart; a missing file or lost permission may require opening it again."
+        ]
+      },
+      {
         id: "reading-tools", folderId: "browsing", name: "Reading tools", icon: icons.book,
         aliases: ["find", "zoom", "reader", "reader mode", "translate", "translation"],
         description: "Find, zoom, read, and translate without leaving the page.",
@@ -187,10 +227,10 @@
       },
       {
         id: "native-macos-interface", folderId: "browsing", name: "Native macOS", icon: icons.mac,
-        aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard", "default browser", "links", "welcome"],
+        aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard", "default browser", "links", "welcome", "picture in picture", "video", "pip"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher, without getting in the way of typing."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Automatic Picture in Picture keeps a playing video in a floating window when you switch tabs, then returns it when you come back or use the window’s return button. Turn automatic Picture in Picture off in Settings. Availability depends on the website and macOS support.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher, without getting in the way of typing."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
@@ -249,7 +289,7 @@
       },
       {
         id: "site-security", folderId: "browsing", name: "Security & permissions", icon: icons.shield,
-        aliases: ["security", "permissions", "camera", "microphone", "location", "certificate", "phishing", "picture in picture"],
+        aliases: ["security", "permissions", "camera", "microphone", "location", "certificate", "phishing"],
         description: "Know who you’re connected to, and decide what each site may use.",
         summary: "The site controls in the address bar show how safe a page’s connection is and what the site is allowed to use, and change it in place.",
         behavior: [
@@ -257,7 +297,7 @@
           "Websites ask before using your camera, microphone, or location (macOS 27). Allow, block, or ask again for each site, and stop a camera or microphone that’s in use.",
           "Clear one site’s cache and cookies without touching any other site.",
           "Deceptive and malware sites show a warning page, and links for other apps, such as Mail, ask before they open.",
-          "Automatic Picture in Picture keeps a playing video in a floating window when you switch away from its tab."
+          "Website notifications aren’t supported. Add a compatible content-blocking extension for ad or content filtering."
         ]
       },
       {
@@ -273,9 +313,9 @@
       }
     ],
     planned: [
-      { name: "More ways to browse", description: "Split views, tab previews, and improved page lifecycle management." },
-      { name: "Passkeys", description: "Sign in with passkeys once Early is signed, which Apple requires for browsers." },
-      { name: "Notarized releases", description: "Signed and notarized by Apple, so macOS opens Early without asking and the password prompt after updates goes away." }
+      { name: "Import from other browsers", description: "Bring bookmarks and history into Early, with open tabs and Arc’s Spaces and pins where supported." },
+      { name: "Passkeys", description: "Sign in with passkeys through macOS and compatible password managers, once Apple approves Early’s browser-passkey support." },
+      { name: "Developer ID signing and notarization", description: "Easier first-time installation and a stable signing identity across updates, addressing the current macOS installation and Keychain prompts. Early will be signed with an Apple-issued certificate and notarized by Apple." }
     ]
   };
   root.EarlyCatalog = catalog;

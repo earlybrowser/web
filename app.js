@@ -127,7 +127,10 @@
         <section class="home-overview" aria-labelledby="overview-heading"><h2 id="overview-heading">Less clutter. More context.</h2>
           <div class="editorial-row"><h3>${routeLink("vertical-tabs", "A sidebar that makes sense")}</h3><p>Keep Favorites close, group pins into folders, and leave everyday pages in Today tabs.</p></div>
           <div class="editorial-row"><h3>${routeLink("spaces-and-profiles", "A Space for each part of your day")}</h3><p>Separate projects with Spaces. Keep accounts and website data apart with profiles.</p></div>
-          <div class="editorial-row"><h3>${routeLink("native-macos-interface", "At home on your Mac")}</h3><p>Native controls, a keyboard-driven command bar, and a quiet interface that follows your appearance.</p></div>
+          <div class="editorial-row"><h3>${routeLink("native-macos-interface", "At home on your Mac")}</h3><p>Native controls, an interface that follows your appearance, and automatic Picture in Picture to keep a video in view while you browse.</p></div>
+          <div class="editorial-row"><h3>${routeLink("split-views", "Work side by side")}</h3><p>Compare two pages in a resizable split view, and preview your open tabs before switching.</p></div>
+          <div class="editorial-row"><h3>${routeLink("reading-tools", "Everyday tools, built in")}</h3><p>Read articles without distractions, translate pages, find text, manage downloads, and save pages or PDFs.</p></div>
+          <div class="editorial-row"><h3>${routeLink("passwords", "Make Early yours")}</h3><p>Save and fill passwords, add compatible Safari extensions, and customize your keyboard shortcuts.</p></div>
           ${routeLink("roadmap", "Explore all features <span aria-hidden=\"true\">→</span>", "text-link")}</section>
         <section class="contribute-section"><h2>Help shape what comes next.</h2><p>Early is a work in progress. Code, bug reports, testing, and thoughtful design feedback are welcome.</p>${externalLink(`${repo}/blob/main/CONTRIBUTING.md`, "Contribute to Early <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else if (state.active === "download") {
@@ -146,8 +149,7 @@
           <li>macOS asks once after each update before Early can open your saved passwords. Choose Always Allow.</li>
           <li>No passkeys yet: sign in with a password instead.</li>
           <li>Apple Silicon only: there’s no Intel build.</li>
-          <li>Extensions: Safari Web Extensions only, on macOS 15.4 and later. No Chrome Web Store.</li>
-          <li>Local files you opened don’t reopen after Early restarts.</li></ul></section>
+          <li>Extensions: Safari Web Extensions only, on macOS 15.4 and later. No Chrome Web Store.</li></ul></section>
         <section><h2>Build from source</h2><p>You’ll need Xcode with Swift 6 support.</p>
           ${codeBlock(`git clone ${repo}.git\ncd early-browser\nopen Early.xcodeproj`, "Copied Build Instructions")}
           <p>In Xcode, select the <strong>Early</strong> scheme and <strong>My Mac</strong>, then build and run.</p>

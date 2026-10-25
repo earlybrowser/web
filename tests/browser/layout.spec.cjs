@@ -84,7 +84,7 @@ for (const colorScheme of ["light", "dark"]) {
       const input = page.locator("#command-bar-input");
       const labels = page.locator("[role=option] .suggestion-label");
       await expect(labels).toHaveText(["Home", "Download & Install", "All Features"]);
-      await input.fill("pr");
+      await input.fill("prof");
       await expect(labels.first()).toHaveText("Profiles");
       await expect(page.getByRole("option").filter({ hasText: "Search Google" })).toHaveCount(0);
       await input.fill("nonexistentword");
