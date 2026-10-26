@@ -24,6 +24,13 @@ Stylesheet and script URLs include content hashes so previews and published page
 
 Feature-page and tab icons are original Early artwork: bundled SVGs drawn on a 24-point grid with a 1.75 stroke. The download glyph is shared by the footer, Download tab, and native app. Browser toolbar and folder-header artwork remain matched to the native app; no icon font or external icon requests are used.
 
+The app branding uses `assets/Early-Horizon-1024.png`, the Default appearance
+exported from `early-browser/Resources/Early.icon` with Icon Composer. The same
+PNG is used in the browser repository's `Branding/Previews` directory and can
+be uploaded as the GitHub organization image. `assets/Early-Horizon-64.png` is
+a small favicon derived from that export; separate Dark and Tinted preview
+images are not needed for the website.
+
 ## Checks
 
 With Node.js 22 or later, no package installation is needed:

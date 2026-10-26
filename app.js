@@ -114,7 +114,7 @@
   function renderPage() {
     let content;
     if (state.active === "home") {
-      content = `<header class="home-header"><img class="app-icon" src="assets/Early-Default-1024.png" width="68" height="68" alt="" fetchpriority="high">
+      content = `<header class="home-header"><img class="app-icon" src="assets/Early-Horizon-1024.png" width="68" height="68" alt="" fetchpriority="high">
         <p class="eyebrow">Made for macOS</p><h1 id="page-heading" tabindex="-1">Early</h1>
         <p class="home-lede">A native Mac browser.<br>Room for everything you’re working on.</p>
         <p class="intro">Open source and inspired by Arc’s sidebar workflow. Built with Swift and WebKit, with tabs, folders, and Spaces that keep your browsing organized.</p>
