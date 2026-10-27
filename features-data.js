@@ -245,10 +245,10 @@
         id: "passwords", folderId: "your-setup", name: "Passwords", icon: icons.key,
         aliases: ["passwords", "password manager", "logins", "autofill", "strong password", "import passwords", "export passwords"],
         description: "Sign in without remembering every password.",
-        summary: "Early saves the passwords you sign in with, fills them in when you come back, and suggests strong ones for new accounts. They stay encrypted on your Mac.",
+        summary: "Early saves the passwords you sign in with, lets you choose a saved account to fill a sign-in, and suggests strong passwords for new accounts. They stay encrypted on your Mac.",
         behavior: [
           "After you sign in, Early offers to save the password, or to update it when it changed. Choose Never for sites you’d rather it forgot.",
-          "Click or tab into a sign-in form you’ve saved a password for and Early fills it in, on secure pages only and never over what you’ve typed. It never fills as a page opens, so the page can’t read your password before you reach it. Turn automatic filling off in Settings to pick an account from the list below the field instead.",
+          "In the next release, click or tab into a sign-in field to see the saved accounts for that site, then choose one to fill its username and password. Focusing the field leaves its values unchanged; filling always requires choosing an account.",
           "New-password fields offer a strong password, saved as soon as you use it.",
           "Settings › Passwords opens with Touch ID or your Mac’s password. Search, edit, copy, and delete passwords there.",
           "Import passwords exported from Chrome, Safari, Firefox, 1Password, or Bitwarden, and export them as a CSV file.",
