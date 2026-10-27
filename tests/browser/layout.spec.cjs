@@ -107,8 +107,6 @@ for (const colorScheme of ["light", "dark"]) {
       await expect(page.locator("#sidebar-toggle-btn svg")).toBeVisible();
       await page.locator("[data-tab-id=download]").click();
       await expect(page.locator("h1")).toHaveText("Download & Install");
-      await expect(page.locator(".information-note")).toHaveCSS("border-left-width", "0px");
-      await expect(page.locator(".information-note")).toHaveCSS("border-radius", "10px");
     });
 
     test("Pages project-subdirectory URLs preserve assets and navigation", async ({ page }) => {

@@ -118,8 +118,7 @@
         <p class="eyebrow">Made for macOS</p><h1 id="page-heading" tabindex="-1">Early</h1>
         <p class="home-lede">A native Mac browser.<br>Room for everything you’re working on.</p>
         <p class="intro">Open source and inspired by Arc’s sidebar workflow. Built with Swift and WebKit, with tabs, folders, and Spaces that keep your browsing organized.</p>
-        <div class="page-actions">${routeLink("download", "Get Early", "button button-primary")}${externalLink(repo, "View on GitHub", "button")}</div>
-        <p class="development-note"><span class="notice-dot" aria-hidden="true"></span>Actively in development. Not production-ready yet.</p></header>
+        <div class="page-actions">${routeLink("download", "Get Early", "button button-primary")}${externalLink(repo, "View on GitHub", "button")}</div></header>
         <section class="home-command-bar" aria-labelledby="command-bar-heading"><h2 id="command-bar-heading">Find your tab. Run a command.</h2>
           <p>Find existing tabs, pins, and Favorites, switch Spaces or profiles, and run browser actions from one command bar. Return to a saved page without opening a duplicate.</p>
           <p>Type naturally: Pin Tab, Duplicate Tab, New Space, or Open Settings. Choose the matching result and keep going.</p>
@@ -133,11 +132,10 @@
           <div class="editorial-row"><h3>${routeLink("passwords", "Make Early yours")}</h3><p>Save and fill passwords, add compatible Safari extensions, and customize your keyboard shortcuts.</p></div>
           <div class="editorial-row"><h3>${routeLink("browser-import", "Bring your browser with you")}</h3><p>Coming in the next release: choose bookmarks and workspaces, preview their destinations, and import only what you want.</p></div>
           ${routeLink("roadmap", "Explore all features <span aria-hidden=\"true\">→</span>", "text-link")}</section>
-        <section class="contribute-section"><h2>Help shape what comes next.</h2><p>Early is a work in progress. Code, bug reports, testing, and thoughtful design feedback are welcome.</p>${externalLink(`${repo}/blob/main/CONTRIBUTING.md`, "Contribute to Early <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
+        <section class="contribute-section"><h2>Help shape what comes next.</h2><p>Code, bug reports, testing, and thoughtful design feedback are welcome.</p>${externalLink(`${repo}/blob/main/CONTRIBUTING.md`, "Contribute to Early <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else if (state.active === "download") {
       const codeBlock = (code, copied) => `<div class="code-block"><div class="code-caption"><span>Terminal</span><button type="button" class="copy-code" data-copied="${copied}">Copy</button></div><pre><code>${escapeHTML(code)}</code></pre></div>`;
       content = `${breadcrumb("Download & Install")}<header class="article-header"><p class="eyebrow">Get Early</p><h1 id="page-heading" tabindex="-1">Download & Install</h1><p class="intro">Install Early with Homebrew, or download it from GitHub. It needs a Mac with Apple Silicon and macOS 14 or later.</p></header>
-        <aside class="information-note">Early is still in active development. Keep another browser for important work, and expect features to change.</aside>
         <section><h2>Install with Homebrew</h2>
           ${codeBlock("brew install --cask earlybrowser/tap/early", "Copied Install Command")}
           <p>Homebrew lets Early open the first time. After that, Early updates itself.</p></section>

@@ -289,8 +289,7 @@
           "Keep folder organization and ordering, with eight nested levels beneath a root folder. No extra Imported Bookmarks folder is required. Existing items stay in place and imported pages load only when selected.",
           "Undo Import stays available after restarting Early. It preserves later edits, active pages, and folders with new contents. Deleting a profile removes its part of the import record while keeping Undo for surviving profiles.",
           "Everything stays on your Mac and the source browser is unchanged. Passwords keep their separate CSV import; cookies and signed-in sessions never transfer. Some browsers keep tabs or groups in formats Early cannot read; the preview explains what is available."
-        ],
-        note: "Implemented for the next release. Browser import is not included in the current 0.1.3 download."
+        ]
       },
       {
         id: "history-and-private-windows", folderId: "browsing", name: "History & privacy", icon: icons.mask,

@@ -205,8 +205,6 @@ button.toolbar-btn:active:not(:disabled) { background: var(--pressed); }
 .button:hover { background: var(--selected); }
 .button-primary { background: var(--button-bg); border-color: transparent; color: var(--button-fg); }
 .button-primary:hover { background: var(--button-bg); filter: brightness(.93); }
-.page-container .development-note { display: flex; align-items: center; gap: 8px; margin-top: 18px; font-size: 12px; }
-.notice-dot { width: 5px; height: 5px; flex-shrink: 0; background: var(--secondary); border-radius: 50%; }
 .home-overview { border-top: 1px solid var(--border); padding-top: 30px; }
 .editorial-row { display: grid; grid-template-columns: minmax(150px, .9fr) 1.3fr; gap: 28px; padding: 19px 0; border-bottom: 1px solid var(--border); }
 .editorial-row h3 a { text-decoration: none; }
@@ -272,8 +270,6 @@ pre { margin: 0; padding: 18px 16px; overflow-x: auto; white-space: pre; font-fa
   .sidebar-autohide .sidebar-edge-sensor { display: none; }
   .feature-pagination { gap: 16px; }
   .page-footer { padding-top: 32px; }
-  .development-note { align-items: flex-start; }
-  .notice-dot { margin-top: 7px; }
 }
 @media (max-height: 460px) {
   .command-bar-card { padding: 12px; }
