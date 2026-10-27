@@ -14,7 +14,13 @@ Open [localhost:4177](http://localhost:4177). The sidebar collapses on small scr
 
 ## Content and navigation
 
-Keep `features-data.js` limited to major features that are available in the browser. Planned work belongs in the separate roadmap list, not in sidebar feature tabs. Verify availability against the browser repository before updating download or release claims.
+Keep `features-data.js` limited to implemented major features. Features implemented for the next release must be clearly marked as unreleased; unimplemented work belongs in the separate roadmap list. Verify availability against the browser repository before updating download or release claims.
+
+Browser import and eight-level folders match `early-browser`'s implementation on
+`feat/browser-import`. They are labeled for the next release because the current
+0.1.3 download does not include them. Update those release labels when they ship.
+The app README and `Documentation/BrowserImport.md` are the source of truth for
+source-format coverage and limits.
 
 The command bar searches this site locally and ranks feature names ahead of incidental mentions. Open it with **New Tab** or **⌘K / Ctrl K** to see Home, Download & Install, and All Features; typing filters the site’s pages. Use Up/Down to select, Right Arrow to fill a page name, Return to open, and Escape to dismiss. Shift-Return adds a line. Explicit web addresses open externally, but there is no Google search option or web-search fallback. Typing alone sends no search requests. Host browsers reserve some native shortcuts such as ⌘T and ⌘L, so those are not guaranteed to reach the site.
 

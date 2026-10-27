@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MPL-2.0
-// Keep this catalog limited to major features available in Early today.
+// Keep this catalog limited to implemented major features; label unreleased capabilities clearly.
 // Icons are original Early artwork, drawn on a 24-point grid with a 1.75 stroke.
 (function (root) {
   "use strict";
@@ -21,6 +21,8 @@
     pin: icon('<path d="M14.39 4.31 19.69 9.61"/><path d="M15.45 5.37 11.73 9.08 6.96 9.61 14.39 17.04 14.92 12.27 18.63 8.55"/><path d="M10.67 13.33 4.31 19.69"/>'),
     // A folder in front of another.
     folder: icon('<path d="M3 9.75c0-.83.67-1.5 1.5-1.5h3.75l1.5 1.5h6.75c.83 0 1.5.67 1.5 1.5v6.75c0 .83-.67 1.5-1.5 1.5H4.5c-.83 0-1.5-.67-1.5-1.5Z"/><path d="M6 8.25v-3c0-.83.67-1.5 1.5-1.5h3l1.5 1.5h7.5c.83 0 1.5.67 1.5 1.5v8.25c0 .83-.67 1.5-1.5 1.5H18"/>'),
+    // An arrow entering a saved collection.
+    import: icon('<path d="M7.5 8.25H6A2.25 2.25 0 0 0 3.75 10.5V18A2.25 2.25 0 0 0 6 20.25h12A2.25 2.25 0 0 0 20.25 18v-7.5A2.25 2.25 0 0 0 18 8.25h-1.5"/><path d="M12 3.75v10.5m-3-3 3 3 3-3"/>'),
     // A stack of cards, one for each Space.
     spaces: icon('<rect x="3" y="9.75" width="18" height="10.5" rx="2.25"/><path d="M5.25 9.75v-1.5c0-.83.67-1.5 1.5-1.5h10.5c.83 0 1.5.67 1.5 1.5v1.5"/><path d="M7.5 6.75v-1.5c0-.83.67-1.5 1.5-1.5h6c.83 0 1.5.67 1.5 1.5v1.5"/>'),
     // The command bar's magnifying glass, as in index.html.
@@ -75,7 +77,7 @@
         aliases: ["folders", "grouping", "organization", "github", "pull requests", "live folder", "live folders"],
         description: "Give a project a home, and put its pages together.",
         summary: "Group your saved pages into folders and subfolders. Collapse a project when you’re done with it, and open it again when you need the context back. A GitHub live folder can keep your open pull requests together and up to date.",
-        behavior: ["Organize pinned pages with up to two levels of nested folders.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a GitHub live folder to keep your open pull requests as pinned tabs: ones you opened, ones assigned to you, and ones waiting for your review. Merged and closed ones leave by themselves. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
+        behavior: ["Organize pinned pages with eight nested levels beneath a root folder in the next release. Version 0.1.3 supports two nested levels.", "The next release shows a background only around the outer group and current folder. Intermediate folders keep their indentation without stacking extra panels.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a GitHub live folder to keep your open pull requests as pinned tabs: ones you opened, ones assigned to you, and ones waiting for your review. Merged and closed ones leave by themselves. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
       },
       {
         id: "spaces-and-profiles", folderId: "organization", name: "Spaces", icon: icons.spaces,
@@ -230,7 +232,7 @@
         aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard", "default browser", "links", "welcome", "picture in picture", "video", "pip"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Automatic Picture in Picture keeps a playing video in a floating window when you switch tabs, then returns it when you come back or use the window’s return button. Turn automatic Picture in Picture off in Settings. Availability depends on the website and macOS support.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher, without getting in the way of typing."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Automatic Picture in Picture keeps a playing video in a floating window when you switch tabs, then returns it when you come back or use the window’s return button. Turn automatic Picture in Picture off in Settings. Availability depends on the website and macOS support.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher. The next release also offers an optional browser-import button there."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
@@ -268,10 +270,26 @@
       },
       {
         id: "session-restoration", folderId: "your-setup", name: "Session restoration", icon: icons.restore,
-        aliases: ["restore", "sessions", "persistence", "saved", "export", "import", "backup", "new mac"],
+        aliases: ["restore", "sessions", "persistence", "saved", "export", "import Early data", "backup", "new mac"],
         description: "A familiar place to return to.",
         summary: "Early saves your browsing organization locally so you can return to your tabs, saved pages, and Spaces after quitting the app.",
         behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need.", "Export your profiles, Spaces, folders, pins, Favorites, windows, tabs, and settings from Settings › Sessions, and import them on another Mac. You see what a file holds before anything changes, a backup of what you had is saved first, and tabs load only when you choose them.", "Passwords, cookies, history, and private windows are never exported, so websites ask you to sign in again after an import."]
+      },
+      {
+        id: "browser-import", folderId: "your-setup", name: "Import from other browsers", icon: icons.import,
+        aliases: ["import", "browser import", "import bookmarks", "migration", "Safari", "Chrome", "Firefox", "Zen", "Arc", "Chromium"],
+        description: "Next release · Bring your browser setup with you.",
+        summary: "Choose the bookmarks and browser organization you want to keep, preview where they will go, and make yourself at home in Early. Existing pages keep running while you import.",
+        behavior: [
+          "Open Import from Another Browser… from File, Settings › Sessions, or the first-launch welcome. Short instructions explain how to export from the selected browser or choose its saved-data folder on this Mac.",
+          "Choose your source browser, including an Other browser option for unlisted sources. Import compatible bookmark exports, read Chromium history from this Mac, or bring supported Firefox and Zen workspace data. Arc sidebar import is experimental.",
+          "For Safari, unzip its export and select the bookmarks HTML and history JSON together. One preview shows both. Password CSVs, extension lists and credit cards stay outside this flow.",
+          "Search the preview and choose individual pages, folders or workspaces. History and open tabs start unchecked. Choose existing or new profiles and Spaces; source profiles stay separate by default.",
+          "Keep folder organization and ordering, with eight nested levels beneath a root folder. No extra Imported Bookmarks folder is required. Existing items stay in place and imported pages load only when selected.",
+          "Undo Import stays available after restarting Early. It preserves later edits, active pages, and folders with new contents.",
+          "Everything stays on your Mac and the source browser is unchanged. Passwords keep their separate CSV import; cookies and signed-in sessions never transfer. Some browsers keep tabs or groups in formats Early cannot read; the preview explains what is available."
+        ],
+        note: "Implemented for the next release. Browser import is not included in the current 0.1.3 download."
       },
       {
         id: "history-and-private-windows", folderId: "browsing", name: "History & privacy", icon: icons.mask,
@@ -313,7 +331,6 @@
       }
     ],
     planned: [
-      { name: "Import from other browsers", description: "Bring bookmarks and history into Early, with open tabs and Arc’s Spaces and pins where supported." },
       { name: "Passkeys", description: "Sign in with passkeys through macOS and compatible password managers, once Apple approves Early’s browser-passkey support." },
       { name: "Developer ID signing and notarization", description: "Easier first-time installation and a stable signing identity across updates, addressing the current macOS installation and Keychain prompts. Early will be signed with an Apple-issued certificate and notarized by Apple." }
     ]

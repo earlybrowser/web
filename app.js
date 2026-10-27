@@ -131,6 +131,7 @@
           <div class="editorial-row"><h3>${routeLink("split-views", "Work side by side")}</h3><p>Compare two pages in a resizable split view, and preview your open tabs before switching.</p></div>
           <div class="editorial-row"><h3>${routeLink("reading-tools", "Everyday tools, built in")}</h3><p>Read articles without distractions, translate pages, find text, manage downloads, and save pages or PDFs.</p></div>
           <div class="editorial-row"><h3>${routeLink("passwords", "Make Early yours")}</h3><p>Save and fill passwords, add compatible Safari extensions, and customize your keyboard shortcuts.</p></div>
+          <div class="editorial-row"><h3>${routeLink("browser-import", "Bring your browser with you")}</h3><p>Coming in the next release: choose bookmarks and workspaces, preview their destinations, and import only what you want.</p></div>
           ${routeLink("roadmap", "Explore all features <span aria-hidden=\"true\">→</span>", "text-link")}</section>
         <section class="contribute-section"><h2>Help shape what comes next.</h2><p>Early is a work in progress. Code, bug reports, testing, and thoughtful design feedback are welcome.</p>${externalLink(`${repo}/blob/main/CONTRIBUTING.md`, "Contribute to Early <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else if (state.active === "download") {
@@ -155,7 +156,7 @@
           <p>In Xcode, select the <strong>Early</strong> scheme and <strong>My Mac</strong>, then build and run.</p>
           ${externalLink(`${repo}#commands`, "Read the build instructions <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else if (state.active === "roadmap") {
-      content = `${breadcrumb("All Features")}<header class="article-header"><p class="eyebrow">What’s in Early</p><h1 id="page-heading" tabindex="-1">All Features</h1><p class="intro">The essentials available today, and a clear view of what’s still ahead.</p></header>
+      content = `${breadcrumb("All Features")}<header class="article-header"><p class="eyebrow">What’s in Early</p><h1 id="page-heading" tabindex="-1">All Features</h1><p class="intro">Explore what Early can do, with upcoming release features clearly marked.</p></header>
         ${catalog.folders.map((folder) => `<section class="feature-group"><h2>${folder.name}</h2><div class="feature-list">${catalog.features.filter((feature) => feature.folderId === folder.id).map((feature) => routeLink(feature.id, `<span class="feature-list-icon">${feature.icon}</span><span><strong>${feature.name}</strong><span class="feature-description">${feature.description}</span></span><span class="list-arrow" aria-hidden="true">↗</span>`, "feature-list-row")).join("")}</div></section>`).join("")}
         <section><p class="eyebrow">Not available yet</p><h2>Looking ahead</h2><p>These are planned areas of work, not release commitments.</p><dl class="planned-list">${catalog.planned.map((item) => `<div><dt>${item.name}</dt><dd>${item.description}</dd></div>`).join("")}</dl>${externalLink(`${repo}#features`, "See the full project status <span aria-hidden=\"true\">↗</span>", "text-link")}</section>`;
     } else {
