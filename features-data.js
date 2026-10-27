@@ -283,10 +283,11 @@
         behavior: [
           "Open Import from Another Browser… from File, Settings › Sessions, or the first-launch welcome. Short instructions explain how to export from the selected browser or choose its saved-data folder on this Mac.",
           "Choose your source browser, including an Other browser option for unlisted sources. Import compatible bookmark exports, read Chromium history from this Mac, or bring supported Firefox and Zen workspace data. Arc sidebar import is experimental.",
-          "For Safari, unzip its export and select the bookmarks HTML and history JSON together. One preview shows both. Password CSVs, extension lists and credit cards stay outside this flow.",
+          "For Safari, unzip its export and select the bookmarks, Reading List HTML and history JSON together. Histories stay with their profiles; choose which profiles receive shared bookmarks, with separate destinations for individual folders when needed. Password CSVs, extension lists and credit cards stay outside this flow.",
           "Search the preview and choose individual pages, folders or workspaces. History and open tabs start unchecked. Choose existing or new profiles and Spaces; source profiles stay separate by default.",
+          "Firefox and Zen containers keep separate website contexts. Zen workspaces sharing a context become Spaces in the same profile; mixed-context workspaces are split with a preview notice. Choose a destination for history whose original container was not recorded.",
           "Keep folder organization and ordering, with eight nested levels beneath a root folder. No extra Imported Bookmarks folder is required. Existing items stay in place and imported pages load only when selected.",
-          "Undo Import stays available after restarting Early. It preserves later edits, active pages, and folders with new contents.",
+          "Undo Import stays available after restarting Early. It preserves later edits, active pages, and folders with new contents. Deleting a profile removes its part of the import record while keeping Undo for surviving profiles.",
           "Everything stays on your Mac and the source browser is unchanged. Passwords keep their separate CSV import; cookies and signed-in sessions never transfer. Some browsers keep tabs or groups in formats Early cannot read; the preview explains what is available."
         ],
         note: "Implemented for the next release. Browser import is not included in the current 0.1.3 download."
