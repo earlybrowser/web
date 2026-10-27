@@ -16,9 +16,8 @@ Open [localhost:4177](http://localhost:4177). The sidebar collapses on small scr
 
 Keep `features-data.js` limited to implemented major features. Features implemented for the next release must be clearly marked as unreleased; unimplemented work belongs in the separate roadmap list. Verify availability against the browser repository before updating download or release claims.
 
-Browser import and eight-level folders match `early-browser`'s implementation on
-`feat/browser-import`. They are labeled for the next release because the current
-0.1.3 download does not include them. Update those release labels when they ship.
+Browser import, eight-level folders, and choosing an account before filling a
+password are available in Early 0.1.4.
 The app README and `Documentation/BrowserImport.md` are the source of truth for
 source-format coverage and limits.
 

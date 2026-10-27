@@ -77,7 +77,7 @@
         aliases: ["folders", "grouping", "organization", "github", "pull requests", "live folder", "live folders"],
         description: "Give a project a home, and put its pages together.",
         summary: "Group your saved pages into folders and subfolders. Collapse a project when you’re done with it, and open it again when you need the context back. A GitHub live folder can keep your open pull requests together and up to date.",
-        behavior: ["Organize pinned pages with eight nested levels beneath a root folder in the next release. Version 0.1.3 supports two nested levels.", "The next release shows a background only around the outer group and current folder. Intermediate folders keep their indentation without stacking extra panels.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a GitHub live folder to keep your open pull requests as pinned tabs: ones you opened, ones assigned to you, and ones waiting for your review. Merged and closed ones leave by themselves. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
+        behavior: ["Organize pinned pages with eight nested levels beneath a root folder.", "Show a background only around the outer group and current folder. Intermediate folders keep their indentation without stacking extra panels.", "Drag tabs and folders to rearrange them, with a preview of where they will land.", "Move a folder and its contents to another Space together.", "Add a GitHub live folder to keep your open pull requests as pinned tabs: ones you opened, ones assigned to you, and ones waiting for your review. Merged and closed ones leave by themselves. It uses the GitHub account you’re already signed in to, and Early keeps no GitHub password or token."]
       },
       {
         id: "spaces-and-profiles", folderId: "organization", name: "Spaces", icon: icons.spaces,
@@ -232,7 +232,7 @@
         aliases: ["webkit", "swift", "appearance", "macos", "native", "shortcuts", "keyboard", "default browser", "links", "welcome", "picture in picture", "video", "pip"],
         description: "Built for the Mac, from the frame to the page.",
         summary: "Early is built with Swift, SwiftUI, AppKit, and WebKit. A shared sidebar and window frame surround a distinct page surface, keeping the interface quiet and the website in focus.",
-        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Automatic Picture in Picture keeps a playing video in a floating window when you switch tabs, then returns it when you come back or use the window’s return button. Turn automatic Picture in Picture off in Settings. Availability depends on the website and macOS support.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher. The next release also offers an optional browser-import button there."]
+        behavior: ["Light and dark appearance, translucent chrome, and Space-aware colors.", "Native trackpad zoom, navigation gestures, and compatible website fullscreen.", "Automatic Picture in Picture keeps a playing video in a floating window when you switch tabs, then returns it when you come back or use the window’s return button. Turn automatic Picture in Picture off in Settings. Availability depends on the website and macOS support.", "Click the speaker beside a tab’s icon to mute or unmute HTML audio/video without switching pages. The muted control stays available after playback stops. Favorite cards have no speaker badge; use their context menu instead.", "Respect for macOS accessibility preferences, including reduced motion and transparency.", "Change or remove the keyboard shortcut of almost any command in Settings › Shortcuts.", "Make Early your default browser from Settings › General or the welcome on first launch. Links from other apps open as new tabs in your frontmost window, never in a private one.", "A short welcome on first launch points out the command bar, Spaces, split view, and the tab switcher, and offers an optional browser-import button."]
       },
       {
         id: "profiles", folderId: "your-setup", name: "Profiles", icon: icons.profile,
@@ -248,7 +248,7 @@
         summary: "Early saves the passwords you sign in with, lets you choose a saved account to fill a sign-in, and suggests strong passwords for new accounts. They stay encrypted on your Mac.",
         behavior: [
           "After you sign in, Early offers to save the password, or to update it when it changed. Choose Never for sites you’d rather it forgot.",
-          "In the next release, click or tab into a sign-in field to see the saved accounts for that site, then choose one to fill its username and password. Focusing the field leaves its values unchanged; filling always requires choosing an account.",
+          "Click or tab into a sign-in field to see the saved accounts for that site, then choose one to fill its username and password. Focusing the field leaves its values unchanged; filling always requires choosing an account.",
           "New-password fields offer a strong password, saved as soon as you use it.",
           "Settings › Passwords opens with Touch ID or your Mac’s password. Search, edit, copy, and delete passwords there.",
           "Import passwords exported from Chrome, Safari, Firefox, 1Password, or Bitwarden, and export them as a CSV file.",
@@ -278,7 +278,7 @@
       {
         id: "browser-import", folderId: "your-setup", name: "Import from other browsers", icon: icons.import,
         aliases: ["import", "browser import", "import bookmarks", "migration", "Safari", "Chrome", "Firefox", "Zen", "Arc", "Chromium"],
-        description: "Next release · Bring your browser setup with you.",
+        description: "Bring your browser setup with you.",
         summary: "Choose the bookmarks and browser organization you want to keep, preview where they will go, and make yourself at home in Early. Existing pages keep running while you import.",
         behavior: [
           "Open Import from Another Browser… from File, Settings › Sessions, or the first-launch welcome. Short instructions explain how to export from the selected browser or choose its saved-data folder on this Mac.",
