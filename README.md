@@ -18,8 +18,7 @@ Keep `features-data.js` limited to implemented major features. Features implemen
 
 Browser import, eight-level folders, and choosing an account before filling a
 password are available in Early 0.1.4.
-The app README and `Documentation/BrowserImport.md` are the source of truth for
-source-format coverage and limits.
+The app README describes the current browser-import coverage.
 
 The command bar searches this site locally and ranks feature names ahead of incidental mentions. Open it with **New Tab** or **⌘K / Ctrl K** to see Home, Download & Install, and All Features; typing filters the site’s pages. Use Up/Down to select, Right Arrow to fill a page name, Return to open, and Escape to dismiss. Shift-Return adds a line. Explicit web addresses open externally, but there is no Google search option or web-search fallback. Typing alone sends no search requests. Host browsers reserve some native shortcuts such as ⌘T and ⌘L, so those are not guaranteed to reach the site.
 
@@ -32,9 +31,11 @@ Feature-page and tab icons are original Early artwork: bundled SVGs drawn on a 2
 The app branding uses `assets/Early-Horizon-1024.png`, the Default appearance
 exported from `early-browser/Resources/Early.icon` with Icon Composer. The same
 PNG is used in the browser repository's `Branding/Previews` directory and can
-be uploaded as the GitHub organization image. `assets/Early-Horizon-64.png` is
-a small favicon derived from that export; separate Dark and Tinted preview
-images are not needed for the website.
+be uploaded as the GitHub organization image. The homepage selects smaller
+96, 128, 192, 256 or 384-pixel PNGs for its displayed size and screen density.
+Resize each directly from the 1024-pixel export, preserving transparency and
+the sRGB profile. `assets/Early-Horizon-64.png` is the favicon; the full-resolution
+export remains the touch icon. Separate Dark and Tinted previews are not needed.
 
 ## Checks
 

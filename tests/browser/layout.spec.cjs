@@ -127,7 +127,8 @@ for (const colorScheme of ["light", "dark"]) {
       await page.locator("[data-tab-id=home]").click();
       await expect(page.locator("h1")).toHaveText("Early");
       await expect(page).toHaveURL(/\/web\/$/);
-      await expect(page.locator(".app-icon")).toHaveJSProperty("naturalWidth", 1024);
+      await expect(page.locator(".app-icon")).toHaveJSProperty("naturalWidth", 128);
+      await expect(page.locator(".app-icon")).toHaveJSProperty("currentSrc", "http://127.0.0.1:4177/web/assets/Early-Horizon-128.png");
     });
 
     test("site controls open a panel that copies the link and closes with Escape", async ({ page }) => {

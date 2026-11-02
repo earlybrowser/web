@@ -114,7 +114,7 @@
   function renderPage() {
     let content;
     if (state.active === "home") {
-      content = `<header class="home-header"><img class="app-icon" src="assets/Early-Horizon-1024.png" width="68" height="68" alt="" fetchpriority="high">
+      content = `<header class="home-header"><img class="app-icon" src="assets/Early-Horizon-128.png" srcset="assets/Early-Horizon-96.png 96w, assets/Early-Horizon-128.png 128w, assets/Early-Horizon-192.png 192w, assets/Early-Horizon-256.png 256w, assets/Early-Horizon-384.png 384w" sizes="clamp(76px, 12vw, 128px)" width="128" height="128" alt="" fetchpriority="high">
         <p class="eyebrow">Made for macOS</p><h1 id="page-heading" tabindex="-1">Early</h1>
         <p class="home-lede">A native Mac browser.<br>Room for everything you’re working on.</p>
         <p class="intro">Open source and inspired by Arc’s sidebar workflow. Built with Swift and WebKit, with tabs, folders, and Spaces that keep your browsing organized.</p>
