@@ -63,6 +63,12 @@ The test runner starts and stops its own local preview server when one is not al
 
 The **Website** workflow runs syntax, unit, asset-version, and browser checks for pull requests targeting `main` and pushes to `main`. Successful `main` runs deploy to GitHub Pages. Other branches can be tested with **Run workflow**, but cannot deploy. Pull requests have read-only permissions and never deploy.
 
+Actions are pinned to full commit hashes, with their release versions in comments.
+To update one, verify the intended tag in its official `actions` repository,
+resolve it to a commit (following annotated tags when needed), and update the
+hash and version comment together. Review the release notes, run `actionlint`,
+and repeat the website checks before pushing.
+
 Only the public HTML, CSS, JavaScript, and images are staged for publication. Source-control metadata, test dependencies, and test results are not published. Failed browser checks attach their screenshots to the workflow run.
 
 One-time setup:
