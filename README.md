@@ -16,9 +16,8 @@ Open [localhost:4177](http://localhost:4177). The sidebar collapses on small scr
 
 Keep `features-data.js` limited to implemented major features. Features implemented for the next release must be clearly marked as unreleased; unimplemented work belongs in the separate roadmap list. Verify availability against the browser repository before updating download or release claims.
 
-Browser import, eight-level folders, and choosing an account before filling a
-password are available in Early 0.1.4.
-The app README describes the current browser-import coverage.
+The [app README](https://github.com/earlybrowser/early-browser#features) describes
+current feature availability and browser-import coverage.
 
 The command bar searches this site locally and ranks feature names ahead of incidental mentions. Open it with **New Tab** or **⌘K / Ctrl K** to see Home, Download & Install, and All Features; typing filters the site’s pages. Use Up/Down to select, Right Arrow to fill a page name, Return to open, and Escape to dismiss. Shift-Return adds a line. Explicit web addresses open externally, but there is no Google search option or web-search fallback. Typing alone sends no search requests. Host browsers reserve some native shortcuts such as ⌘T and ⌘L, so those are not guaranteed to reach the site.
 

@@ -54,7 +54,7 @@
     ],
     tabs: [
       { id: "home", name: "Home", description: "Meet Early, an open-source native macOS browser.", icon: icons.home, aliases: ["overview", "early"] },
-      { id: "download", name: "Download & Install", description: "Build Early from source and find release information.", icon: icons.download, aliases: ["install", "build", "requirements"] },
+      { id: "download", name: "Download & Install", description: "Install Early with Homebrew or download the latest release from GitHub.", icon: icons.download, aliases: ["install", "build", "requirements"] },
       { id: "roadmap", name: "All Features", description: "What works today, and what is still ahead.", icon: icons.list, aliases: ["features", "roadmap", "planned"] }
     ],
     features: [
@@ -95,7 +95,7 @@
           "Open with ⌘T, or edit the current address with ⌘L. Typing or dismissing the bar doesn’t add a tab.",
           "Find tabs and pins in your current Space, your profile’s Favorites, and pages from your history, by title or address. Switch to an existing page or reopen a closed pin or Favorite in place, without duplicates. Parent folders expand to reveal the tab.",
           "Type naturally: “Pin Tab”, “Duplicate Tab”, “New Space”, or “Open Settings”. Choose the matching command with the arrow keys and Return, or click it. Commands appear when they can be used.",
-          "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional suggestions from your search engine: Google, DuckDuckGo, Bing, Ecosia, Brave Search or Kagi.",
+          "Switch Spaces or profiles by typing their names. Tab matches and browser actions appear above optional online suggestions from Google, DuckDuckGo, Bing, Ecosia, or Brave Search. Kagi receives your query when you submit a search.",
           "Pressing Return without selecting a result opens your typed address or web search. Right Arrow fills a selected suggestion before submitting.",
           "Turn command-bar actions or online suggestions on or off in Settings → Search. Escape or an outside click dismisses the bar without creating a tab."
         ],
@@ -165,8 +165,8 @@
             name: "History and privacy",
             commands: [
               { name: "Show All History", description: "Browse, search, and delete the pages you visited." },
-              { name: "Clear History…", description: "Clear history and website data from the last hour, today, or all time." },
-              { name: "New Private Window", description: "Browse in a window that keeps no history, cookies, or website data after it closes." }
+              { name: "Clear History…", description: "Clear history and website data for the last hour, today, today and yesterday, or all time." },
+              { name: "New Private Window", description: "Browse without recording history. Cookies and website data clear when the last private window closes." }
             ]
           },
           {
@@ -210,7 +210,7 @@
         behavior: [
           "Open Downloads from the sidebar footer to see progress, stop or resume a download, and reveal a file in Finder.",
           "Upload files through websites’ file pickers.",
-          "Save pages as HTML, export PDFs, or print. Saved pages and PDFs appear in the downloads list too.",
+          "Save pages as HTML, export PDFs, or print. Saved pages and exported PDFs appear in Downloads even if you close the source tab before the list updates.",
           "Open local files in tabs. Early remembers access for restoration after a restart; a missing file or lost permission may require opening it again."
         ]
       },
@@ -220,10 +220,10 @@
         description: "Find, zoom, read, and translate without leaving the page.",
         summary: "Tools for the page in front of you: a find bar with a match count, zoom for each tab, a clean Reader view for articles, and translation that stays on your Mac.",
         behavior: [
-          "Press ⌘F to find text. A small bar at the page’s top right, in your Space’s theme, counts the matches; ⌘G and ⇧⌘G step through them.",
+          "Press ⌘F to find text. The bar counts matches at the top right of the page. Use ⌘G and ⇧⌘G to step through them and refresh the results when page text changes or becomes visible.",
           "Zoom a tab with ⌘+, ⌘− and ⌘0. Each tab keeps its own zoom, and trackpad pinch and Smart Zoom still work.",
           "Open Reader with ⇧⌘R or from the address bar’s site controls when a page is an article. Show Original returns to the page.",
-          "Translate a page into your language with Apple’s on-device translation on macOS 15 and later.",
+          "Translate a page into your language with Apple’s on-device translation on macOS 15 and later. Early preserves text the website edits during translation or before you choose Show Original.",
           "Hover a link to see its address at the bottom of the page, and right-click the address bar to Paste and Go."
         ]
       },
@@ -273,7 +273,13 @@
         aliases: ["restore", "sessions", "persistence", "saved", "export", "import Early data", "backup", "new mac"],
         description: "A familiar place to return to.",
         summary: "Early saves your browsing organization locally so you can return to your tabs, saved pages, and Spaces after quitting the app.",
-        behavior: ["Restore tabs, pins, Favorites, ordering, and selection.", "Keep multiple windows’ Today tabs separate while restoring them together.", "Start with folders collapsed, ready to open the context you need.", "Export your profiles, Spaces, folders, pins, Favorites, windows, tabs, and settings from Settings › Sessions, and import them on another Mac. You see what a file holds before anything changes, a backup of what you had is saved first, and tabs load only when you choose them.", "Passwords, cookies, history, and private windows are never exported, so websites ask you to sign in again after an import."]
+        behavior: [
+          "Restore tabs, pins, Favorites, ordering, and selection. Each window keeps its own Today tabs, and folders start collapsed.",
+          "Settings › Sessions exports your profiles, Spaces, folders, pins, Favorites, windows, open tabs, and settings for import on another Mac. Preview the file before importing. Imported tabs load when you choose them.",
+          "Portable archives support up to 64 profiles, 20,000 tab records across all windows, and 16 MiB. If an export exceeds these limits, Show Session Folder lets you find the files for a local recovery copy.",
+          "Early saves a backup before importing. It keeps the new backup and the four most recent earlier copies, and tells you if an older copy is locked and can’t be removed.",
+          "Passwords, cookies, history, and private windows stay outside the archive. Sign in again on a new Mac."
+        ]
       },
       {
         id: "browser-import", folderId: "your-setup", name: "Import from other browsers", icon: icons.import,
@@ -321,10 +327,10 @@
       {
         id: "developer-tools", folderId: "browsing", name: "Developer tools", icon: icons.code,
         aliases: ["inspect", "web inspector", "devtools", "console", "view source", "page source"],
-        description: "Inspect any page with Web Inspector, docked beside it.",
-        summary: "Every page can be inspected right away: there is no developer mode to turn on.",
+        description: "Inspect pages with Web Inspector.",
+        summary: "Inspect pages directly in Early where WebKit supports the docked inspector. Safari’s Develop menu can inspect Early’s pages on other systems.",
         behavior: [
-          "Right-click a page and choose Inspect, or press ⌥⌘I, to open Web Inspector docked beside the page.",
+          "When the docked inspector is available, right-click a page and choose Inspect, or press ⌥⌘I to open it.",
           "Dock it on the right, at the bottom, or in its own window. It stays with its tab when you switch away and back.",
           "View Page Source (⌥⌘U) opens the page’s current markup in a new tab, without downloading it again."
         ]
